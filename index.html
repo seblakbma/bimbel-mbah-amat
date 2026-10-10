@@ -40,7 +40,6 @@
     </script>
     <style>
         body { font-family: 'Inter', sans-serif; }
-        /* Custom Device View Frames */
         .device-pc { width: 100%; height: 100vh; transition: all 0.3s ease; }
         .device-tablet { width: 768px; height: 90vh; margin: 20px auto; border: 12px solid #334155; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); overflow-y: auto; }
         .device-iphone { width: 390px; height: 812px; margin: 20px auto; border: 12px solid #1e293b; border-radius: 40px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.3); overflow-y: auto; position: relative; }
@@ -48,7 +47,6 @@
         .device-android { width: 360px; height: 780px; margin: 20px auto; border: 10px solid #0f172a; border-radius: 28px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.3); overflow-y: auto; position: relative; }
         .device-android::before { content: ''; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 12px; height: 12px; background: #334155; border-radius: 50%; z-index: 50; }
         
-        /* Custom scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
@@ -268,21 +266,14 @@
                 <!-- Dynamic Content Display Area -->
                 <main class="flex-1 overflow-y-auto p-4 md:p-6 bg-slate-100">
 
-                    <!-- SECTION 1: DASHBOARD / BERANDA -->
+                    <!-- SECTION 1: DASHBOARD -->
                     <div id="sec-dashboard" class="content-section space-y-6">
                         <div class="bg-gradient-to-r from-brand-800 to-slate-900 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
                             <div class="relative z-10">
                                 <h2 class="text-2xl font-black">Selamat Datang di Bimbel Mbah Amat 🚀</h2>
                                 <p class="text-sm text-brand-100 mt-1 max-w-xl">Sistem manajemen bimbingan belajar dengan validasi lokasi presensi GPS radius 10m, otomatisasi invoice SPP, dan AI Quiz Generator.</p>
-                                <div class="mt-4 flex flex-wrap gap-2 text-xs">
-                                    <span class="bg-white/10 px-3 py-1.5 rounded-lg border border-white/20"><i class="fa-solid fa-location-dot text-emerald-400"></i> GPS Geofencing 10 Meter</span>
-                                    <span class="bg-white/10 px-3 py-1.5 rounded-lg border border-white/20"><i class="fa-solid fa-door-open text-cyan-400"></i> Ruang 1 - Ruang 10</span>
-                                    <span class="bg-white/10 px-3 py-1.5 rounded-lg border border-white/20"><i class="fa-solid fa-robot text-purple-400"></i> Gemini AI Bank Soal</span>
-                                </div>
                             </div>
                         </div>
-
-                        <!-- Stats Overview Cards -->
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                             <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex items-center space-x-3">
                                 <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-user-graduate"></i></div>
@@ -313,657 +304,173 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Schedule Quick Glance -->
-                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                            <h3 class="font-bold text-slate-800 text-base mb-3 flex items-center gap-2">
-                                <i class="fa-solid fa-calendar-day text-brand-600"></i> Ringkasan Jadwal Bimbel Hari Ini
-                            </h3>
-                            <div id="dashJadwalList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                                <!-- Populated dynamically -->
-                            </div>
-                        </div>
                     </div>
 
-                    <!-- SECTION 2: ABSENSI GPS SISWA -->
-                    <div id="sec-absensi-gps" class="content-section space-y-6 hidden">
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                            <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-slate-200 gap-4">
-                                <div>
-                                    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-                                        <i class="fa-solid fa-street-view text-emerald-600"></i> Check-In Mandiri GPS Siswa
-                                    </h2>
-                                    <p class="text-xs text-slate-500">Persyaratan: Berada dalam radius maksimal 10 Meter dari Koordinat Pusat Bimbel Mbah Amat.</p>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <button onclick="checkGpsLocation()" class="bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold px-4 py-2 rounded-lg shadow flex items-center gap-1.5">
-                                        <i class="fa-solid fa-arrows-rotate"></i> Refresh GPS Saya
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Map Reference & Distance Callout -->
-                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-                                <div class="lg:col-span-2 space-y-4">
-                                    <div class="p-4 bg-slate-900 rounded-xl text-white space-y-3 border border-slate-800">
-                                        <div class="flex items-center justify-between text-xs text-slate-400">
-                                            <span>Pusat Bimbel Mbah Amat (-7.7956, 110.3695)</span>
-                                            <span class="text-emerald-400 font-semibold"><i class="fa-solid fa-circle-dot"></i> Radius Toleransi: 10m</span>
-                                        </div>
-                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-800 p-3 rounded-lg text-xs font-mono">
-                                            <div>
-                                                <span class="text-slate-400 block">Koordinat Anda Sekarang:</span>
-                                                <span id="userLatLong" class="font-bold text-amber-400">Mendeteksi...</span>
-                                            </div>
-                                            <div>
-                                                <span class="text-slate-400 block">Jarak Terhitung (Haversine):</span>
-                                                <span id="userDistance" class="font-bold text-amber-400">0 meter</span>
-                                            </div>
-                                        </div>
-
-                                        <!-- Distance Status Alert Banner -->
-                                        <div id="gpsStatusBox" class="p-3 rounded-lg text-xs font-semibold flex items-center justify-between bg-amber-500/20 text-amber-300 border border-amber-500/40">
-                                            <span id="gpsStatusText"><i class="fa-solid fa-spinner fa-spin"></i> Menghubungkan GPS Device...</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Quick Simulator Controls for Demo -->
-                                    <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl space-y-2">
-                                        <div class="text-xs font-bold text-emerald-900 flex items-center gap-1">
-                                            <i class="fa-solid fa-vial"></i> Tombol Demo Simulator Lokasi:
-                                        </div>
-                                        <p class="text-[11px] text-emerald-700">Gunakan simulator di bawah untuk menguji apakah status diterima / ditolak presensinya saat di luar radius.</p>
-                                        <div class="flex flex-wrap gap-2 pt-1">
-                                            <button onclick="setSimulatedLocation(true)" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-xs font-bold shadow-sm">
-                                                <i class="fa-solid fa-location-dot"></i> Set Simulasi di Bimbel (Distance 0m)
-                                            </button>
-                                            <button onclick="setSimulatedLocation(false)" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded text-xs font-bold shadow-sm">
-                                                <i class="fa-solid fa-location-arrow"></i> Set Simulasi Jauh (Distance 120m)
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Action Form Check-in -->
-                                <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 flex flex-col justify-between">
-                                    <div class="space-y-4">
-                                        <h3 class="font-bold text-slate-800 text-sm">Form Check-In Kehadiran</h3>
-                                        <div>
-                                            <label class="block text-xs font-semibold text-slate-600 mb-1">Pilih Siswa</label>
-                                            <select id="gpsSelectSiswa" class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white"></select>
-                                        </div>
-                                        <div>
-                                            <label class="block text-xs font-semibold text-slate-600 mb-1">Pilih Ruang / Kelas</label>
-                                            <select id="gpsSelectKelas" class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white"></select>
-                                        </div>
-                                        <div>
-                                            <label class="block text-xs font-semibold text-slate-600 mb-1">Status Kehadiran</label>
-                                            <select id="gpsSelectStatus" class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white">
-                                                <option value="Hadir">Hadir Mandiri (GPS Checked)</option>
-                                                <option value="Izin">Izin (Sertakan Surat)</option>
-                                                <option value="Sakit">Sakit</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <button id="btnSubmitGps" onclick="submitGpsCheckin()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 rounded-lg text-xs shadow mt-4 transition flex items-center justify-center gap-2">
-                                        <i class="fa-solid fa-check-circle"></i> Kirim Check-In Presensi
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Presensi Log Table -->
-                            <div class="mt-8">
-                                <h3 class="font-bold text-slate-800 text-sm mb-3">Riwayat Presensi GPS Hari Ini</h3>
-                                <div class="overflow-x-auto border border-slate-200 rounded-xl">
-                                    <table class="w-full text-left border-collapse text-xs">
-                                        <thead class="bg-slate-100 text-slate-700 uppercase tracking-wider font-bold">
-                                            <tr>
-                                                <th class="p-3">Waktu</th>
-                                                <th class="p-3">Nama Siswa</th>
-                                                <th class="p-3">Kelas / Ruang</th>
-                                                <th class="p-3">Jarak GPS</th>
-                                                <th class="p-3">Status</th>
-                                                <th class="p-3">Validasi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tblPresensiGps" class="divide-y divide-slate-200 bg-white">
-                                            <!-- Dynamic Rows -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SECTION 3: ABSENSI TENTOR & JURNAL MATERI -->
-                    <div id="sec-absensi-tentor" class="content-section space-y-6 hidden">
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                            <div class="pb-4 border-b border-slate-200">
-                                <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-                                    <i class="fa-solid fa-book-journal-whills text-amber-600"></i> Jurnal Mengajar & Presensi Tentor
-                                </h2>
-                                <p class="text-xs text-slate-500">Syarat Penguncian: Tentor wajib menginput Jurnal Materi & Presensi Siswa sebelum dapat menandai absensi tentor sendiri.</p>
-                            </div>
-
-                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-                                <!-- Form Jurnal & Locking Logic -->
-                                <div class="lg:col-span-2 bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
-                                    <h3 class="font-bold text-slate-800 text-sm border-b pb-2">1. Input Jurnal Pembelajaran Kelas</h3>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                        <div>
-                                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Tentor</label>
-                                            <select id="jurnalSelectTentor" class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white"></select>
-                                        </div>
-                                        <div>
-                                            <label class="block text-xs font-semibold text-slate-600 mb-1">Pilih Jadwal Ruang</label>
-                                            <select id="jurnalSelectJadwal" onchange="renderSiswaAbsenChecklist()" class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white"></select>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-semibold text-slate-600 mb-1">Materi / Bahasan Pembelajaran Hari Ini</label>
-                                        <textarea id="jurnalMateriText" rows="2" class="w-full text-xs p-2.5 border border-slate-300 rounded-lg bg-white outline-none focus:ring-2 focus:ring-brand-500" placeholder="Contoh: Pembahasan Soal UTBK Matematika Dasar Bab Trigonometri"></textarea>
-                                    </div>
-
-                                    <h3 class="font-bold text-slate-800 text-sm border-b pb-2 pt-2">2. Checklist Presensi Siswa Hadir</h3>
-                                    <div id="siswaChecklistWrapper" class="grid grid-cols-2 sm:grid-cols-3 gap-2 bg-white p-3 rounded-lg border border-slate-200 max-h-40 overflow-y-auto">
-                                        <!-- Checkboxes dynamically generated -->
-                                    </div>
-
-                                    <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800 flex items-start gap-2">
-                                        <i class="fa-solid fa-lock text-amber-600 mt-0.5"></i>
-                                        <span>Sistem otomatis mengunci (lock) tombol Absensi Tentor sampai materi diisi dan minimal presensi diverifikasi.</span>
-                                    </div>
-
-                                    <button onclick="submitJurnalDanTentor()" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2.5 rounded-lg text-xs shadow transition flex items-center justify-center gap-2">
-                                        <i class="fa-solid fa-lock-open"></i> Simpan Jurnal Materi & Mark Absensi Tentor
-                                    </button>
-                                </div>
-
-                                <!-- Summary Jurnal Recorded -->
-                                <div class="bg-slate-900 text-white p-5 rounded-xl border border-slate-800 space-y-4">
-                                    <h3 class="font-bold text-sm text-brand-400">Jurnal Pengajaran Terbaru</h3>
-                                    <div id="recentJurnalList" class="space-y-3 text-xs max-h-[380px] overflow-y-auto pr-1">
-                                        <!-- Dynamic items -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SECTION 4: MANAJEMEN KELAS & JADWAL BERTINGKAT -->
-                    <div id="sec-kelas-jadwal" class="content-section space-y-6 hidden">
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                            <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-slate-200 gap-4">
-                                <div>
-                                    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-                                        <i class="fa-solid fa-door-open text-cyan-600"></i> Pengelompokan Ruang & Jadwal (Ruang 1 - Ruang 10)
-                                    </h2>
-                                    <p class="text-xs text-slate-500">Kapasitas Slot Siswa Default 6 Orang per Kelas (Bisa ditambah/dikurangi).</p>
-                                </div>
-                                <button onclick="openModalAddJadwal()" class="bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold px-4 py-2 rounded-lg shadow flex items-center gap-1.5">
-                                    <i class="fa-solid fa-plus"></i> Tambah Jadwal Ruang Baru
-                                </button>
-                            </div>
-
-                            <!-- Filter Jenjang -->
-                            <div class="flex items-center space-x-2 my-4">
-                                <span class="text-xs font-bold text-slate-600">Filter Jenjang:</span>
-                                <button onclick="filterJadwal('All')" class="px-3 py-1 text-xs rounded-full bg-slate-800 text-white font-medium">Semua</button>
-                                <button onclick="filterJadwal('SD/MI')" class="px-3 py-1 text-xs rounded-full bg-slate-200 text-slate-700 font-medium hover:bg-slate-300">SD / MI</button>
-                                <button onclick="filterJadwal('SMP/MTs')" class="px-3 py-1 text-xs rounded-full bg-slate-200 text-slate-700 font-medium hover:bg-slate-300">SMP / MTs</button>
-                                <button onclick="filterJadwal('SMA/MA/SMK')" class="px-3 py-1 text-xs rounded-full bg-slate-200 text-slate-700 font-medium hover:bg-slate-300">SMA / MA / SMK</button>
-                            </div>
-
-                            <!-- Grid Ruang 1 to Ruang 10 -->
-                            <div id="gridJadwalRuang" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                <!-- Cards populated dynamically -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SECTION 5: BANK SOAL & AI GEMINI QUIZ -->
-                    <div id="sec-bank-soal-ai" class="content-section space-y-6 hidden">
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                            <div class="pb-4 border-b border-slate-200 flex flex-col md:flex-row justify-between md:items-center gap-2">
-                                <div>
-                                    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-                                        <i class="fa-solid fa-wand-magic-sparkles text-purple-600"></i> Generator Soal & Quiz AI (Gemini Powered)
-                                    </h2>
-                                    <p class="text-xs text-slate-500">Buat latihan soal otomatis lengkap dengan Kunci Jawaban Terpisah & Pembahasan Instant.</p>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <span class="text-xs text-slate-500 font-semibold">Gemini Model:</span>
-                                    <span class="text-xs px-2.5 py-1 rounded bg-purple-100 text-purple-700 font-bold border border-purple-200">gemini-3-flash-preview</span>
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-                                <!-- Prompt Area Input -->
-                                <div class="lg:col-span-1 space-y-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                    <h3 class="font-bold text-xs uppercase tracking-wider text-slate-700">Papan Instruksi & File Kisi-kisi</h3>
-                                    <div>
-                                        <label class="block text-xs font-semibold text-slate-600 mb-1">Mata Pelajaran & Jenjang</label>
-                                        <input type="text" id="aiSubject" class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white" placeholder="misal: Matematika SMA Class 11">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-semibold text-slate-600 mb-1">Jumlah Soal</label>
-                                        <select id="aiNumQuestions" class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white">
-                                            <option value="3">3 Soal (Cepat)</option>
-                                            <option value="5">5 Soal (Standar)</option>
-                                            <option value="10">10 Soal (Lengkap)</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-semibold text-slate-600 mb-1">Upload Kisi-kisi / Materi PDF (Mock File)</label>
-                                        <input type="file" id="aiFileMock" class="w-full text-xs p-1.5 border border-slate-300 rounded-lg bg-white">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-semibold text-slate-600 mb-1">Prompt Instruksi Khusus</label>
-                                        <textarea id="aiCustomPrompt" rows="3" class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white outline-none focus:ring-2 focus:ring-purple-500" placeholder="Contoh: Fokus pada soal High Order Thinking Skills (HOTS) tentang Turunan Fungsi Aljabar."></textarea>
-                                    </div>
-
-                                    <button onclick="generateQuizWithGemini()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 rounded-lg text-xs shadow transition flex items-center justify-center gap-2">
-                                        <i class="fa-solid fa-bolt"></i> Generate Soal dengan Gemini AI
-                                    </button>
-                                </div>
-
-                                <!-- Output Quiz Preview & Interactive Tester -->
-                                <div class="lg:col-span-2 space-y-4">
-                                    <div class="flex items-center justify-between border-b pb-2">
-                                        <h3 class="font-bold text-slate-800 text-sm">Hasil Bank Soal Ter-generate</h3>
-                                        <div class="space-x-2">
-                                            <button onclick="toggleAnswerKeys()" class="text-xs bg-slate-200 hover:bg-slate-300 px-3 py-1 rounded font-semibold text-slate-700">
-                                                <i class="fa-solid fa-key"></i> <span id="btnKeyText">Tampilkan Kunci Jawaban</span>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Generated Quiz Content Holder -->
-                                    <div id="aiQuizOutput" class="space-y-4 min-h-[300px] bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                        <p class="text-xs text-slate-400 italic text-center py-12">Belum ada soal ter-generate. Silahkan klik tombol generate di samping.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SECTION 6: SISTEM SPP, INVOICE & KWITANSI BARCODE/QR -->
-                    <div id="sec-spp-kas" class="content-section space-y-6 hidden">
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                            <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-slate-200 gap-4">
-                                <div>
-                                    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-                                        <i class="fa-solid fa-file-invoice-dollar text-blue-600"></i> Sistem Pembayaran SPP & Kwitansi PDF Barcode
-                                    </h2>
-                                    <p class="text-xs text-slate-500">Penerbitan Invoice Otomatis, Kalkulator Pengurangan SPP Akibat Izin, dan Kwitansi Terverifikasi QR/Barcode.</p>
-                                </div>
-                                <button onclick="generateMonthlyInvoices()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2 rounded-lg shadow flex items-center gap-1.5">
-                                    <i class="fa-solid fa-calendar-plus"></i> Terbitkan Invoice Serentak (Tanggal 1)
-                                </button>
-                            </div>
-
-                            <!-- Tarif Matrix Info -->
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
-                                <div class="bg-blue-50 border border-blue-200 p-3 rounded-xl">
-                                    <span class="text-[11px] font-bold uppercase text-blue-700">Tarif Base SD / MI</span>
-                                    <p class="text-lg font-black text-blue-900">Rp 150.000 <span class="text-xs font-normal text-slate-500">/ Bulan</span></p>
-                                </div>
-                                <div class="bg-indigo-50 border border-indigo-200 p-3 rounded-xl">
-                                    <span class="text-[11px] font-bold uppercase text-indigo-700">Tarif Base SMP / MTs</span>
-                                    <p class="text-lg font-black text-indigo-900">Rp 200.000 <span class="text-xs font-normal text-slate-500">/ Bulan</span></p>
-                                </div>
-                                <div class="bg-purple-50 border border-purple-200 p-3 rounded-xl">
-                                    <span class="text-[11px] font-bold uppercase text-purple-700">Tarif Base SMA / MA / SMK</span>
-                                    <p class="text-lg font-black text-purple-900">Rp 250.000 <span class="text-xs font-normal text-slate-500">/ Bulan</span></p>
-                                </div>
-                            </div>
-
-                            <!-- Table Invoices -->
-                            <div class="overflow-x-auto border border-slate-200 rounded-xl">
-                                <table class="w-full text-left border-collapse text-xs">
-                                    <thead class="bg-slate-100 text-slate-700 uppercase tracking-wider font-bold">
-                                        <tr>
-                                            <th class="p-3">No. Invoice</th>
-                                            <th class="p-3">Nama Siswa</th>
-                                            <th class="p-3">Jenjang</th>
-                                            <th class="p-3">Tarif Normal</th>
-                                            <th class="p-3">Diskon Izin Valid</th>
-                                            <th class="p-3">Total Net SPP</th>
-                                            <th class="p-3">Status</th>
-                                            <th class="p-3 text-center">Aksi Kwitansi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tblSppInvoice" class="divide-y divide-slate-200 bg-white">
-                                        <!-- Dynamic SPP rows -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SECTION 7: TUITION FEE TENTOR -->
-                    <div id="sec-tuition-fee" class="content-section space-y-6 hidden">
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                            <div class="pb-4 border-b border-slate-200">
-                                <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-                                    <i class="fa-solid fa-hand-holding-dollar text-rose-600"></i> Tuition Fee Tentor & Matrik Honor
-                                </h2>
-                                <p class="text-xs text-slate-500">Perhitungan honor otomatis berdasarkan jenjang kelas dan jumlah kehadiran siswa.</p>
-                            </div>
-
-                            <!-- Matrix Fee Config Form -->
-                            <div class="mt-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                <h3 class="font-bold text-xs uppercase tracking-wider text-slate-700 mb-3">Matrik Tarif Fee Dasar per Sesi</h3>
-                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                    <div>
-                                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Fee SD (Base + per siswa)</label>
-                                        <input type="number" id="feeSdBase" value="30000" class="w-full text-xs p-2 border border-slate-300 rounded bg-white">
-                                    </div>
-                                    <div>
-                                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Fee SMP (Base + per siswa)</label>
-                                        <input type="number" id="feeSmpBase" value="40000" class="w-full text-xs p-2 border border-slate-300 rounded bg-white">
-                                    </div>
-                                    <div>
-                                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Fee SMA (Base + per siswa)</label>
-                                        <input type="number" id="feeSmaBase" value="50000" class="w-full text-xs p-2 border border-slate-300 rounded bg-white">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Tentor Accumulated Fee Table -->
-                            <div class="mt-6">
-                                <h3 class="font-bold text-slate-800 text-sm mb-3">Akumulasi Fee Tentor Bulan Ini</h3>
-                                <div class="overflow-x-auto border border-slate-200 rounded-xl">
-                                    <table class="w-full text-left border-collapse text-xs">
-                                        <thead class="bg-slate-100 text-slate-700 uppercase tracking-wider font-bold">
-                                            <tr>
-                                                <th class="p-3">Nama Tentor</th>
-                                                <th class="p-3">Jumlah Sesi Mengajar</th>
-                                                <th class="p-3">Siswa Terlayani</th>
-                                                <th class="p-3">Total Honor Fee</th>
-                                                <th class="p-3">Status Pencairan</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tblFeeTentor" class="divide-y divide-slate-200 bg-white">
-                                            <!-- Dynamic Rows -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SECTION 8: MANAJEMEN AKUN & SISWA (ADMIN ONLY) -->
+                    <!-- SECTION: MANAJEMEN AKUN (DENGAN TOMBOL TAMBAH, EDIT, HAPUS) -->
                     <div id="sec-manajemen-akun" class="content-section space-y-6 hidden">
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                            <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-slate-200 gap-4">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-200 gap-4">
                                 <div>
                                     <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-                                        <i class="fa-solid fa-users-gear text-orange-600"></i> Manajemen Akun, Siswa & Status Aktif
+                                        <i class="fa-solid fa-users-gear text-orange-500"></i> Manajemen Akun, Siswa & Status Aktif
                                     </h2>
-                                    <p class="text-xs text-slate-500">Kelola status aktif/non-aktif akun, peran pengguna, dan registrasi siswa baru.</p>
+                                    <p class="text-xs text-slate-500">Kelola tambah akun baru, edit data, hapus, dan status aktif pengguna.</p>
                                 </div>
+                                <button onclick="bukaModalUser('tambah')" class="bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold px-4 py-2 rounded-lg shadow flex items-center gap-1.5 self-start sm:self-auto">
+                                    <i class="fa-solid fa-user-plus"></i> Tambah Akun Baru
+                                </button>
                             </div>
 
-                            <!-- Users Table -->
-                            <div class="overflow-x-auto border border-slate-200 rounded-xl mt-6">
+                            <div class="overflow-x-auto mt-4">
                                 <table class="w-full text-left border-collapse text-xs">
-                                    <thead class="bg-slate-100 text-slate-700 uppercase tracking-wider font-bold">
-                                        <tr>
+                                    <thead>
+                                        <tr class="bg-slate-100 text-slate-600 uppercase tracking-wider border-b border-slate-200">
                                             <th class="p-3">Nama Lengkap</th>
                                             <th class="p-3">Username</th>
                                             <th class="p-3">Role</th>
                                             <th class="p-3">Jenjang</th>
                                             <th class="p-3">Status Aktif</th>
-                                            <th class="p-3 text-center">Aksi Status</th>
+                                            <th class="p-3 text-right">Aksi Kelola</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tblManajemenUser" class="divide-y divide-slate-200 bg-white">
-                                        <!-- Dynamic user list -->
+                                    <tbody id="tabelManajemenAkunBody" class="divide-y divide-slate-200">
+                                        <!-- Data rendered dynamically -->
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Placeholder sections for other navs -->
+                    <div id="sec-absensi-gps" class="content-section space-y-6 hidden"><div class="bg-white p-6 rounded-2xl shadow-sm"><h3 class="font-bold">Absensi GPS Siswa</h3><p class="text-xs text-slate-500 mt-1">Modul validasi lokasi radius 10 meter.</p></div></div>
+                    <div id="sec-absensi-tentor" class="content-section space-y-6 hidden"><div class="bg-white p-6 rounded-2xl shadow-sm"><h3 class="font-bold">Jurnal & Absen Tentor</h3></div></div>
+                    <div id="sec-kelas-jadwal" class="content-section space-y-6 hidden"><div class="bg-white p-6 rounded-2xl shadow-sm"><h3 class="font-bold">Kelas & Jadwal (Ruang 1 - 10)</h3></div></div>
+                    <div id="sec-bank-soal-ai" class="content-section space-y-6 hidden"><div class="bg-white p-6 rounded-2xl shadow-sm"><h3 class="font-bold">Bank Soal & Gemini AI Generator</h3></div></div>
+                    <div id="sec-spp-kas" class="content-section space-y-6 hidden"><div class="bg-white p-6 rounded-2xl shadow-sm"><h3 class="font-bold">SPP, Diskon & Kwitansi Otomatis</h3></div></div>
+                    <div id="sec-tuition-fee" class="content-section space-y-6 hidden"><div class="bg-white p-6 rounded-2xl shadow-sm"><h3 class="font-bold">Tuition Fee Tentor</h3></div></div>
+
                 </main>
             </div>
-
-            <!-- PRINTABLE KWITANSI MODAL CONTAINER -->
-            <div id="modalKwitansi" class="fixed inset-0 bg-slate-900/80 z-[999] hidden flex items-center justify-center p-4 overflow-y-auto">
-                <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
-                    <!-- Printable Receipt Content -->
-                    <div id="printableKwitansiContent" class="p-6 border-2 border-dashed border-slate-300 rounded-xl bg-slate-50 space-y-4 text-slate-800">
-                        <div class="flex items-center justify-between border-b pb-3 border-slate-300">
-                            <div>
-                                <h2 class="font-extrabold text-lg text-brand-700">BIMBEL MBAH AMAT</h2>
-                                <p class="text-[10px] text-slate-500">Jl. Bimbingan Belajar No. 1, Yogyakarta</p>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-xs font-bold text-slate-400 block">KWITANSI RESMI</span>
-                                <span id="kwitansiNum" class="text-xs font-mono font-bold text-slate-800">#INV-001</span>
-                            </div>
-                        </div>
-
-                        <div class="space-y-1.5 text-xs">
-                            <div class="flex justify-between">
-                                <span class="text-slate-500">Telah Diterima Dari:</span>
-                                <span id="kwitansiSiswa" class="font-bold">Ahmad Siswa</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-slate-500">Jenjang Pendidikan:</span>
-                                <span id="kwitansiJenjang" class="font-bold">SMA/MA/SMK</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-slate-500">Tanggal Lunas:</span>
-                                <span id="kwitansiTanggal" class="font-bold">10 Oktober 2026</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-slate-500">Rincian Diskon Izin:</span>
-                                <span id="kwitansiDiskon" class="font-bold text-rose-600">Rp 0</span>
-                            </div>
-                            <div class="flex justify-between border-t pt-2 border-slate-300 font-bold text-sm">
-                                <span>Jumlah Dibayar:</span>
-                                <span id="kwitansiTotal" class="text-brand-700">Rp 250.000</span>
-                            </div>
-                        </div>
-
-                        <!-- QR Code Canvas Display -->
-                        <div class="pt-4 border-t border-slate-300 flex flex-col items-center justify-center space-y-1">
-                            <div id="qrcodeCanvas" class="p-2 bg-white rounded border border-slate-200"></div>
-                            <span class="text-[9px] font-mono text-slate-400">Kode Verifikasi QR Resmi Mbah Amat</span>
-                        </div>
-                    </div>
-
-                    <div class="flex space-x-2">
-                        <button onclick="downloadKwitansiPdf()" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white font-bold py-2 rounded-lg text-xs shadow flex items-center justify-center gap-1.5">
-                            <i class="fa-solid fa-file-pdf"></i> Download PDF Kwitansi
-                        </button>
-                        <button onclick="closeKwitansiModal()" class="px-4 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 rounded-lg text-xs">
-                            Tutup
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- MODAL TAMBAH JADWAL -->
-            <div id="modalAddJadwal" class="fixed inset-0 bg-slate-900/80 z-[999] hidden flex items-center justify-center p-4">
-                <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
-                    <h3 class="font-bold text-slate-800 text-base">Tambah Jadwal Kelas Baru</h3>
-                    <form onsubmit="handleSaveJadwal(event)" class="space-y-3 text-xs">
-                        <div>
-                            <label class="block font-semibold mb-1">Nama Mata Pelajaran / Kelas</label>
-                            <input type="text" id="addJadwalNama" required class="w-full p-2 border rounded" placeholder="Contoh: Fisika Dasar SMA">
-                        </div>
-                        <div>
-                            <label class="block font-semibold mb-1">Jenjang</label>
-                            <select id="addJadwalJenjang" class="w-full p-2 border rounded bg-white">
-                                <option value="SD/MI">SD / MI</option>
-                                <option value="SMP/MTs">SMP / MTs</option>
-                                <option value="SMA/MA/SMK">SMA / MA / SMK</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block font-semibold mb-1">Pilih Ruang</label>
-                            <select id="addJadwalRuang" class="w-full p-2 border rounded bg-white">
-                                <option value="Ruang 1">Ruang 1</option>
-                                <option value="Ruang 2">Ruang 2</option>
-                                <option value="Ruang 3">Ruang 3</option>
-                                <option value="Ruang 4">Ruang 4</option>
-                                <option value="Ruang 5">Ruang 5</option>
-                                <option value="Ruang 6">Ruang 6</option>
-                                <option value="Ruang 7">Ruang 7</option>
-                                <option value="Ruang 8">Ruang 8</option>
-                                <option value="Ruang 9">Ruang 9</option>
-                                <option value="Ruang 10">Ruang 10</option>
-                            </select>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="block font-semibold mb-1">Hari</label>
-                                <select id="addJadwalHari" class="w-full p-2 border rounded bg-white">
-                                    <option value="Senin">Senin</option>
-                                    <option value="Selasa">Selasa</option>
-                                    <option value="Rabu">Rabu</option>
-                                    <option value="Kamis">Kamis</option>
-                                    <option value="Jumat">Jumat</option>
-                                    <option value="Sabtu">Sabtu</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block font-semibold mb-1">Jam Belajar</label>
-                                <input type="text" id="addJadwalJam" required class="w-full p-2 border rounded" placeholder="15:30 - 17:00">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block font-semibold mb-1">Tentor Pengajar</label>
-                            <select id="addJadwalTentor" class="w-full p-2 border rounded bg-white"></select>
-                        </div>
-                        <div class="flex justify-end space-x-2 pt-2">
-                            <button type="button" onclick="closeModalAddJadwal()" class="px-4 py-2 bg-slate-200 rounded font-bold">Batal</button>
-                            <button type="submit" class="px-4 py-2 bg-brand-600 text-white rounded font-bold">Simpan Jadwal</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
         </main>
     </div>
 
+    <!-- MODAL FORM TAMBAH / EDIT USER -->
+    <div id="modalUser" class="fixed inset-0 bg-black/60 z-[1000] hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden border border-slate-200 animate-in fade-in zoom-in duration-150">
+            <div class="bg-brand-700 px-6 py-4 text-white flex items-center justify-between">
+                <h3 id="modalUserTitle" class="font-bold text-sm">Tambah Akun Baru</h3>
+                <button onclick="tutupModalUser()" class="text-brand-100 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="formModalUser" onsubmit="simpanDataUser(event)" class="p-6 space-y-3">
+                <input type="hidden" id="editOriginalUsername">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nama Lengkap</label>
+                    <input type="text" id="mFullName" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none" placeholder="Nama Lengkap">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Username</label>
+                    <input type="text" id="mUsername" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none" placeholder="username">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Peran / Role</label>
+                    <select id="mRole" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
+                        <option value="Siswa">Siswa</option>
+                        <option value="Tentor">Tentor</option>
+                        <option value="Orang Tua">Orang Tua</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Jenjang Pendidikan</label>
+                    <select id="mJenjang" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
+                        <option value="-">-</option>
+                        <option value="SD/MI">SD / MI</option>
+                        <option value="SMP/MTs">SMP / MTs</option>
+                        <option value="SMA/MA/SMK">SMA / MA / SMK</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">No. WhatsApp / HP</label>
+                    <input type="tel" id="mPhone" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none" placeholder="08123456789">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Kata Sandi</label>
+                    <input type="password" id="mPassword" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none" placeholder="••••••••">
+                </div>
+                <div class="pt-2 flex space-x-2">
+                    <button type="button" onclick="tutupModalUser()" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2.5 rounded-lg text-xs">Batal</button>
+                    <button type="submit" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 rounded-lg text-xs shadow">Simpan Data</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // --- 1. INITIAL APPLICATION STATE ---
-        const BIMBEL_GPS_REF = { lat: -7.7956, lng: 110.3695 }; // Reference Bimbel Coordinates
-        let simulatedUserLocation = { lat: -7.7956, lng: 110.3695 }; // Default centered on bimbel
+        // Database User Awal (Fallback localStorage)
+        const defaultUsers = [
+            { fullname: "Administrator Mbah Amat", username: "admin", role: "Admin", jenjang: "-", phone: "08123456789", password: "123456", status: "Aktif" },
+            { fullname: "Budi Utomo, S.Pd", username: "tentor1", role: "Tentor", jenjang: "SMA/MA/SMK", phone: "08123456781", password: "123", status: "Aktif" },
+            { fullname: "Anisa Rahmawati", username: "siswa1", role: "Siswa", jenjang: "SMA/MA/SMK", phone: "08123456782", password: "123", status: "Aktif" },
+            { fullname: "Dimas Prasetyo", username: "siswa2", role: "Siswa", jenjang: "SMP/MTs", phone: "08123456783", password: "123", status: "Aktif" },
+            { fullname: "Bpk. Hendra Rahmawati", username: "ortu1", role: "Orang Tua", jenjang: "SMA/MA/SMK", phone: "08123456784", password: "123", status: "Aktif" }
+        ];
 
-        let currentUser = null;
-        let isAnswerKeysVisible = false;
+        let users = JSON.parse(localStorage.getItem('bimbel_users')) || defaultUsers;
+        let currentUser = JSON.parse(localStorage.getItem('bimbel_current_user')) || null;
 
-        // Default Data Store
-        let appData = {
-            users: [
-                { id: 'u1', username: 'admin', name: 'Administrator Mbah Amat', role: 'Admin', jenjang: '-', phone: '08123456789', active: true, pass: '123456' },
-                { id: 'u2', username: 'tentor1', name: 'Budi Utomo, S.Pd', role: 'Tentor', jenjang: 'SMA/MA/SMK', phone: '08198765432', active: true, pass: '123456' },
-                { id: 'u3', username: 'siswa1', name: 'Anisa Rahmawati', role: 'Siswa', jenjang: 'SMA/MA/SMK', phone: '08512345678', active: true, pass: '123456' },
-                { id: 'u4', username: 'siswa2', name: 'Dimas Prasetyo', role: 'Siswa', jenjang: 'SMP/MTs', phone: '08587654321', active: true, pass: '123456' },
-                { id: 'u5', username: 'ortu1', name: 'Bpk. Hendra Rahmawati', role: 'Orang Tua', jenjang: 'SMA/MA/SMK', phone: '08133344455', active: true, pass: '123456' }
-            ],
-            jadwal: [
-                { id: 'j1', nama: 'Fisika Intensif UTBK', jenjang: 'SMA/MA/SMK', ruang: 'Ruang 1', hari: 'Senin', jam: '15:30 - 17:00', tentor: 'Budi Utomo, S.Pd', slotMax: 6, enrolled: ['Anisa Rahmawati'] },
-                { id: 'j2', nama: 'Matematika Dasar SMP', jenjang: 'SMP/MTs', ruang: 'Ruang 2', hari: 'Selasa', jam: '16:00 - 17:30', tentor: 'Budi Utomo, S.Pd', slotMax: 6, enrolled: ['Dimas Prasetyo'] },
-                { id: 'j3', nama: 'Tematik Calistung SD', jenjang: 'SD/MI', ruang: 'Ruang 3', hari: 'Rabu', jam: '14:00 - 15:30', tentor: 'Budi Utomo, S.Pd', slotMax: 6, enrolled: [] }
-            ],
-            presensiGps: [],
-            jurnalMateri: [],
-            invoices: [
-                { id: 'INV-202610-01', siswaName: 'Anisa Rahmawati', jenjang: 'SMA/MA/SMK', normalFee: 250000, diskonIzin: 0, totalNet: 250000, status: 'Lunas', date: '2026-10-01' },
-                { id: 'INV-202610-02', siswaName: 'Dimas Prasetyo', jenjang: 'SMP/MTs', normalFee: 200000, diskonIzin: 25000, totalNet: 175000, status: 'Belum Lunas', date: '2026-10-01' }
-            ]
-        };
-
-        window.onload = function() {
-            loadLocalStorageData();
-            checkGpsLocation();
-            renderAllViews();
-        };
-
-        function saveLocalStorageData() {
-            localStorage.setItem('bimbel_mbah_amat_data', JSON.stringify(appData));
+        function saveUsersToLocalStorage() {
+            localStorage.setItem('bimbel_users', JSON.stringify(users));
         }
 
-        function loadLocalStorageData() {
-            const saved = localStorage.getItem('bimbel_mbah_amat_data');
-            if(saved) {
-                try {
-                    appData = JSON.parse(saved);
-                } catch(e) {
-                    console.error("Error parsing saved state", e);
-                }
-            }
+        // Notifikasi Toast
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `p-3 rounded-xl text-xs font-bold text-white shadow-lg transition transform translate-y-2 flex items-center gap-2 ${type === 'success' ? 'bg-emerald-600' : 'bg-rose-600'}`;
+            toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-triangle-exclamation'}"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
         }
 
-        // --- 2. DEVICE VIEW SWITCHER FUNC ---
-        function setDeviceView(type) {
-            const frame = document.getElementById('deviceFrameWrapper');
-            const btns = ['pc', 'tablet', 'iphone', 'android'];
-
-            btns.forEach(b => {
-                const btnEl = document.getElementById(`btn-${b}`);
-                if(b === type) {
-                    btnEl.className = "px-2.5 py-1 text-xs rounded-md bg-brand-600 text-white font-medium transition flex items-center space-x-1";
-                } else {
-                    btnEl.className = "px-2.5 py-1 text-xs rounded-md text-slate-300 hover:text-white transition flex items-center space-x-1";
+        // View switcher (PC/Tablet/Phone frame emulator)
+        function setDeviceView(device) {
+            ['pc', 'tablet', 'iphone', 'android'].forEach(d => {
+                const btn = document.getElementById(`btn-${d}`);
+                if(btn) {
+                    btn.className = d === device ? "px-2.5 py-1 text-xs rounded-md bg-brand-600 text-white font-medium transition flex items-center space-x-1" : "px-2.5 py-1 text-xs rounded-md text-slate-300 hover:text-white transition flex items-center space-x-1";
                 }
             });
-
-            frame.className = "flex-1 bg-slate-900 transition-all duration-300 flex justify-center items-center overflow-auto";
-            const appMain = document.getElementById('appContainer');
-
-            if (type === 'pc') {
-                appMain.className = "device-pc bg-slate-50 min-h-full flex flex-col relative";
-            } else if (type === 'tablet') {
-                appMain.className = "device-tablet bg-slate-50 flex flex-col relative";
-            } else if (type === 'iphone') {
-                appMain.className = "device-iphone bg-slate-50 flex flex-col relative pt-5";
-            } else if (type === 'android') {
-                appMain.className = "device-android bg-slate-50 flex flex-col relative pt-6";
-            }
+            const wrapper = document.getElementById('deviceFrameWrapper');
+            wrapper.className = `flex-1 bg-slate-900 transition-all duration-300 device-${device}`;
         }
 
-        // --- 3. AUTHENTICATION LOGIC ---
+        // Auth Tabs
         function switchAuthTab(tab) {
+            const tabLogin = document.getElementById('tabLogin');
+            const tabRegister = document.getElementById('tabRegister');
             const formLogin = document.getElementById('formLogin');
-            const formReg = document.getElementById('formRegister');
-            const tabL = document.getElementById('tabLogin');
-            const tabR = document.getElementById('tabRegister');
+            const formRegister = document.getElementById('formRegister');
 
             if(tab === 'login') {
+                tabLogin.className = "flex-1 py-3 border-b-2 border-brand-600 text-brand-600 bg-slate-50/50";
+                tabRegister.className = "flex-1 py-3 text-slate-500 hover:text-slate-800";
                 formLogin.classList.remove('hidden');
-                formReg.classList.add('hidden');
-                tabL.className = "flex-1 py-3 border-b-2 border-brand-600 text-brand-600 bg-slate-50/50";
-                tabR.className = "flex-1 py-3 text-slate-500 hover:text-slate-800";
+                formRegister.classList.add('hidden');
             } else {
+                tabRegister.className = "flex-1 py-3 border-b-2 border-brand-600 text-brand-600 bg-slate-50/50";
+                tabLogin.className = "flex-1 py-3 text-slate-500 hover:text-slate-800";
+                formRegister.classList.remove('hidden');
                 formLogin.classList.add('hidden');
-                formReg.classList.remove('hidden');
-                tabR.className = "flex-1 py-3 border-b-2 border-brand-600 text-brand-600 bg-slate-50/50";
-                tabL.className = "flex-1 py-3 text-slate-500 hover:text-slate-800";
             }
         }
 
         function fillAdminCreds() {
             document.getElementById('loginUsername').value = 'admin';
             document.getElementById('loginPassword').value = '123456';
-            showToast("Kredensial admin diisi!", "info");
-        }
-
-        function toggleRegJenjang() {
-            const role = document.getElementById('regRole').value;
-            const wrapper = document.getElementById('regJenjangWrapper');
-            if(role === 'Siswa') {
-                wrapper.classList.remove('hidden');
-            } else {
-                wrapper.classList.add('hidden');
-            }
         }
 
         function handleLogin(e) {
@@ -971,676 +478,226 @@
             const u = document.getElementById('loginUsername').value.trim();
             const p = document.getElementById('loginPassword').value.trim();
 
-            const user = appData.users.find(x => x.username.toLowerCase() === u.toLowerCase() && x.pass === p);
+            const found = users.find(x => (x.username === u || x.phone === u) && x.password === p);
+            if(found) {
+                if(found.status === 'Non-Aktif') {
+                    showToast('Akun Anda dinonaktifkan oleh Admin.', 'error');
+                    return;
+                }
+                currentUser = found;
+                localStorage.setItem('bimbel_current_user', JSON.stringify(currentUser));
+                initSession();
+                showToast(`Selamat datang kembali, ${found.fullname}!`);
+            } else {
+                showToast('Username atau Kata Sandi salah!', 'error');
+            }
+        }
 
-            if(!user) {
-                showToast("Username atau kata sandi salah!", "error");
+        function handleRegister(e) {
+            e.preventDefault();
+            const fullname = document.getElementById('regFullName').value.trim();
+            const username = document.getElementById('regUsername').value.trim();
+            const role = document.getElementById('regRole').value;
+            const jenjang = document.getElementById('regJenjang').value;
+            const phone = document.getElementById('regPhone').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
+
+            if(users.some(x => x.username === username)) {
+                showToast('Username sudah terdaftar, gunakan yang lain.', 'error');
                 return;
             }
 
-            if(!user.active) {
-                showToast("Akun Anda dinonaktifkan oleh Admin!", "error");
-                return;
-            }
+            const newUser = { fullname, username, role, jenjang, phone, password, status: 'Aktif' };
+            users.push(newUser);
+            saveUsersToLocalStorage();
+            showToast('Pendaftaran akun berhasil! Silakan masuk.');
+            switchAuthTab('login');
+            document.getElementById('formRegister').reset();
+        }
 
-            currentUser = user;
-            showToast(`Selamat datang, ${user.name}!`, "success");
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('bimbel_current_user');
+            document.getElementById('authScreen').classList.remove('hidden');
+            document.getElementById('mainDashboard').classList.add('hidden');
+            document.getElementById('topUserInfo').classList.add('hidden');
+            document.getElementById('topUserInfo').classList.remove('flex');
+            showToast('Berhasil keluar dari sistem.');
+        }
 
+        function initSession() {
+            if(!currentUser) return;
             document.getElementById('authScreen').classList.add('hidden');
             document.getElementById('mainDashboard').classList.remove('hidden');
             document.getElementById('topUserInfo').classList.remove('hidden');
             document.getElementById('topUserInfo').classList.add('flex');
 
-            document.getElementById('topUserName').innerText = user.name;
-            document.getElementById('topUserBadge').innerText = user.role;
-            document.getElementById('sidebarUserName').innerText = user.name;
-            document.getElementById('sidebarUserPhone').innerText = user.phone;
-            document.getElementById('currentUserRoleBadge').innerText = user.role;
+            document.getElementById('topUserName').innerText = currentUser.fullname;
+            document.getElementById('topUserBadge').innerText = currentUser.role;
+            document.getElementById('sidebarUserName').innerText = currentUser.fullname;
+            document.getElementById('sidebarUserPhone').innerText = currentUser.phone;
+            document.getElementById('currentUserRoleBadge').innerText = currentUser.role;
 
-            // Admin only menu visibility
-            if(user.role === 'Admin') {
-                document.getElementById('adminMenuSection').classList.remove('hidden');
+            const adminSec = document.getElementById('adminMenuSection');
+            if(currentUser.role === 'Admin') {
+                adminSec.classList.remove('hidden');
             } else {
-                document.getElementById('adminMenuSection').classList.add('hidden');
+                adminSec.classList.add('hidden');
             }
 
-            renderAllViews();
+            updateDashboardStats();
             navTo('dashboard');
         }
 
-        function handleRegister(e) {
-            e.preventDefault();
-            const name = document.getElementById('regFullName').value.trim();
-            const username = document.getElementById('regUsername').value.trim();
-            const role = document.getElementById('regRole').value;
-            const jenjang = role === 'Siswa' ? document.getElementById('regJenjang').value : '-';
-            const phone = document.getElementById('regPhone').value.trim();
-            const pass = document.getElementById('regPassword').value.trim();
-
-            if(appData.users.some(x => x.username.toLowerCase() === username.toLowerCase())) {
-                showToast("Username sudah digunakan!", "error");
-                return;
-            }
-
-            const newUser = {
-                id: 'u_' + Date.now(),
-                username, name, role, jenjang, phone, pass, active: true
-            };
-
-            appData.users.push(newUser);
-            saveLocalStorageData();
-
-            // Simulate sending credentials via WhatsApp/Email
-            showToast(`Registrasi Berhasil! Kredensial telah disimulasikan terkirim ke WhatsApp ${phone}`, "success");
-            switchAuthTab('login');
-            fillAdminCreds();
-        }
-
-        function logout() {
-            currentUser = null;
-            document.getElementById('authScreen').classList.remove('hidden');
-            document.getElementById('mainDashboard').classList.add('hidden');
-            document.getElementById('topUserInfo').classList.add('hidden');
-            showToast("Anda telah keluar.", "info");
-        }
-
-        // --- 4. NAVIGATION SYSTEM ---
         function navTo(sectionId) {
             document.querySelectorAll('.content-section').forEach(sec => sec.classList.add('hidden'));
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('bg-slate-800', 'text-white');
-                btn.classList.add('text-slate-300');
-            });
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-slate-800', 'text-white'));
 
-            const target = document.getElementById(`sec-${sectionId}`);
-            if(target) target.classList.remove('hidden');
+            const targetSec = document.getElementById(`sec-${sectionId}`);
+            if(targetSec) targetSec.classList.remove('hidden');
+            const targetBtn = document.getElementById(`nav-${sectionId}`);
+            if(targetBtn) targetBtn.classList.add('bg-slate-800', 'text-white');
 
-            const activeNav = document.getElementById(`nav-${sectionId}`);
-            if(activeNav) {
-                activeNav.classList.add('bg-slate-800', 'text-white');
+            if(sectionId === 'manajemen-akun') {
+                renderManajemenAkun();
             }
         }
 
-        // --- 5. HAVERSINE FORMULA & GPS GEOFENCING (10m Radius) ---
-        function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371e3; // metres
-            const φ1 = lat1 * Math.PI/180;
-            const φ2 = lat2 * Math.PI/180;
-            const Δφ = (lat2-lat1) * Math.PI/180;
-            const Δλ = (lon2-lon1) * Math.PI/180;
-
-            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-                    Math.cos(φ1) * Math.cos(φ2) *
-                    Math.sin(Δλ/2) * Math.sin(Δλ/2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-            return R * c; // in meters
+        function updateDashboardStats() {
+            const siswaCount = users.filter(x => x.role === 'Siswa').length;
+            const tentorCount = users.filter(x => x.role === 'Tentor').length;
+            document.getElementById('statTotalSiswa').innerText = siswaCount;
+            document.getElementById('statTotalTentor').innerText = tentorCount;
+            document.getElementById('statSppLunas').innerText = `4 / ${siswaCount || 1}`;
         }
 
-        function checkGpsLocation() {
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(
-                    position => {
-                        simulatedUserLocation = {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                        };
-                        updateGpsUi();
-                    },
-                    error => {
-                        console.log("GPS hardware error or permission denied, using reference simulation location.");
-                        updateGpsUi();
-                    }
-                );
-            } else {
-                updateGpsUi();
-            }
-        }
+        // --- MANAJEMEN AKUN (TAMBAH, EDIT, HAPUS, TOGGLE STATUS) ---
+        function renderManajemenAkun() {
+            const tbody = document.getElementById('tabelManajemenAkunBody');
+            tbody.innerHTML = '';
 
-        function setSimulatedLocation(isNearBimbel) {
-            if(isNearBimbel) {
-                // Exact bimbel location (0 - 3m distance)
-                simulatedUserLocation = { lat: -7.795600, lng: 110.369500 };
-            } else {
-                // Far location (approx 120m distance)
-                simulatedUserLocation = { lat: -7.796700, lng: 110.370500 };
-            }
-            updateGpsUi();
-        }
-
-        function updateGpsUi() {
-            const dist = calculateHaversineDistance(
-                simulatedUserLocation.lat,
-                simulatedUserLocation.lng,
-                BIMBEL_GPS_REF.lat,
-                BIMBEL_GPS_REF.lng
-            );
-
-            const distRounded = Math.round(dist);
-            document.getElementById('userLatLong').innerText = `${simulatedUserLocation.lat.toFixed(6)}, ${simulatedUserLocation.lng.toFixed(6)}`;
-            document.getElementById('userDistance').innerText = `${distRounded} Meter`;
-
-            const statusBox = document.getElementById('gpsStatusBox');
-            const statusText = document.getElementById('gpsStatusText');
-            const btnSubmit = document.getElementById('btnSubmitGps');
-
-            if(distRounded <= 10) {
-                statusBox.className = "p-3 rounded-lg text-xs font-semibold flex items-center justify-between bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
-                statusText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> Dalam Radius Lokasi Bimbel (${distRounded}m <= 10m). Check-In Diizinkan!`;
-                btnSubmit.disabled = false;
-                btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
-            } else {
-                statusBox.className = "p-3 rounded-lg text-xs font-semibold flex items-center justify-between bg-rose-500/20 text-rose-300 border border-rose-500/40";
-                statusText.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-rose-400"></i> Di luar radius 10m dari Bimbel Mbah Amat (Jarak Anda: ${distRounded} meter). Tombol dikunci.`;
-                btnSubmit.disabled = true;
-                btnSubmit.classList.add('opacity-50', 'cursor-not-allowed');
-            }
-        }
-
-        function submitGpsCheckin() {
-            const siswaName = document.getElementById('gpsSelectSiswa').value;
-            const kelasName = document.getElementById('gpsSelectKelas').value;
-            const status = document.getElementById('gpsSelectStatus').value;
-
-            const dist = Math.round(calculateHaversineDistance(simulatedUserLocation.lat, simulatedUserLocation.lng, BIMBEL_GPS_REF.lat, BIMBEL_GPS_REF.lng));
-
-            if(status === 'Hadir' && dist > 10) {
-                showToast(`Gagal: Lokasi Anda ${dist}m di luar radius 10m!`, "error");
-                return;
-            }
-
-            const record = {
-                id: 'p_' + Date.now(),
-                waktu: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                siswa: siswaName,
-                kelas: kelasName,
-                jarak: `${dist}m`,
-                status: status,
-                valid: dist <= 10 ? 'Valid GPS' : 'Manual / Selesai'
-            };
-
-            appData.presensiGps.unshift(record);
-
-            // If status is Izin, automatically calculate SPP discount!
-            if(status === 'Izin') {
-                const invoice = appData.invoices.find(inv => inv.siswaName === siswaName && inv.status === 'Belum Lunas');
-                if(invoice) {
-                    invoice.diskonIzin += 25000; // Rp 25.000 discount per approved absence
-                    invoice.totalNet = Math.max(0, invoice.normalFee - invoice.diskonIzin);
-                    showToast(`Diskon izin Rp 25.000 berhasil diterapkan ke invoice SPP!`, "info");
-                }
-            }
-
-            saveLocalStorageData();
-            renderAllViews();
-            showToast("Presensi berhasil disimpan!", "success");
-        }
-
-        // --- 6. ABSENSI TENTOR & JURNAL MATERI ---
-        function renderSiswaAbsenChecklist() {
-            const wrapper = document.getElementById('siswaChecklistWrapper');
-            wrapper.innerHTML = '';
-
-            const siswaList = appData.users.filter(u => u.role === 'Siswa');
-            if(siswaList.length === 0) {
-                wrapper.innerHTML = `<span class="text-xs text-slate-400">Tidak ada siswa terdaftar.</span>`;
-                return;
-            }
-
-            siswaList.forEach(s => {
-                const label = document.createElement('label');
-                label.className = "flex items-center space-x-2 text-xs text-slate-700 cursor-pointer";
-                label.innerHTML = `<input type="checkbox" value="${s.name}" class="chk-siswa rounded text-brand-600 focus:ring-brand-500"> <span>${s.name}</span>`;
-                wrapper.appendChild(label);
-            });
-        }
-
-        function submitJurnalDanTentor() {
-            const tentorName = document.getElementById('jurnalSelectTentor').value;
-            const jadwalId = document.getElementById('jurnalSelectJadwal').value;
-            const materi = document.getElementById('jurnalMateriText').value.trim();
-
-            if(!materi) {
-                showToast("Wajib mengisi Ringkasan Materi sebelum mark absensi tentor!", "error");
-                return;
-            }
-
-            const checkedSiswa = Array.from(document.querySelectorAll('.chk-siswa:checked')).map(cb => cb.value);
-
-            const record = {
-                id: 'j_' + Date.now(),
-                waktu: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                tentor: tentorName,
-                jadwal: jadwalId,
-                materi: materi,
-                siswaHadirCount: checkedSiswa.length
-            };
-
-            appData.jurnalMateri.unshift(record);
-            saveLocalStorageData();
-            document.getElementById('jurnalMateriText').value = '';
-            renderAllViews();
-            showToast("Jurnal Pembelajaran disimpan & Absensi Tentor Terverifikasi!", "success");
-        }
-
-        // --- 7. GEMINI AI QUIZ GENERATOR INTEGRATION ---
-        async function generateQuizWithGemini() {
-            const subject = document.getElementById('aiSubject').value || "Matematika SMA";
-            const num = document.getElementById('aiNumQuestions').value;
-            const promptExtra = document.getElementById('aiCustomPrompt').value;
-            const outputDiv = document.getElementById('aiQuizOutput');
-
-            outputDiv.innerHTML = `<div class="text-center py-12 space-y-3">
-                <i class="fa-solid fa-spinner fa-spin text-3xl text-purple-600"></i>
-                <p class="text-xs text-slate-600 font-semibold">Sedang Menghubungi Gemini AI Model (gemini-3-flash-preview)...</p>
-            </div>`;
-
-            const systemPrompt = "Anda adalah pembuat soal kuis bimbingan belajar yang handal. Buatkan pilihan ganda lengkap dengan pilihan A, B, C, D, Kunci Jawaban, dan Pembahasan Singkat.";
-            const userQuery = `Buatkan ${num} soal pilihan ganda topik: ${subject}. Instruksi khusus: ${promptExtra}.
-            Format JSON Array persis seperti ini:
-            [
-              {
-                "soal": "Teks pertanyaan",
-                "opsi": ["A. pilihan1", "B. pilihan2", "C. pilihan3", "D. pilihan4"],
-                "kunci": "A",
-                "pembahasan": "Alasan singkat"
-              }
-            ]`;
-
-            // Call Gemini API using apiKey or Fallback
-            const apiKey = "";
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: userQuery }] }],
-                        systemInstruction: { parts: [{ text: systemPrompt }] },
-                        generationConfig: { responseMimeType: "application/json" }
-                    })
-                });
-
-                const data = await response.json();
-                const jsonText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-
-                if(jsonText) {
-                    const quizData = JSON.parse(jsonText);
-                    renderQuizOutput(quizData);
-                    showToast("Soal berhasil dibuat oleh AI!", "success");
-                } else {
-                    throw new Error("Format AI tidak valid");
-                }
-            } catch(err) {
-                console.warn("Falling back to local AI Generator Simulator due to API key restriction or offline state.");
-                // Fallback Mock Quiz Data
-                const mockQuiz = [
-                    {
-                        soal: `[Demo AI Fallback] Berapakah turunan pertama dari fungsi f(x) = 3x^2 + 5x - 4?`,
-                        opsi: ["A. 6x + 5", "B. 3x + 5", "C. 6x - 4", "D. 3x^2 + 5"],
-                        kunci: "A",
-                        pembahasan: "Menggunakan aturan turunan f'(x) = n*a*x^(n-1), turunan dari 3x^2 adalah 6x, dan 5x adalah 5."
-                    },
-                    {
-                        soal: `[Demo AI Fallback] Apa nama senyawa kimia dari NaCl?`,
-                        opsi: ["A. Natrium Klorida", "B. Kalium Klorida", "C. Natrium Hidroksida", "D. Asam Klorida"],
-                        kunci: "A",
-                        pembahasan: "NaCl merupakan rumus kimia garam dapur yaitu Natrium Klorida."
-                    }
-                ];
-                renderQuizOutput(mockQuiz);
-                showToast("Berhasil generate kuis (Mode Simulator AI)!", "info");
-            }
-        }
-
-        function renderQuizOutput(quizArray) {
-            const outputDiv = document.getElementById('aiQuizOutput');
-            outputDiv.innerHTML = '';
-
-            quizArray.forEach((q, idx) => {
-                const qBox = document.createElement('div');
-                qBox.className = "bg-white p-4 rounded-xl border border-slate-200 space-y-2 text-xs";
-                qBox.innerHTML = `
-                    <p class="font-bold text-slate-800 text-sm">${idx + 1}. ${q.soal}</p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 my-2">
-                        ${q.opsi.map(opt => `<div class="p-2 border rounded bg-slate-50 text-slate-700">${opt}</div>`).join('')}
-                    </div>
-                    <div class="key-box ${isAnswerKeysVisible ? '' : 'hidden'} mt-2 p-2.5 bg-purple-50 border border-purple-200 rounded-lg text-purple-900">
-                        <span class="font-bold">Kunci Jawaban: ${q.kunci}</span>
-                        <p class="mt-1 text-[11px] text-purple-700 font-sans"><strong>Pembahasan:</strong> ${q.pembahasan}</p>
-                    </div>
+            users.forEach((u) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition";
+                tr.innerHTML = `
+                    <td class="p-3 font-semibold text-slate-800">${u.fullname}</td>
+                    <td class="p-3 font-mono text-slate-600">${u.username}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-700">${u.role}</span></td>
+                    <td class="p-3 text-slate-600">${u.jenjang || '-'}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${u.status === 'Aktif' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">${u.status || 'Aktif'}</span></td>
+                    <td class="p-3 text-right space-x-1">
+                        <button onclick="bukaModalUser('edit', '${u.username}')" class="bg-amber-500 hover:bg-amber-600 text-white text-[10px] px-2.5 py-1 rounded shadow" title="Edit Akun">
+                            <i class="fa-solid fa-pen-to-square"></i> Edit
+                        </button>
+                        <button onclick="hapusUser('${u.username}')" class="bg-rose-500 hover:bg-rose-600 text-white text-[10px] px-2.5 py-1 rounded shadow" title="Hapus Akun">
+                            <i class="fa-solid fa-trash"></i> Hapus
+                        </button>
+                        <button onclick="toggleStatusUser('${u.username}')" class="bg-slate-700 hover:bg-slate-800 text-white text-[10px] px-2 py-1 rounded shadow" title="Ubah Status Aktif">
+                            Status
+                        </button>
+                    </td>
                 `;
-                outputDiv.appendChild(qBox);
+                tbody.appendChild(tr);
             });
         }
 
-        function toggleAnswerKeys() {
-            isAnswerKeysVisible = !isAnswerKeysVisible;
-            document.querySelectorAll('.key-box').forEach(el => {
-                if(isAnswerKeysVisible) el.classList.remove('hidden');
-                else el.classList.add('hidden');
-            });
-            document.getElementById('btnKeyText').innerText = isAnswerKeysVisible ? "Sembunyikan Kunci" : "Tampilkan Kunci Jawaban";
-        }
+        function bukaModalUser(mode, username = '') {
+            const modal = document.getElementById('modalUser');
+            const title = document.getElementById('modalUserTitle');
+            modal.classList.remove('hidden');
 
-        // --- 8. SPP INVOICES & PRINTABLE KWITANSI PDF QR CODE ---
-        function generateMonthlyInvoices() {
-            const siswaUsers = appData.users.filter(u => u.role === 'Siswa');
-            siswaUsers.forEach(s => {
-                let fee = 150000; // SD
-                if(s.jenjang === 'SMP/MTs') fee = 200000;
-                if(s.jenjang === 'SMA/MA/SMK') fee = 250000;
-
-                const invId = `INV-202610-0${appData.invoices.length + 1}`;
-                if(!appData.invoices.some(inv => inv.siswaName === s.name)) {
-                    appData.invoices.push({
-                        id: invId,
-                        siswaName: s.name,
-                        jenjang: s.jenjang || 'SD/MI',
-                        normalFee: fee,
-                        diskonIzin: 0,
-                        totalNet: fee,
-                        status: 'Belum Lunas',
-                        date: '2026-10-01'
-                    });
+            if(mode === 'tambah') {
+                title.innerText = "Tambah Akun Baru";
+                document.getElementById('formModalUser').reset();
+                document.getElementById('editOriginalUsername').value = '';
+                document.getElementById('mUsername').disabled = false;
+            } else {
+                title.innerText = "Edit Data Akun";
+                const userObj = users.find(x => x.username === username);
+                if(userObj) {
+                    document.getElementById('editOriginalUsername').value = userObj.username;
+                    document.getElementById('mFullName').value = userObj.fullname;
+                    document.getElementById('mUsername').value = userObj.username;
+                    document.getElementById('mUsername').disabled = true; // username kunci unik
+                    document.getElementById('mRole').value = userObj.role;
+                    document.getElementById('mJenjang').value = userObj.jenjang || '-';
+                    document.getElementById('mPhone').value = userObj.phone;
+                    document.getElementById('mPassword').value = userObj.password;
                 }
-            });
-
-            saveLocalStorageData();
-            renderAllViews();
-            showToast("Invoice bulanan otomatis diterbitkan untuk semua siswa!", "success");
-        }
-
-        function payInvoice(invId) {
-            const inv = appData.invoices.find(x => x.id === invId);
-            if(inv) {
-                inv.status = 'Lunas';
-                saveLocalStorageData();
-                renderAllViews();
-                showToast(`Invoice ${invId} berhasil ditandai Lunas!`, "success");
             }
         }
 
-        function openKwitansiModal(invId) {
-            const inv = appData.invoices.find(x => x.id === invId);
-            if(!inv) return;
-
-            document.getElementById('kwitansiNum').innerText = `#${inv.id}`;
-            document.getElementById('kwitansiSiswa').innerText = inv.siswaName;
-            document.getElementById('kwitansiJenjang').innerText = inv.jenjang;
-            document.getElementById('kwitansiTanggal').innerText = new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric'});
-            document.getElementById('kwitansiDiskon').innerText = `Rp ${inv.diskonIzin.toLocaleString('id-ID')}`;
-            document.getElementById('kwitansiTotal').innerText = `Rp ${inv.totalNet.toLocaleString('id-ID')}`;
-
-            // Generate QR Code dynamically inside Canvas
-            const qrContainer = document.getElementById('qrcodeCanvas');
-            qrContainer.innerHTML = '';
-            new QRCode(qrContainer, {
-                text: `VERIFIED-BIMBEL-MBAH-AMAT:${inv.id}:${inv.siswaName}:${inv.totalNet}`,
-                width: 90,
-                height: 90,
-                colorDark : "#166534",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.H
-            });
-
-            document.getElementById('modalKwitansi').classList.remove('hidden');
+        function tutupModalUser() {
+            document.getElementById('modalUser').classList.add('hidden');
         }
 
-        function closeKwitansiModal() {
-            document.getElementById('modalKwitansi').classList.add('hidden');
-        }
-
-        function downloadKwitansiPdf() {
-            const element = document.getElementById('printableKwitansiContent');
-            const opt = {
-                margin:       0.5,
-                filename:     `Kwitansi_SPP_MbahAmat_${Date.now()}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
-                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-            };
-
-            html2pdf().set(opt).from(element).save();
-            showToast("Mengunduh kwitansi PDF...", "info");
-        }
-
-        // --- 9. CLASS & ROOM SCHEDULING MODAL LOGIC ---
-        function openModalAddJadwal() {
-            // Populate tentors
-            const selectTentor = document.getElementById('addJadwalTentor');
-            selectTentor.innerHTML = appData.users.filter(u => u.role === 'Tentor').map(t => `<option value="${t.name}">${t.name}</option>`).join('');
-            document.getElementById('modalAddJadwal').classList.remove('hidden');
-        }
-
-        function closeModalAddJadwal() {
-            document.getElementById('modalAddJadwal').classList.add('hidden');
-        }
-
-        function handleSaveJadwal(e) {
+        function simpanDataUser(e) {
             e.preventDefault();
-            const nama = document.getElementById('addJadwalNama').value;
-            const jenjang = document.getElementById('addJadwalJenjang').value;
-            const ruang = document.getElementById('addJadwalRuang').value;
-            const hari = document.getElementById('addJadwalHari').value;
-            const jam = document.getElementById('addJadwalJam').value;
-            const tentor = document.getElementById('addJadwalTentor').value;
+            const origUsername = document.getElementById('editOriginalUsername').value;
+            const fullname = document.getElementById('mFullName').value.trim();
+            const username = document.getElementById('mUsername').value.trim();
+            const role = document.getElementById('mRole').value;
+            const jenjang = document.getElementById('mJenjang').value;
+            const phone = document.getElementById('mPhone').value.trim();
+            const password = document.getElementById('mPassword').value.trim();
 
-            appData.jadwal.push({
-                id: 'j_' + Date.now(),
-                nama, jenjang, ruang, hari, jam, tentor, slotMax: 6, enrolled: []
-            });
-
-            saveLocalStorageData();
-            closeModalAddJadwal();
-            renderAllViews();
-            showToast("Jadwal kelas baru berhasil disimpan!", "success");
-        }
-
-        function updateSlotCapacity(jadwalId, delta) {
-            const j = appData.jadwal.find(x => x.id === jadwalId);
-            if(j) {
-                j.slotMax = Math.max(1, j.slotMax + delta);
-                saveLocalStorageData();
-                renderAllViews();
-            }
-        }
-
-        function toggleSiswaActiveStatus(userId) {
-            const u = appData.users.find(x => x.id === userId);
-            if(u) {
-                u.active = !u.active;
-                saveLocalStorageData();
-                renderAllViews();
-                showToast(`Status user ${u.name} diperbarui!`, "info");
-            }
-        }
-
-        // --- 10. DYNAMIC RENDER FUNCTIONS ---
-        function renderAllViews() {
-            // Stats Update
-            const totalSiswa = appData.users.filter(u => u.role === 'Siswa').length;
-            const totalTentor = appData.users.filter(u => u.role === 'Tentor').length;
-            const sppLunas = appData.invoices.filter(i => i.status === 'Lunas').length;
-
-            document.getElementById('statTotalSiswa').innerText = totalSiswa;
-            document.getElementById('statTotalTentor').innerText = totalTentor;
-            document.getElementById('statSppLunas').innerText = `${sppLunas} / ${appData.invoices.length}`;
-
-            // Render Dashboard Schedule Glances
-            const dashJadwalList = document.getElementById('dashJadwalList');
-            dashJadwalList.innerHTML = appData.jadwal.map(j => `
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1 text-xs">
-                    <div class="flex justify-between items-center font-bold">
-                        <span class="text-brand-700">${j.ruang}</span>
-                        <span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700">${j.jenjang}</span>
-                    </div>
-                    <p class="font-bold text-slate-800">${j.nama}</p>
-                    <p class="text-slate-500"><i class="fa-solid fa-clock"></i> ${j.hari}, ${j.jam}</p>
-                    <p class="text-slate-500"><i class="fa-solid fa-user-tie"></i> ${j.tentor}</p>
-                </div>
-            `).join('');
-
-            // Render Dropdowns for GPS Check-in & Jurnal
-            const gpsSelectSiswa = document.getElementById('gpsSelectSiswa');
-            gpsSelectSiswa.innerHTML = appData.users.filter(u => u.role === 'Siswa').map(s => `<option value="${s.name}">${s.name} (${s.jenjang})</option>`).join('');
-
-            const gpsSelectKelas = document.getElementById('gpsSelectKelas');
-            gpsSelectKelas.innerHTML = appData.jadwal.map(j => `<option value="${j.nama} - ${j.ruang}">${j.nama} - ${j.ruang}</option>`).join('');
-
-            const jurnalSelectTentor = document.getElementById('jurnalSelectTentor');
-            jurnalSelectTentor.innerHTML = appData.users.filter(u => u.role === 'Tentor').map(t => `<option value="${t.name}">${t.name}</option>`).join('');
-
-            const jurnalSelectJadwal = document.getElementById('jurnalSelectJadwal');
-            jurnalSelectJadwal.innerHTML = appData.jadwal.map(j => `<option value="${j.id}">${j.nama} (${j.ruang}) - ${j.hari}</option>`).join('');
-
-            renderSiswaAbsenChecklist();
-
-            // Render GPS Log Table
-            const tblPresensiGps = document.getElementById('tblPresensiGps');
-            if(appData.presensiGps.length === 0) {
-                tblPresensiGps.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">Belum ada catatan presensi hari ini.</td></tr>`;
+            if(origUsername === '') {
+                // Tambah baru
+                if(users.some(x => x.username === username)) {
+                    showToast('Username sudah digunakan!', 'error');
+                    return;
+                }
+                users.push({ fullname, username, role, jenjang, phone, password, status: 'Aktif' });
+                showToast('Akun baru berhasil ditambahkan!');
             } else {
-                tblPresensiGps.innerHTML = appData.presensiGps.map(p => `
-                    <tr>
-                        <td class="p-3 font-mono">${p.waktu}</td>
-                        <td class="p-3 font-bold">${p.siswa}</td>
-                        <td class="p-3">${p.kelas}</td>
-                        <td class="p-3 font-semibold text-emerald-600">${p.jarak}</td>
-                        <td class="p-3"><span class="px-2 py-0.5 rounded ${p.status === 'Hadir' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'} font-bold">${p.status}</span></td>
-                        <td class="p-3 text-slate-500">${p.valid}</td>
-                    </tr>
-                `).join('');
+                // Edit
+                const idx = users.findIndex(x => x.username === origUsername);
+                if(idx !== -1) {
+                    users[idx].fullname = fullname;
+                    users[idx].role = role;
+                    users[idx].jenjang = jenjang;
+                    users[idx].phone = phone;
+                    users[idx].password = password;
+                    showToast('Data akun berhasil diperbarui!');
+                }
             }
 
-            // Render Jurnal List
-            const recentJurnalList = document.getElementById('recentJurnalList');
-            if(appData.jurnalMateri.length === 0) {
-                recentJurnalList.innerHTML = `<p class="text-slate-500 italic">Belum ada jurnal terisi hari ini.</p>`;
-            } else {
-                recentJurnalList.innerHTML = appData.jurnalMateri.map(jm => `
-                    <div class="p-3 bg-slate-800 rounded-lg border border-slate-700 space-y-1">
-                        <div class="flex justify-between font-bold text-brand-400">
-                            <span>${jm.tentor}</span>
-                            <span class="text-[10px] text-slate-400 font-mono">${jm.waktu}</span>
-                        </div>
-                        <p class="text-slate-200">${jm.materi}</p>
-                        <span class="text-[10px] text-slate-400 block"><i class="fa-solid fa-users"></i> ${jm.siswaHadirCount} Siswa Hadir</span>
-                    </div>
-                `).join('');
+            saveUsersToLocalStorage();
+            tutupModalUser();
+            renderManajemenAkun();
+            updateDashboardStats();
+        }
+
+        function hapusUser(username) {
+            if(username === 'admin') {
+                showToast('Akun Administrator utama tidak dapat dihapus!', 'error');
+                return;
             }
-
-            // Render Ruang 1 - 10 Grid
-            renderJadwalRuangGrid('All');
-
-            // Render SPP Table
-            const tblSppInvoice = document.getElementById('tblSppInvoice');
-            tblSppInvoice.innerHTML = appData.invoices.map(inv => `
-                <tr>
-                    <td class="p-3 font-mono font-bold">${inv.id}</td>
-                    <td class="p-3 font-bold">${inv.siswaName}</td>
-                    <td class="p-3">${inv.jenjang}</td>
-                    <td class="p-3">Rp ${inv.normalFee.toLocaleString('id-ID')}</td>
-                    <td class="p-3 text-rose-600 font-semibold">- Rp ${inv.diskonIzin.toLocaleString('id-ID')}</td>
-                    <td class="p-3 font-extrabold text-slate-800">Rp ${inv.totalNet.toLocaleString('id-ID')}</td>
-                    <td class="p-3"><span class="px-2 py-0.5 rounded font-bold ${inv.status === 'Lunas' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">${inv.status}</span></td>
-                    <td class="p-3 text-center space-x-1">
-                        ${inv.status === 'Belum Lunas' ? `<button onclick="payInvoice('${inv.id}')" class="px-2 py-1 bg-emerald-600 text-white rounded font-bold hover:bg-emerald-700">Bayar</button>` : ''}
-                        <button onclick="openKwitansiModal('${inv.id}')" class="px-2 py-1 bg-blue-600 text-white rounded font-bold hover:bg-blue-700"><i class="fa-solid fa-qrcode"></i> Kwitansi</button>
-                    </td>
-                </tr>
-            `).join('');
-
-            // Render Tuition Fee Tentor
-            renderTuitionFee();
-
-            // Render User Management Table
-            const tblManajemenUser = document.getElementById('tblManajemenUser');
-            tblManajemenUser.innerHTML = appData.users.map(u => `
-                <tr>
-                    <td class="p-3 font-bold">${u.name}</td>
-                    <td class="p-3 font-mono">${u.username}</td>
-                    <td class="p-3"><span class="px-2 py-0.5 rounded bg-slate-200 font-bold">${u.role}</span></td>
-                    <td class="p-3">${u.jenjang}</td>
-                    <td class="p-3"><span class="px-2 py-0.5 rounded font-bold ${u.active ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">${u.active ? 'Aktif' : 'Non-Aktif'}</span></td>
-                    <td class="p-3 text-center">
-                        <button onclick="toggleSiswaActiveStatus('${u.id}')" class="px-2 py-1 bg-slate-800 text-white rounded font-bold hover:bg-slate-700">Toggle Status</button>
-                    </td>
-                </tr>
-            `).join('');
+            if(confirm(`Apakah Anda yakin ingin menghapus akun dengan username "${username}"?`)) {
+                users = users.filter(x => x.username !== username);
+                saveUsersToLocalStorage();
+                renderManajemenAkun();
+                updateDashboardStats();
+                showToast('Akun berhasil dihapus.');
+            }
         }
 
-        function renderJadwalRuangGrid(filterJenjang) {
-            const grid = document.getElementById('gridJadwalRuang');
-            const items = filterJenjang === 'All' ? appData.jadwal : appData.jadwal.filter(x => x.jenjang === filterJenjang);
-
-            grid.innerHTML = items.map(j => `
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-                    <div class="flex justify-between items-start">
-                        <span class="px-2 py-1 bg-cyan-100 text-cyan-800 rounded font-bold text-xs"><i class="fa-solid fa-door-open"></i> ${j.ruang}</span>
-                        <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-200 text-slate-700">${j.jenjang}</span>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-slate-800 text-sm">${j.nama}</h4>
-                        <p class="text-xs text-slate-500 mt-0.5"><i class="fa-solid fa-clock"></i> ${j.hari}, ${j.jam}</p>
-                        <p class="text-xs text-slate-500"><i class="fa-solid fa-user-tie"></i> ${j.tentor}</p>
-                    </div>
-                    <div class="pt-2 border-t flex justify-between items-center text-xs">
-                        <span class="font-bold text-slate-700">Slot Kapasitas:</span>
-                        <div class="flex items-center space-x-2">
-                            <button onclick="updateSlotCapacity('${j.id}', -1)" class="w-6 h-6 rounded bg-slate-200 font-bold hover:bg-slate-300">-</button>
-                            <span class="font-extrabold text-brand-700">${j.enrolled.length} / ${j.slotMax}</span>
-                            <button onclick="updateSlotCapacity('${j.id}', 1)" class="w-6 h-6 rounded bg-slate-200 font-bold hover:bg-slate-300">+</button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
+        function toggleStatusUser(username) {
+            const userObj = users.find(x => x.username === username);
+            if(userObj) {
+                userObj.status = (userObj.status === 'Non-Aktif') ? 'Aktif' : 'Non-Aktif';
+                saveUsersToLocalStorage();
+                renderManajemenAkun();
+                showToast(`Status ${username} diubah menjadi ${userObj.status}`);
+            }
         }
 
-        function filterJadwal(jenjang) {
-            renderJadwalRuangGrid(jenjang);
-        }
-
-        function renderTuitionFee() {
-            const tbl = document.getElementById('tblFeeTentor');
-            const tentors = appData.users.filter(u => u.role === 'Tentor');
-
-            tbl.innerHTML = tentors.map(t => {
-                const jurnals = appData.jurnalMateri.filter(jm => jm.tentor === t.name);
-                const totalSesi = jurnals.length;
-                const totalSiswa = jurnals.reduce((acc, curr) => acc + curr.siswaHadirCount, 0);
-                const honorEstimated = (totalSesi * 40000) + (totalSiswa * 5000);
-
-                return `
-                    <tr>
-                        <td class="p-3 font-bold">${t.name}</td>
-                        <td class="p-3 font-mono">${totalSesi} Sesi</td>
-                        <td class="p-3 font-mono">${totalSiswa} Siswa</td>
-                        <td class="p-3 font-extrabold text-emerald-700">Rp ${honorEstimated.toLocaleString('id-ID')}</td>
-                        <td class="p-3"><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">Siap Dicairkan</span></td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        // --- 11. TOAST NOTIFICATION UTILITY ---
-        function showToast(msg, type = "info") {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-
-            let bgClass = "bg-slate-800 text-white";
-            if(type === "success") bgClass = "bg-emerald-600 text-white";
-            if(type === "error") bgClass = "bg-rose-600 text-white";
-
-            toast.className = `${bgClass} p-3 rounded-xl shadow-xl text-xs font-semibold flex items-center justify-between space-x-3 transition-all duration-300 transform translate-y-2 pointer-events-auto`;
-            toast.innerHTML = `<span>${msg}</span><button onclick="this.parentElement.remove()" class="text-white/80 hover:text-white">&times;</button>`;
-
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.remove();
-            }, 4000);
-        }
+        // Auto-login check on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            if(currentUser) {
+                initSession();
+            }
+        });
     </script>
 </body>
 </html>
