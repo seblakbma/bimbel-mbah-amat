@@ -234,10 +234,26 @@
             tuitionMatrix: {
                 headers: ['Jenjang', '0 Siswa', '1 Siswa', '2 Siswa', '3 Siswa', '4 Siswa', '5 Siswa', '6 Siswa', '7 Siswa', '8 Siswa', '9 Siswa', '10 Siswa'],
                 rows: [
-                    ['SD', '15000', '25000', '30000', '35000', '40000', '45000', '51000', '57000', '63000', '69000', '75000'],
-                    ['SMP', '15000', '30000', '36000', '43000', '49000', '55000', '62000', '69000', '76000', '83000', '90000'],
-                    ['SMA', '15000', '35000', '44000', '53000', '61000', '70000', '78000', '86000', '94000', '102000', '110000']
+                    ['SD', '15000', '30000', '35000', '40000', '45000', '50000', '55000', '60000', '65000', '70000', '75000'],
+                    ['SMP', '15000', '40000', '45000', '50000', '55000', '60000', '65000', '70000', '75000', '80000', '85000'],
+                    ['SMA', '15000', '50000', '55000', '60000', '65000', '70000', '75000', '80000', '85000', '90000', '95000'],
+                    ['ALUMNI', '15000', '60000', '65000', '70000', '75000', '80000', '85000', '90000', '95000', '100000', '105000'],
+                    ['TK', '15000', '30000', '35000', '40000', '45000', '50000', '55000', '60000', '65000', '70000', '75000'],
+                    ['OSN', '15000', '50000', '55000', '60000', '65000', '70000', '75000', '80000', '85000', '90000', '95000'],
+                    ['INTENSIF SD', '15000', '30000', '35000', '40000', '45000', '50000', '55000', '60000', '65000', '70000', '75000']
                 ]
+            },
+
+            settingMatrices: {
+                kelas: { title: 'Tabel Matrik Kelas', headers: ['Kelas'], rows: Array.from({length:12},(_,i)=>[`Kelas ${i+1}`]) },
+                transport: { title: 'Tabel Matrik Fee Transport', headers: ['Komponen','Fee (Rp)','Aturan'], rows: [['Transport per Tanggal Kedatangan','5000','Maksimal 1 kali per tentor per tanggal, meskipun mengajar beberapa sesi']] },
+                agama: { title: 'Tabel Matrik Agama', headers: ['Agama'], rows: [['Islam'],['Kristen'],['Katolik'],['Hindu'],['Buddha'],['Konghucu']] },
+                ruangan: { title: 'Tabel Matrik Ruangan', headers: ['Ruangan'], rows: Array.from({length:10},(_,i)=>[`Ruang ${i+1}`]) },
+                sesi: { title: 'Matrik Sesi Jam Mengajar', headers: ['Sesi Jam Mengajar'], rows: [['07:30 - 09:00'], ['09:00 - 10:30'], ['10:30 - 12:00'], ['16:00 - 17:30'], ['18:30 - 20:00']] },
+                mapel: { title: 'Matrik Mapel', headers: ['Mata Pelajaran'], rows: [['Matematika'],['Bahasa Indonesia'],['Bahasa Inggris'],['IPAS']] },
+                angkaPembagiAdministrasi: { title: 'Matrik Angka Pembagi Administrasi Bulanan (SPP Bulanan)', headers: ['Pembagi (Pertemuan)', 'Pengali'], rows: [['9', '0.5']] },
+                administrasiBulanan: { title: 'Matrik Administrasi Bulanan', headers: ['Jenjang', '1 Siswa', '2 Siswa', '3 Siswa', '4 Siswa', '5 Siswa', '6 Siswa'], rows: [['TK','400000','300000','300000','250000','250000','250000'],['SD','400000','300000','300000','250000','250000','250000'],['SMP','500000','375000','375000','325000','325000','325000'],['SMA','600000','450000','450000','375000','375000','375000'],['OSN','600000','450000','450000','375000','375000','375000'],['INTENSIF SD','400000','300000','300000','250000','250000','250000']] },
+                tarifPendaftaran: { title: 'Matrik Tarif Pendaftaran', headers: ['Jenjang', 'Tarif Pendaftaran (Rp)'], rows: [['TK','50000'],['SD','50000'],['SMP','50000'],['SMA','50000'],['ALUMNI','50000'],['OSN','50000'],['INTENSIF SD','50000']] }
             },
 
             schedules: [
@@ -291,7 +307,7 @@
         // Catatan: localStorage hanya menyimpan data pada perangkat/browser ini.
         // Sinkronisasi multi-pengguna lintas perangkat membutuhkan backend online dan autentikasi server.
         const MBA_STORAGE_KEY = 'mbahAmatAppData_v1';
-        const MBA_PERSIST_KEYS = ['accounts','registrations','students','tutors','tuitionMatrix','schedules','studentAttendance','tutorAttendance','invoices','payments','questionBank','examPackages','examResults','announcements','notifications'];
+        const MBA_PERSIST_KEYS = ['accounts','registrations','students','tutors','tuitionMatrix','settingMatrices','schedules','studentAttendance','tutorAttendance','invoices','payments','questionBank','examPackages','examResults','announcements','notifications'];
         let mbaSaveTimer = null;
         let mbaLastSavedAt = null;
 
@@ -658,7 +674,7 @@
                         <div><label class="font-bold block mb-1">Nama Lengkap Siswa</label><input type="text" id="ft-name" value="${DB.currentUser.role === 'siswa' ? DB.currentUser.name : ''}" required class="w-full px-3 py-2 border rounded-xl" placeholder="Nama Siswa"></div>
                     </div>
                     <div class="grid grid-cols-3 gap-2">
-                        <div><label class="font-bold block mb-1">Jenjang</label><select id="ft-level" class="w-full px-3 py-2 border rounded-xl"><option>TK</option><option selected>SD</option><option>SMP</option><option>SMA</option><option>Lainnya</option></select></div>
+                        <div><label class="font-bold block mb-1">Jenjang</label><select id="ft-level" class="w-full px-3 py-2 border rounded-xl">${matrixLevelOptions("SD")}</select></div>
                         <div><label class="font-bold block mb-1">Kelas</label><input type="text" id="ft-grade" value="Kelas 5" class="w-full px-3 py-2 border rounded-xl"></div>
                         <div><label class="font-bold block mb-1">Agama</label><input type="text" id="ft-religion" value="Islam" class="w-full px-3 py-2 border rounded-xl"></div>
                     </div>
@@ -1139,7 +1155,7 @@
                     <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-3 sm:p-4 space-y-3">
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                             <label class="sm:col-span-2 lg:col-span-2"><span class="block text-xs font-bold text-slate-600 mb-1.5">Cari siswa</span><div class="relative"><i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i><input id="siswa-search" type="search" value="${(window._siswaSearch || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;')}" oninput="window._siswaSearch=this.value; renderSiswaTab(document.getElementById('tab-content-area'))" placeholder="Nama, no. induk, sekolah, kontak..." class="w-full min-h-11 pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200"></div></label>
-                            <label><span class="block text-xs font-bold text-slate-600 mb-1.5">Jenjang</span><select onchange="window._siswaLevel=this.value;renderSiswaTab(document.getElementById('tab-content-area'))" class="w-full min-h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-sm"><option ${levelFilter==='Semua'?'selected':''}>Semua</option>${['TK','SD','SMP','SMA','Lainnya'].map(v=>`<option ${levelFilter===v?'selected':''}>${v}</option>`).join('')}</select></label>
+                            <label><span class="block text-xs font-bold text-slate-600 mb-1.5">Jenjang</span><select onchange="window._siswaLevel=this.value;renderSiswaTab(document.getElementById('tab-content-area'))" class="w-full min-h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-sm"><option ${levelFilter==='Semua'?'selected':''}>Semua</option>${getMatrixLevels().map(v=>`<option value="${escapeHtml(v)}" ${levelFilter===v?'selected':''}>${escapeHtml(v)}</option>`).join('')}</select></label>
                             <label><span class="block text-xs font-bold text-slate-600 mb-1.5">Status</span><select onchange="window._siswaStatus=this.value;renderSiswaTab(document.getElementById('tab-content-area'))" class="w-full min-h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-sm"><option ${statusFilter==='Semua'?'selected':''}>Semua</option><option ${statusFilter==='Aktif'?'selected':''}>Aktif</option><option ${statusFilter==='Nonaktif'?'selected':''}>Nonaktif</option></select></label>
                         </div>
                         <div class="flex flex-wrap items-center justify-between gap-2 text-xs"><p class="text-slate-500">Menampilkan <strong class="text-slate-800">${filtered.length}</strong> dari <strong class="text-slate-800">${dataList.length}</strong> siswa</p><button onclick="window._siswaSearch='';window._siswaLevel='Semua';window._siswaStatus='Semua';renderSiswaTab(document.getElementById('tab-content-area'))" class="min-h-9 px-3 rounded-lg text-indigo-700 hover:bg-indigo-50 font-bold"><i class="fa-solid fa-rotate-left mr-1"></i> Reset filter</button></div>
@@ -1191,23 +1207,17 @@
                     <div class="grid grid-cols-3 gap-2">
                         <div>
                             <label class="font-bold block mb-1">Jenjang</label>
-                            <select id="m-level" class="w-full px-3 py-2 border rounded-xl">
-                                <option ${s.level==='TK'?'selected':''}>TK</option>
-                                <option ${s.level==='SD'?'selected':''}>SD</option>
-                                <option ${s.level==='SMP'?'selected':''}>SMP</option>
-                                <option ${s.level==='SMA'?'selected':''}>SMA</option>
-                                <option ${s.level==='Lainnya'?'selected':''}>Lainnya</option>
-                            </select>
+                            <select id="m-level" class="w-full px-3 py-2 border rounded-xl">${matrixLevelOptions(s.level)}</select>
                         </div>
-                        <div><label class="font-bold block mb-1">Kelas</label><input type="text" id="m-grade" value="${s.grade}" class="w-full px-3 py-2 border rounded-xl"></div>
-                        <div><label class="font-bold block mb-1">Agama</label><input type="text" id="m-religion" value="${s.religion}" class="w-full px-3 py-2 border rounded-xl"></div>
+                        <div><label class="font-bold block mb-1">Kelas</label><select id="m-grade" class="w-full px-3 py-2 border rounded-xl">${matrixSettingOptions('kelas', s.grade)}</select></div>
+                        <div><label class="font-bold block mb-1">Agama</label><select id="m-religion" class="w-full px-3 py-2 border rounded-xl">${matrixSettingOptions('agama', s.religion)}</select></div>
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div><label class="font-bold block mb-1">Tempat Lahir</label><input type="text" id="m-pob" value="${s.pob}" class="w-full px-3 py-2 border rounded-xl"></div>
                         <div><label class="font-bold block mb-1">Tgl Lahir</label><input type="date" id="m-dob" value="${s.dob}" class="w-full px-3 py-2 border rounded-xl"></div>
                     </div>
                     <div class="grid grid-cols-2 gap-2">
-                        <div><label class="font-bold block mb-1">Asal Sekolah</label><input type="text" id="m-school" value="${s.school}" class="w-full px-3 py-2 border rounded-xl"></div>
+                        <div><label class="font-bold block mb-1">Asal Sekolah</label><input type="text" id="m-school" list="m-school-options" value="${s.school}" autocomplete="off" class="w-full px-3 py-2 border rounded-xl" placeholder="Ketik nama sekolah..."><datalist id="m-school-options">${[...new Set((DB.students||[]).map(st=>String(st.school||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'id')).map(school=>`<option value="${escapeHtml(school)}"></option>`).join('')}</datalist></div>
                         <div><label class="font-bold block mb-1">URL Foto Selfie</label><input type="text" id="m-selfie" value="${s.selfie}" class="w-full px-3 py-2 border rounded-xl"></div>
                     </div>
                     <div class="grid grid-cols-2 gap-2">
@@ -1262,6 +1272,9 @@
             if (duplicate) { showToast('Nomor induk sudah digunakan. Gunakan nomor yang berbeda.'); return; }
             if(idx !== null) DB.students[idx] = { ...DB.students[idx], ...data };
             else DB.students.push({ id: DB.students.length ? Math.max(...DB.students.map(x => Number(x.id) || 0)) + 1 : 1, ...data });
+            if (String(data.active).trim().toLowerCase() !== 'aktif') {
+                (DB.schedules || []).forEach(schedule => { schedule.students = (schedule.students || []).filter(studentName => String(studentName) !== String(data.name)); });
+            }
             mbaSaveLocalData(false); closeModal(); renderAppLayout('siswa'); showToast('Data siswa berhasil disimpan.');
         }
 
@@ -1429,7 +1442,7 @@
                         </div>
                     </div>
                     ${isAdmin ? `<div class="bg-white border border-slate-200 rounded-2xl p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-                        <div><label class="block text-xs font-bold mb-1">Filter Jenjang</label><select onchange="window._schLevelFilter=this.value;renderJadwalTab(document.getElementById('tab-content-area'))" class="w-full border rounded-lg px-3 py-2 text-xs"><option value="all">Semua jenjang</option>${[...new Set(DB.schedules.map(x=>x.level).filter(Boolean))].sort().map(x=>`<option value="${x}" ${levelFilter===x?'selected':''}>${x}</option>`).join('')}</select></div>
+                        <div><label class="block text-xs font-bold mb-1">Filter Jenjang</label><select onchange="window._schLevelFilter=this.value;renderJadwalTab(document.getElementById('tab-content-area'))" class="w-full border rounded-lg px-3 py-2 text-xs"><option value="all">Semua jenjang</option>${getMatrixLevels().map(x=>`<option value="${escapeHtml(x)}" ${levelFilter===x?'selected':''}>${escapeHtml(x)}</option>`).join('')}</select></div>
                         <div><label class="block text-xs font-bold mb-1">Filter Hari</label><select onchange="window._schDayFilter=this.value;renderJadwalTab(document.getElementById('tab-content-area'))" class="w-full border rounded-lg px-3 py-2 text-xs"><option value="all">Semua hari</option>${[...new Set(DB.schedules.map(x=>x.day).filter(Boolean))].sort().map(x=>`<option value="${x}" ${dayFilter===x?'selected':''}>${x}</option>`).join('')}</select></div>
                         <div><label class="block text-xs font-bold mb-1">Filter Tentor</label><select onchange="window._schTutorFilter=this.value;renderJadwalTab(document.getElementById('tab-content-area'))" class="w-full border rounded-lg px-3 py-2 text-xs"><option value="all">Semua tentor</option>${[...new Set(DB.schedules.map(x=>x.tutorName).filter(Boolean))].sort().map(x=>`<option value="${x}" ${tutorFilter===x?'selected':''}>${x}</option>`).join('')}</select></div>
                         <div><label class="block text-xs font-bold mb-1">Filter Ruangan</label><select onchange="window._schRoomFilter=this.value;renderJadwalTab(document.getElementById('tab-content-area'))" class="w-full border rounded-lg px-3 py-2 text-xs"><option value="all">Semua ruangan</option>${[...new Set(DB.schedules.map(x=>x.room).filter(Boolean))].sort().map(x=>`<option value="${x}" ${roomFilter===x?'selected':''}>${x}</option>`).join('')}</select></div>
@@ -1472,7 +1485,8 @@
 
         function openScheduleModal(idx = null) {
             const isEdit = idx !== null;
-            const s = isEdit ? DB.schedules[idx] : { name: '', level: 'SMP', day: 'Senin', time: '15:30 - 17:00', room: 'Ruang 01', tutorCode: (DB.tutors[0] || {}).code || 'T01', tutorName: (DB.tutors[0] || {}).name || 'Budi Santoso, S.Pd', students: [] };
+            const activeTutors = (DB.tutors || []).filter(t => String(t.active || 'Aktif').trim().toLowerCase() === 'aktif');
+            const s = isEdit ? DB.schedules[idx] : { name: '', level: 'SMP', day: 'Senin', time: '15:30 - 17:00', room: 'Ruang 01', tutorCode: (activeTutors[0] || {}).code || '', tutorName: (activeTutors[0] || {}).name || '', students: [] };
             const currentSelectedStudents = s.students || [];
 
             openModal(isEdit ? 'Edit Jadwal & Rombel' : 'Buat Jadwal Les & Rombel Baru', `
@@ -1481,32 +1495,25 @@
                     <div class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="font-bold block mb-1">Jenjang</label>
-                            <select id="sch-level" class="w-full px-3 py-2 border rounded-xl">
-                                <option ${s.level==='TK'?'selected':''}>TK</option>
-                                <option ${s.level==='SD'?'selected':''}>SD</option>
-                                <option ${s.level==='SMP'?'selected':''}>SMP</option>
-                                <option ${s.level==='SMA'?'selected':''}>SMA</option>
-                                <option ${s.level==='Lainnya'?'selected':''}>Lainnya</option>
-                            </select>
+                            <select id="sch-level" class="w-full px-3 py-2 border rounded-xl">${matrixLevelOptions(s.level)}</select>
                         </div>
-                        <div><label class="font-bold block mb-1">Ruangan</label><input type="text" id="sch-room" value="${s.room}" placeholder="Ruang 01" class="w-full px-3 py-2 border rounded-xl"></div>
+                        <div><label class="font-bold block mb-1">Ruangan</label><select id="sch-room" class="w-full px-3 py-2 border rounded-xl">${matrixSettingOptions('ruangan', s.room)}</select></div>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         <div><label class="font-bold block mb-1">Hari</label><select id="sch-day" class="w-full px-3 py-2 border rounded-xl"><option ${s.day==='Senin'?'selected':''}>Senin</option><option ${s.day==='Selasa'?'selected':''}>Selasa</option><option ${s.day==='Rabu'?'selected':''}>Rabu</option><option ${s.day==='Kamis'?'selected':''}>Kamis</option><option ${s.day==='Jumat'?'selected':''}>Jumat</option><option ${s.day==='Sabtu'?'selected':''}>Sabtu</option><option ${s.day==='Minggu'?'selected':''}>Minggu</option></select></div>
-                        <div><label class="font-bold block mb-1">Jam</label><input type="text" id="sch-time" value="${s.time}" placeholder="15:30 - 17:00" required class="w-full px-3 py-2 border rounded-xl"></div>
+                        <div><label class="font-bold block mb-1">Jam</label><select id="sch-time" required class="w-full px-3 py-2 border rounded-xl">${matrixSettingOptions('sesi', s.time)}</select></div>
                     </div>
-                    <div><label class="font-bold block mb-1">Tentor Pengampu</label><select id="sch-tutor" required class="w-full px-3 py-2 border rounded-xl">${DB.tutors.map(t => `<option value="${t.code}" ${String(s.tutorCode || '')===String(t.code) || (!s.tutorCode && s.tutorName===t.name)?'selected':''}>${t.name} (${t.code})</option>`).join('')}</select>${DB.tutors.length===0?'<p class="text-rose-600 mt-1">Tambahkan data tentor terlebih dahulu.</p>':''}</div>
+                    <div><label class="font-bold block mb-1">Tentor Pengampu</label><select id="sch-tutor" required class="w-full px-3 py-2 border rounded-xl">${activeTutors.map(t => `<option value="${t.code}" ${String(s.tutorCode || '')===String(t.code) || (!s.tutorCode && s.tutorName===t.name)?'selected':''}>${t.name} (${t.code})</option>`).join('')}</select>${activeTutors.length===0?'<p class="text-rose-600 mt-1">Tidak ada tentor aktif. Aktifkan tentor pada menu Data Tentor terlebih dahulu.</p>':''}</div>
                     <div>
                         <label class="font-bold block mb-1 text-indigo-700"><i class="fa-solid fa-user-check mr-1"></i> Daftar Siswa Rombel</label>
                         <input type="search" id="sch-student-search" oninput="filterScheduleStudents()" placeholder="Cari nama siswa..." class="w-full px-3 py-2 border rounded-xl mb-2" />
                         <div class="flex items-center justify-between text-[11px] text-slate-500 mb-2"><span>Centang siswa yang masuk rombel.</span><span id="sch-student-count">${currentSelectedStudents.length} dipilih</span></div>
                         <div id="sch-student-list" class="max-h-48 overflow-y-auto border p-3 rounded-xl space-y-1.5 bg-slate-50">
-                            ${DB.students.map(st => {
+                            ${DB.students.filter(st => String(st.active || 'Aktif').trim().toLowerCase() === 'aktif').map(st => {
                                 const selected = currentSelectedStudents.includes(st.name);
-                                const active = String(st.active || 'Aktif').toLowerCase() === 'aktif';
-                                return `<label data-student-label="${String(st.name).toLowerCase()}" class="${!active && !selected?'opacity-60':''} flex items-center space-x-2.5 p-1 hover:bg-white rounded cursor-pointer">
-                                    <input type="checkbox" name="rombel-student" value="${st.name}" ${selected?'checked':''} ${!active && !selected?'disabled':''} onchange="updateScheduleStudentCount()" class="rounded text-indigo-600 w-4 h-4">
-                                    <span class="font-medium text-slate-700">${st.name} <span class="text-slate-400">(${st.level} - ${st.grade})</span> ${!active?'<span class="text-rose-600 text-[10px] font-bold">NONAKTIF</span>':''}</span>
+                                return `<label data-student-label="${String(st.name).toLowerCase()}" class="flex items-center space-x-2.5 p-1 hover:bg-white rounded cursor-pointer">
+                                    <input type="checkbox" name="rombel-student" value="${st.name}" ${selected?'checked':''} onchange="updateScheduleStudentCount()" class="rounded text-indigo-600 w-4 h-4">
+                                    <span class="font-medium text-slate-700">${st.name} <span class="text-slate-400">(${st.level} - ${st.grade})</span></span>
                                 </label>`;
                             }).join('')}
                         </div>
@@ -1600,12 +1607,26 @@
                 attList = DB.studentAttendance.filter(a => names.some(n => n.toLowerCase() === a.studentName.toLowerCase()));
             }
 
-            if (role === 'tentor') {
-                // Tampilan tentor dibatasi pada seluruh absensi siswa untuk tanggal hari ini.
+            const activeStudents = DB.students.filter(st => st && st.name && String(st.active || 'Aktif').trim().toLowerCase() === 'aktif');
+            const attDate = window._attFilterDate || '';
+            const attMonth = window._attFilterMonth || '';
+            const attYear = window._attFilterYear || '';
+            const attStudent = window._attFilterStudent || '';
+            const attStatus = window._attFilterStatus || '';
+            attList = attList.filter(a => activeStudents.some(st => st.name === a.studentName));
+            if (attDate) attList = attList.filter(a => String(a.date || '').slice(0,10) === attDate);
+            if (attMonth) attList = attList.filter(a => String(a.date || '').slice(5,7) === attMonth);
+            if (attYear) attList = attList.filter(a => String(a.date || '').slice(0,4) === attYear);
+            if (attStudent) attList = attList.filter(a => a.studentName === attStudent);
+            if (attStatus) attList = attList.filter(a => a.status === attStatus);
+
+            const hasExplicitAttendanceFilter = Boolean(attDate || attMonth || attYear || attStudent || attStatus);
+            if (role === 'tentor' && !hasExplicitAttendanceFilter) {
+                // Default tampilan tentor tetap tanggal hari ini; filter periode dapat memperluas pencarian.
                 const today = `${reportYear}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
                 attList = attList.filter(a => String(a.date || '').slice(0, 10) === today);
-            } else {
-                // Perilaku laporan admin dan akun lain tetap seperti sebelumnya.
+            } else if (role !== 'tentor' && !hasExplicitAttendanceFilter) {
+                // Default laporan admin dan akun lain tetap mengikuti periode yang sebelumnya dipakai.
                 attList = attList.filter(a => { const d = String(a.date || ''); return reportPeriod === 'all' || (reportPeriod === 'year' ? d.startsWith(String(reportYear)) : d.startsWith(`${reportYear}-${reportMonth}`)); });
             }
             const presentByStudent = {};
@@ -1637,6 +1658,14 @@
                     <div class="flex justify-between items-center">
                         <div><h2 class="text-xl font-bold text-slate-800">Absensi Kehadiran Siswa Per Jadwal / Rombel</h2><p class="text-xs text-slate-500">Rekap absensi sesuai hak akses akun Anda.</p></div>
                         ${isAdmin || role === 'tentor' ? `<button onclick="openAbsensiSiswaModal()" class="bg-indigo-600 text-white px-4 py-2.5 rounded-xl font-bold text-xs shadow"><i class="fa-solid fa-clipboard-user mr-1"></i> Input Absensi Sesi</button>` : ''}
+                    </div>
+                    <div class="bg-white rounded-2xl border p-3 flex flex-wrap gap-2 items-end">
+                        <label class="text-xs font-semibold">Tanggal<input type="date" value="${attDate}" onchange="window._attFilterDate=this.value;renderAppLayout('absensi-siswa')" class="block mt-1 border rounded-lg px-2 py-2"></label>
+                        <label class="text-xs font-semibold">Bulan<select onchange="window._attFilterMonth=this.value;renderAppLayout('absensi-siswa')" class="block mt-1 border rounded-lg px-2 py-2"><option value="">Semua bulan</option>${['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'].map((m,i)=>`<option value="${String(i+1).padStart(2,'0')}" ${attMonth===String(i+1).padStart(2,'0')?'selected':''}>${m}</option>`).join('')}</select></label>
+                        <label class="text-xs font-semibold">Tahun<input type="number" min="2000" max="2100" value="${attYear}" placeholder="Semua tahun" onchange="window._attFilterYear=this.value;renderAppLayout('absensi-siswa')" class="block mt-1 border rounded-lg px-2 py-2 w-28"></label>
+                        <label class="text-xs font-semibold">Nama Siswa<select onchange="window._attFilterStudent=this.value;renderAppLayout('absensi-siswa')" class="block mt-1 border rounded-lg px-2 py-2"><option value="">Semua siswa aktif</option>${activeStudents.map(st=>`<option value="${escapeHtml(st.name)}" ${attStudent===st.name?'selected':''}>${escapeHtml(st.name)}</option>`).join('')}</select></label>
+                        <label class="text-xs font-semibold">Status Kehadiran<select onchange="window._attFilterStatus=this.value;renderAppLayout('absensi-siswa')" class="block mt-1 border rounded-lg px-2 py-2"><option value="">Semua status</option><option ${attStatus==='Hadir'?'selected':''}>Hadir</option><option ${attStatus==='Izin'?'selected':''}>Izin</option><option ${attStatus==='Alpha'?'selected':''}>Alpha</option></select></label>
+                        <button onclick="window._attFilterDate='';window._attFilterMonth='';window._attFilterYear='';window._attFilterStudent='';window._attFilterStatus='';renderAppLayout('absensi-siswa')" class="px-3 py-2 rounded-lg border text-xs font-bold">Reset Filter</button>
                     </div>
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-x-auto">
                         <table class="w-full text-left border-collapse text-xs">
@@ -1672,6 +1701,7 @@
                                             </td>
                                             <td class="p-4 text-center space-x-1 whitespace-nowrap">
                                                 <button onclick="viewAbsensiSiswaDetail(${realIdx})" class="bg-slate-100 text-slate-700 px-2 py-1 rounded font-semibold" title="Lihat Detail"><i class="fa-solid fa-eye"></i></button>
+                                                ${a.status==='Izin' && isAdmin ? `<button onclick="validateStudentLeave(${realIdx})" class="${a.izinValidated?'bg-emerald-100 text-emerald-700':'bg-amber-100 text-amber-800'} px-2 py-1 rounded font-semibold" title="Validasi izin">${a.izinValidated?'Disetujui':'Validasi Izin'}</button>` : (a.status==='Izin' ? `<span class="text-xs ${a.izinValidated?'text-emerald-700':'text-amber-700'}">Izin ${a.izinValidated?'Disetujui':'Menunggu validasi'}</span>` : '')}
                                                 ${isAdmin || role === 'tentor' ? `
                                                     <button onclick="openEditAbsensiSiswaModal(${realIdx})" class="bg-indigo-100 text-indigo-700 px-2 py-1 rounded font-semibold" title="Edit Data"><i class="fa-solid fa-pen"></i></button>
                                                     <button onclick="deleteAbsensiSiswa(${realIdx})" class="bg-rose-100 text-rose-700 px-2 py-1 rounded font-semibold" title="Hapus"><i class="fa-solid fa-trash"></i></button>
@@ -1693,22 +1723,23 @@
             let rows = DB.studentAttendance || [];
             const period = window._studentReportPeriod || 'month';
             const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth()+1).padStart(2,'0');
+            const year = Number(window._studentReportYear || now.getFullYear());
+            const month = String(window._studentReportMonth || (now.getMonth()+1)).padStart(2,'0');
             if (role === 'tentor') { const t = getCurrentTentor(); const ids = DB.schedules.filter(s=>s.tutorCode===t?.code || s.tutorName===t?.name).map(s=>s.id); rows=rows.filter(a=>ids.includes(a.scheduleId)||a.tutor===t?.name); }
             else if (role === 'siswa' || role === 'ortu') { const names=getCurrentUserStudentNames(); rows=rows.filter(a=>names.some(n=>n.toLowerCase()===String(a.studentName||'').toLowerCase())); }
             rows=rows.filter(a=>{const d=String(a.date||'');return period==='all'||(period==='year'?d.startsWith(String(year)):d.startsWith(`${year}-${month}`));});
-            const stats={}; rows.forEach(a=>{const n=a.studentName||'Siswa'; if(!stats[n])stats[n]={hadir:0,total:0};stats[n].total++;if(a.status==='Hadir')stats[n].hadir++;});
-            area.innerHTML=`<div class="space-y-5"><div><h2 class="text-xl font-bold text-slate-800">Ringkasan Kehadiran Siswa</h2><p class="text-xs text-slate-500">Rekap jumlah hadir per siswa berdasarkan periode.</p></div><div class="flex flex-wrap gap-2"><button onclick="window._studentReportPeriod='month';renderAppLayout('ringkasan-kehadiran')" class="px-3 py-2 rounded-lg text-xs font-bold ${period==='month'?'bg-indigo-600 text-white':'bg-white border'}">Bulan ini</button><button onclick="window._studentReportPeriod='year';renderAppLayout('ringkasan-kehadiran')" class="px-3 py-2 rounded-lg text-xs font-bold ${period==='year'?'bg-indigo-600 text-white':'bg-white border'}">Tahun ini</button><button onclick="window._studentReportPeriod='all';renderAppLayout('ringkasan-kehadiran')" class="px-3 py-2 rounded-lg text-xs font-bold ${period==='all'?'bg-indigo-600 text-white':'bg-white border'}">Semua periode</button></div><div class="bg-white rounded-2xl border overflow-x-auto"><table class="w-full text-xs text-left"><thead class="bg-slate-50"><tr><th class="p-3">Nama Siswa</th><th class="p-3">Catatan Absensi</th><th class="p-3">Jumlah Hadir</th><th class="p-3">Detail</th></tr></thead><tbody>${Object.entries(stats).sort((a,b)=>a[0].localeCompare(b[0],'id')).map(([name,st])=>`<tr class="border-t"><td class="p-3 font-bold">${name}</td><td class="p-3">${st.total}</td><td class="p-3 font-bold text-emerald-700">${st.hadir} kali</td><td class="p-3"><button onclick="viewStudentAttendanceReport(${JSON.stringify(name).replace(/"/g,'&quot;')}, '${period}')" class="text-indigo-600 font-bold underline">Lihat detail</button></td></tr>`).join('')||'<tr><td colspan="4" class="p-5 text-center text-slate-500">Belum ada data pada periode ini.</td></tr>'}</tbody></table></div></div>`;
+            const stats={}; rows.forEach(a=>{const n=a.studentName||'Siswa'; if(!stats[n])stats[n]={hadir:0,alpha:0,izin:0,total:0};stats[n].total++;if(a.status==='Hadir')stats[n].hadir++;else if(String(a.status||'').toLowerCase()==='alpha')stats[n].alpha++;else if(String(a.status||'').toLowerCase()==='izin')stats[n].izin++;});
+            const monthOptions=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+            area.innerHTML=`<div class="space-y-5"><div><h2 class="text-xl font-bold text-slate-800">Ringkasan Kehadiran Siswa</h2><p class="text-xs text-slate-500">Rekap jumlah hadir, alpha, dan izin berdasarkan bulan dan tahun pilihan.</p></div><div class="flex flex-wrap items-center gap-2"><button onclick="window._studentReportPeriod='month';renderAppLayout('ringkasan-kehadiran')" class="px-3 py-2 rounded-lg text-xs font-bold ${period==='month'?'bg-indigo-600 text-white':'bg-white border'}">Bulan terpilih</button><button onclick="window._studentReportPeriod='year';renderAppLayout('ringkasan-kehadiran')" class="px-3 py-2 rounded-lg text-xs font-bold ${period==='year'?'bg-indigo-600 text-white':'bg-white border'}">Tahun terpilih</button><button onclick="window._studentReportPeriod='all';renderAppLayout('ringkasan-kehadiran')" class="px-3 py-2 rounded-lg text-xs font-bold ${period==='all'?'bg-indigo-600 text-white':'bg-white border'}">Semua periode</button><label class="text-xs flex items-center gap-2">Bulan <select onchange="window._studentReportMonth=this.value;window._studentReportPeriod='month';renderAppLayout('ringkasan-kehadiran')" class="border rounded-lg px-2 py-2">${monthOptions.map((m,i)=>`<option value="${i+1}" ${Number(month)===i+1?'selected':''}>${m}</option>`).join('')}</select></label><label class="text-xs flex items-center gap-2">Tahun <input type="number" min="2000" max="2100" value="${year}" onchange="window._studentReportYear=this.value;window._studentReportPeriod='year';renderAppLayout('ringkasan-kehadiran')" class="border rounded-lg px-2 py-2 w-24"></label></div><div class="bg-white rounded-2xl border overflow-x-auto"><table class="w-full text-xs text-left"><thead class="bg-slate-50"><tr><th class="p-3">Nama Siswa</th><th class="p-3">Catatan Absensi</th><th class="p-3">Jumlah Hadir</th><th class="p-3">Jumlah Alpha</th><th class="p-3">Jumlah Izin</th><th class="p-3">Detail</th></tr></thead><tbody>${Object.entries(stats).sort((a,b)=>a[0].localeCompare(b[0],'id')).map(([name,st])=>`<tr class="border-t"><td class="p-3 font-bold">${name}</td><td class="p-3">${st.total}</td><td class="p-3 font-bold text-emerald-700">${st.hadir} kali</td><td class="p-3 font-bold text-rose-700">${st.alpha} kali</td><td class="p-3 font-bold text-amber-700">${st.izin} kali</td><td class="p-3"><button onclick="viewStudentAttendanceReport(${JSON.stringify(name).replace(/"/g,'&quot;')}, '${period}')" class="text-indigo-600 font-bold underline">Lihat detail</button></td></tr>`).join('')||'<tr><td colspan="6" class="p-5 text-center text-slate-500">Belum ada data pada periode ini.</td></tr>'}</tbody></table></div></div>`;
         }
 
         function viewStudentAttendanceReport(studentName, period) {
-            const now = new Date(); const year = now.getFullYear(); const month = String(now.getMonth()+1).padStart(2,'0');
+            const now = new Date(); const year = Number(window._studentReportYear || now.getFullYear()); const month = String(window._studentReportMonth || (now.getMonth()+1)).padStart(2,'0');
             const role = DB.currentUser.role; let list = DB.studentAttendance;
             if (role === 'tentor') { const tutor = getCurrentTentor(); const ids = DB.schedules.filter(s => s.tutorCode === tutor?.code || s.tutorName === tutor?.name).map(s=>s.id); list = list.filter(a => ids.includes(a.scheduleId) || a.tutor === tutor?.name); }
             else if (role === 'ortu' || role === 'siswa') { const names = getCurrentUserStudentNames(); list = list.filter(a => names.some(n => n.toLowerCase() === String(a.studentName||'').toLowerCase())); }
             list = list.filter(a => a.studentName === studentName && (period === 'all' || (period === 'year' ? String(a.date||'').startsWith(String(year)) : String(a.date||'').startsWith(`${year}-${month}`))));
-            openModal(`Detail Kehadiran: ${studentName}`, `<div class="space-y-3 text-xs"><p class="font-bold">Total hadir: ${list.filter(a=>a.status==='Hadir').length} kali dari ${list.length} catatan.</p><div class="overflow-x-auto"><table class="w-full text-left"><thead><tr class="bg-slate-50"><th class="p-2">Tanggal</th><th class="p-2">Jadwal</th><th class="p-2">Tentor</th><th class="p-2">Status</th></tr></thead><tbody>${list.sort((a,b)=>String(b.date).localeCompare(String(a.date))).map(a=>`<tr class="border-b"><td class="p-2">${a.date||'-'}</td><td class="p-2">${a.scheduleName||'-'}</td><td class="p-2">${a.tutor||'-'}</td><td class="p-2 font-bold">${a.status||'-'}</td></tr>`).join('')||'<tr><td colspan="4" class="p-3">Belum ada data.</td></tr>'}</tbody></table></div></div>`);
+            openModal(`Detail Kehadiran: ${studentName}`, `<div class="space-y-3 text-xs"><div class="flex flex-wrap gap-2"><button onclick="printAttendanceHtml('Detail Kehadiran Siswa - ${escapeHtml(studentName)}',document.getElementById('attendance-student-report-table').outerHTML)" class="bg-indigo-600 text-white px-3 py-2 rounded-lg font-bold">Print / Simpan PDF</button><button onclick="shareAttendanceWA('student',${JSON.stringify(studentName).replace(/"/g,'&quot;')})" class="bg-emerald-600 text-white px-3 py-2 rounded-lg font-bold">Kirim ke WA</button></div><p class="font-bold">Total hadir: ${list.filter(a=>a.status==='Hadir').length} kali dari ${list.length} catatan.</p><div class="overflow-x-auto"><table id="attendance-student-report-table" class="w-full text-left"><thead><tr class="bg-slate-50"><th class="p-2">Tanggal</th><th class="p-2">Jadwal</th><th class="p-2">Tentor</th><th class="p-2">Status</th></tr></thead><tbody>${list.sort((a,b)=>String(b.date).localeCompare(String(a.date))).map(a=>`<tr class="border-b"><td class="p-2">${formatDateID(a.date)}</td><td class="p-2">${a.scheduleName||'-'}</td><td class="p-2">${a.tutor||'-'}</td><td class="p-2 font-bold">${a.status||'-'}</td></tr>`).join('')||'<tr><td colspan="4" class="p-3">Belum ada data.</td></tr>'}</tbody></table></div></div>`);
         }
 
         function viewAbsensiSiswaDetail(idx) {
@@ -1793,6 +1824,44 @@
             closeModal();
             renderAppLayout('absensi-siswa');
             showToast('Data absensi siswa berhasil diperbarui!');
+        }
+
+        function validateStudentLeave(idx) {
+            const item = DB.studentAttendance[idx];
+            if (!item || item.status !== 'Izin') { showToast('Validasi hanya tersedia untuk status Izin.', 'error'); return; }
+            item.izinValidated = !item.izinValidated;
+            item.izinValidatedAt = item.izinValidated ? new Date().toISOString().slice(0,10) : '';
+            mbaSaveLocalData(false); renderAppLayout('absensi-siswa');
+            showToast(item.izinValidated ? 'Izin berhasil disetujui dan dapat menjadi dasar potongan invoice.' : 'Persetujuan izin dibatalkan.', item.izinValidated ? 'success' : 'info');
+        }
+
+        function getApprovedLeaveCount(studentName, monthValue) {
+            const [yy, mm] = String(monthValue || '').split('-');
+            return (DB.studentAttendance || []).filter(a => a.studentName === studentName && a.status === 'Izin' && a.izinValidated === true && String(a.date || '').startsWith(`${yy}-${mm}`)).length;
+        }
+        function getAdminDiscountRule() {
+            const m = DB.settingMatrices?.angkaPembagiAdministrasi;
+            const row = m?.rows?.[0] || ['9','0.5'];
+            const divisor = Math.max(1, Number(row[0]) || 9);
+            const multiplier = Math.max(0, Number(String(row[1]).replace(',','.')) || 0.5);
+            return { divisor, multiplier };
+        }
+        function updateInvoiceDiscountDefaults() {
+            const students = DB.students.filter(s=>s && s.name && String(s.active || 'Aktif').trim().toLowerCase()==='aktif');
+            const student = students[Number(document.getElementById('inv-student')?.value)];
+            const monthValue = document.getElementById('inv-month')?.value || '';
+            if (!student) return;
+            const rule = getAdminDiscountRule();
+            const perUnit = Math.round(safeAmount(student.sppBase) / rule.divisor * rule.multiplier);
+            const approved = getApprovedLeaveCount(student.name, monthValue);
+            const disc = document.getElementById('inv-disc');
+            const leaveDisc = document.getElementById('inv-leave-disc');
+            const leaveCount = document.getElementById('inv-approved-leave-count');
+            if (disc && !disc.dataset.manual) disc.value = perUnit;
+            if (leaveDisc && !leaveDisc.dataset.manual) leaveDisc.value = perUnit * approved;
+            if (leaveCount) leaveCount.textContent = `${approved} kali izin disetujui untuk periode ini.`;
+            const total = document.getElementById('inv-preview-total');
+            if (total) total.textContent = 'Rp ' + moneyID(roundInvoiceTotal(Math.max(0, safeAmount(student.sppBase) - safeAmount(disc?.value) - safeAmount(leaveDisc?.value))));
         }
 
         function deleteAbsensiSiswa(idx) {
@@ -1971,7 +2040,9 @@
             const year = now.getFullYear();
             const month = String(now.getMonth()+1).padStart(2,'0');
             const period = window._tutorSummaryPeriod || 'month';
-            const selectedMonth = window._tutorSummaryMonth || `${year}-${month}`;
+            const selectedMonth = `${year}-${month}`;
+            const selectedYear = Number(window._tutorSummaryYear || year);
+            const selectedMonthNum = Number(window._tutorSummaryMonthNum || month);
             const search = window._tutorSummarySearch || '';
             const sort = window._tutorSummarySort || 'date-desc';
             let rows = (DB.tutorAttendance || []).slice();
@@ -1980,8 +2051,8 @@
             rows = rows.filter(t => {
                 const d = String(t.date||'');
                 if (period === 'all') return true;
-                if (period === 'year') return d.startsWith(String(year));
-                return d.startsWith(period === 'custom' ? selectedMonth : `${year}-${month}`);
+                if (period === 'year') return d.startsWith(String(selectedYear));
+                return d.startsWith(period === 'custom' ? `${selectedYear}-${String(selectedMonthNum).padStart(2,'0')}` : `${year}-${month}`);
             });
             rows.sort((a,b) => {
                 if (sort === 'date-asc') return String(a.date||'').localeCompare(String(b.date||''));
@@ -1992,13 +2063,13 @@
                 return String(b.date||'').localeCompare(String(a.date||''));
             });
             const totalFee = rows.reduce((sum,t)=>sum+(Number(t.fee)||0),0);
-            const periodLabel = period === 'all' ? 'Semua periode' : period === 'year' ? `Tahun ${year}` : `Bulan ${period === 'custom' ? selectedMonth : `${year}-${month}`}`;
+            const periodLabel = period === 'all' ? 'Semua periode' : period === 'year' ? `Tahun ${selectedYear}` : `Bulan ${period === 'custom' ? `${selectedYear}-${String(selectedMonthNum).padStart(2,'0')}` : `${year}-${month}`}`;
             area.innerHTML = `<div class="space-y-5">
               <div><h2 class="text-xl font-bold text-slate-800">Ringkasan Absensi Tentor & Fee</h2><p class="text-xs text-slate-500">Ringkasan sesi dan total fee berdasarkan periode, dengan detail yang bisa diperiksa.</p></div>
               <div class="bg-white border rounded-2xl p-4 space-y-4">
-                <div class="flex flex-wrap gap-2"><button onclick="window._tutorSummaryPeriod='month';renderAppLayout('ringkasan-tentor-fee')" class="px-3 py-2 rounded-lg text-xs font-bold ${period==='month'?'bg-indigo-600 text-white':'bg-slate-100'}">Bulan ini</button><button onclick="window._tutorSummaryPeriod='year';renderAppLayout('ringkasan-tentor-fee')" class="px-3 py-2 rounded-lg text-xs font-bold ${period==='year'?'bg-indigo-600 text-white':'bg-slate-100'}">Tahun ini</button><button onclick="window._tutorSummaryPeriod='all';renderAppLayout('ringkasan-tentor-fee')" class="px-3 py-2 rounded-lg text-xs font-bold ${period==='all'?'bg-indigo-600 text-white':'bg-slate-100'}">Semua periode</button><label class="text-xs flex items-center gap-2">Pilih bulan <input type="month" value="${selectedMonth}" onchange="window._tutorSummaryMonth=this.value;window._tutorSummaryPeriod='custom';renderAppLayout('ringkasan-tentor-fee')" class="border rounded-lg px-2 py-2"></label></div>
+                <div class="flex flex-wrap gap-2"><button onclick="window._tutorSummaryPeriod='month';renderAppLayout('ringkasan-tentor-fee')" class="px-3 py-2 rounded-lg text-xs font-bold ${period==='month'?'bg-indigo-600 text-white':'bg-slate-100'}">Bulan ini</button><button onclick="window._tutorSummaryPeriod='year';renderAppLayout('ringkasan-tentor-fee')" class="px-3 py-2 rounded-lg text-xs font-bold ${period==='year'?'bg-indigo-600 text-white':'bg-slate-100'}">Tahun ini</button><button onclick="window._tutorSummaryPeriod='all';renderAppLayout('ringkasan-tentor-fee')" class="px-3 py-2 rounded-lg text-xs font-bold ${period==='all'?'bg-indigo-600 text-white':'bg-slate-100'}">Semua periode</button><label class="text-xs flex items-center gap-2">Bulan <select onchange="window._tutorSummaryMonthNum=this.value;window._tutorSummaryMonth=(window._tutorSummaryYear||new Date().getFullYear())+'-'+String(this.value).padStart(2,'0');window._tutorSummaryPeriod='custom';renderAppLayout('ringkasan-tentor-fee')" class="border rounded-lg px-2 py-2">${['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'].map((m,i)=>`<option value="${i+1}" ${selectedMonthNum===i+1?'selected':''}>${m}</option>`).join('')}</select></label><label class="text-xs flex items-center gap-2">Tahun <input type="number" min="2000" max="2100" value="${selectedYear}" onchange="window._tutorSummaryYear=this.value;window._tutorSummaryMonth=(this.value||new Date().getFullYear())+'-'+String(window._tutorSummaryMonthNum||new Date().getMonth()+1).padStart(2,'0');window._tutorSummaryPeriod='year';renderAppLayout('ringkasan-tentor-fee')" class="border rounded-lg px-2 py-2 w-24"></label></div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3"><div class="bg-indigo-50 rounded-xl p-4"><p class="text-xs text-indigo-700">Jumlah Pertemuan</p><p class="text-2xl font-extrabold text-indigo-900">${rows.length}</p></div><div class="bg-emerald-50 rounded-xl p-4"><p class="text-xs text-emerald-700">Total Fee</p><p class="text-2xl font-extrabold text-emerald-900">Rp ${totalFee.toLocaleString('id-ID')}</p></div></div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">${isAdmin ? `<select value="${search.replace(/"/g,'&quot;')}" onchange="window._tutorSummarySearch=this.value;renderAppLayout('ringkasan-tentor-fee')" class="border rounded-xl px-3 py-2 text-xs"><option value="">Semua tentor</option>${[...new Set([...(DB.tutors||[]).map(t=>t.name),...(DB.tutorAttendance||[]).map(t=>t.tutorName)].filter(Boolean))].sort((a,b)=>a.localeCompare(b,'id')).map(name=>`<option value="${String(name).replace(/"/g,'&quot;')}" ${search===name?'selected':''}>${name}</option>`).join('')}</select>` : ''}<select onchange="window._tutorSummarySort=this.value;renderAppLayout('ringkasan-tentor-fee')" class="border rounded-xl px-3 py-2 text-xs"><option value="date-desc" ${sort==='date-desc'?'selected':''}>Tanggal terbaru</option><option value="date-asc" ${sort==='date-asc'?'selected':''}>Tanggal terlama</option><option value="tutor" ${sort==='tutor'?'selected':''}>Nama tentor A–Z</option><option value="level" ${sort==='level'?'selected':''}>Jenjang A–Z</option><option value="fee-desc" ${sort==='fee-desc'?'selected':''}>Fee tertinggi</option><option value="fee-asc" ${sort==='fee-asc'?'selected':''}>Fee terendah</option></select></div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">${isAdmin ? `<select value="${search.replace(/"/g,'&quot;')}" onchange="window._tutorSummarySearch=this.value;renderAppLayout('ringkasan-tentor-fee')" class="border rounded-xl px-3 py-2 text-xs"><option value="">Semua tentor</option>${(DB.tutors||[]).filter(t=>String(t.active || 'Aktif').trim().toLowerCase()==='aktif').map(t=>t.name).filter(Boolean).sort((a,b)=>a.localeCompare(b,'id')).map(name=>`<option value="${String(name).replace(/"/g,'&quot;')}" ${search===name?'selected':''}>${name}</option>`).join('')}</select>` : ''}<select onchange="window._tutorSummarySort=this.value;renderAppLayout('ringkasan-tentor-fee')" class="border rounded-xl px-3 py-2 text-xs"><option value="date-desc" ${sort==='date-desc'?'selected':''}>Tanggal terbaru</option><option value="date-asc" ${sort==='date-asc'?'selected':''}>Tanggal terlama</option><option value="tutor" ${sort==='tutor'?'selected':''}>Nama tentor A–Z</option><option value="level" ${sort==='level'?'selected':''}>Jenjang A–Z</option><option value="fee-desc" ${sort==='fee-desc'?'selected':''}>Fee tertinggi</option><option value="fee-asc" ${sort==='fee-asc'?'selected':''}>Fee terendah</option></select></div>
                 <div class="flex flex-wrap gap-2"><button onclick="viewTutorAttendanceReport('${period}')" class="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold"><i class="fa-solid fa-eye mr-1"></i> Lihat detail laporan</button>${isAdmin ? `<button onclick="openTutorFeeReceipt('${selectedMonth}')" class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold"><i class="fa-solid fa-file-invoice-dollar mr-1"></i> Struk Tuition Fee / Slip Gaji</button>` : ''}</div>
                 ${isAdmin ? `<p class="text-xs text-slate-500">Struk Tuition Fee / Slip Gaji tetap tersedia di ringkasan ini. Pilih bulan yang ingin dicetak; hanya sesi yang sudah divalidasi admin yang masuk ke struk.</p>` : ''}
               </div>
@@ -2007,12 +2078,23 @@
         }
 
         function viewTutorAttendanceReport(period) {
-            const now = new Date(); const year = now.getFullYear(); const month = String(now.getMonth()+1).padStart(2,'0'); const role=DB.currentUser.role; const tentor=getCurrentTentor(); const q=window._ttSearch||'';
-            let list=DB.tutorAttendance;
-            if(role==='tentor') list=list.filter(t=>String(t.tutorName||'').toLowerCase()===String(tentor?.name||'').toLowerCase()); else list=list.filter(t=>String(t.tutorName||'').toLowerCase().includes(q.toLowerCase()));
-            list=list.filter(t=>period==='all'||(period==='year'?String(t.date||'').startsWith(String(year)):String(t.date||'').startsWith(`${year}-${month}`))).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
-            const total=list.reduce((sum,t)=>sum+(Number(t.fee)||0),0);
-            openModal('Detail Laporan Absensi Tentor', `<div class="space-y-3 text-xs"><div class="bg-emerald-50 p-3 rounded-xl font-bold">${list.length} pertemuan · Total fee Rp ${total.toLocaleString('id-ID')}</div><div class="overflow-x-auto"><table class="w-full text-left"><thead><tr class="bg-slate-50"><th class="p-2">Tanggal</th><th class="p-2">Tentor</th><th class="p-2">Jadwal</th><th class="p-2">Jenjang</th><th class="p-2">Siswa hadir</th><th class="p-2">Fee</th></tr></thead><tbody>${list.map(t=>`<tr class="border-b"><td class="p-2">${t.date||'-'}</td><td class="p-2">${t.tutorName||'-'}</td><td class="p-2">${t.scheduleName||'-'}</td><td class="p-2">${t.level || DB.schedules.find(s=>String(s.id)===String(t.scheduleId))?.level || '-'}</td><td class="p-2">${Number(t.studentCount)||0}</td><td class="p-2 font-bold">Rp ${(Number(t.fee)||0).toLocaleString('id-ID')}</td></tr>`).join('')||'<tr><td colspan="6" class="p-3">Belum ada data.</td></tr>'}</tbody></table></div></div>`);
+            const now = new Date(); const year = Number(window._tutorSummaryYear || now.getFullYear()); const month = String(window._tutorSummaryMonthNum || (now.getMonth()+1)).padStart(2,'0');
+            const role=DB.currentUser.role; const tentor=getCurrentTentor();
+            const selectedTutor = role === 'tentor' ? (tentor?.name||'') : (window._tutorSummarySearch||'');
+            const selectedMonth = window._tutorSummaryMonth || `${year}-${month}`;
+            let list=[...(DB.tutorAttendance||[])];
+            if(role==='tentor') list=list.filter(t=>String(t.tutorName||'').toLowerCase()===String(selectedTutor).toLowerCase());
+            else if(selectedTutor) list=list.filter(t=>String(t.tutorName||'').toLowerCase()===String(selectedTutor).toLowerCase());
+            const activePeriod=period||window._tutorSummaryPeriod||'month';
+            list=list.filter(t=>activePeriod==='all'||(activePeriod==='year'?String(t.date||'').startsWith(String(year)):String(t.date||'').startsWith(activePeriod==='custom'?selectedMonth:`${year}-${month}`))).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+            const tuitionOf=t=>Number.isFinite(Number(t.sessionFee))?Number(t.sessionFee):Math.max(0,(Number(t.fee)||0)-(Number(t.transportFee)||0));
+            const tuitionTotal=list.reduce((sum,t)=>sum+tuitionOf(t),0);
+            const transportTotal=list.reduce((sum,t)=>sum+(Number(t.transportFee)||0),0);
+            const total=tuitionTotal+transportTotal;
+            const fmt=n=>'Rp '+Number(n||0).toLocaleString('id-ID');
+            const titleTutor=selectedTutor||'Semua Tentor';
+            const table=`<table id="attendance-tutor-report-table" style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr><th>Tanggal</th><th>Tentor</th><th>Jadwal</th><th>Jenjang</th><th>Siswa hadir</th><th>Tuition Fee</th><th>Fee Transport</th><th>Total</th><th>Validasi</th></tr></thead><tbody>${list.map(t=>`<tr><td>${t.date||'-'}</td><td>${t.tutorName||'-'}</td><td>${t.scheduleName||'-'}</td><td>${t.level||DB.schedules.find(s=>String(s.id)===String(t.scheduleId))?.level||'-'}</td><td>${Number(t.studentCount)||0}</td><td>${fmt(tuitionOf(t))}</td><td>${fmt(t.transportFee)}</td><td>${fmt(tuitionOf(t)+(Number(t.transportFee)||0))}</td><td>${t.adminValidated?'Tervalidasi':'Menunggu'}</td></tr>`).join('')||'<tr><td colspan="9">Belum ada data.</td></tr>'}</tbody></table>`;
+            openModal('Detail Laporan Absensi Tentor', `<div class="space-y-3 text-xs"><p><b>Tentor:</b> ${titleTutor} · <b>Periode:</b> ${activePeriod==='all'?'Semua periode':activePeriod==='year'?year:activePeriod==='custom'?selectedMonth:`${year}-${month}`}</p><div class="flex flex-wrap gap-2"><button onclick="printAttendanceHtml('Detail Kehadiran Tentor',document.getElementById('attendance-tutor-report-table').outerHTML)" class="bg-indigo-600 text-white px-3 py-2 rounded-lg font-bold">Print / Simpan PDF</button><button onclick="shareAttendanceWA('tutor',${JSON.stringify(selectedTutor||tentor?.name||'').replace(/"/g,'&quot;')})" class="bg-emerald-600 text-white px-3 py-2 rounded-lg font-bold">Kirim ke WA</button></div><div class="bg-emerald-50 p-3 rounded-xl font-bold">${list.length} sesi · Tuition Fee ${fmt(tuitionTotal)} · Transport ${fmt(transportTotal)} · Total ${fmt(total)}</div><div class="overflow-x-auto">${table}</div></div>`);
         }
 
         function openTutorAttModal(idx = null) {
@@ -2092,8 +2174,14 @@
                 showToast('Absensi siswa untuk jadwal dan tanggal ini belum diisi. Isi absensi siswa terlebih dahulu.', 'error');
                 return;
             }
-            const calculatedFee = attendanceForSession.length ? calculateFeeFromMatrix(schedule.level, attendedCount) : 0;
-            const data = { date, scheduleId: schedule.id, level: schedule.level, tutorCode: schedule.tutorCode || '', tutorName, scheduleName: schedule.name, studentCount: attendedCount, fee: calculatedFee, feeSource: 'tuitionMatrix', note: document.getElementById('ta-note').value || 'OK' };
+            const sessionFee = attendanceForSession.length ? calculateFeeFromMatrix(schedule.level, attendedCount) : 0;
+            const transportConfig = DB.settingMatrices?.transport;
+            const transportRow = transportConfig?.rows?.find(r=>String(r[0]||'').toLowerCase().includes('transport'));
+            const transportAmount = Math.max(0, Number(String(transportRow?.[1] ?? '5000').replace(/[^0-9.-]/g,'')) || 0);
+            const hasTransportAlready = DB.tutorAttendance.some((a,j)=>j!==idx && a.date===date && String(a.tutorName||'').toLowerCase()===String(tutorName).toLowerCase() && Number(a.transportFee)>0);
+            const transportFee = hasTransportAlready ? 0 : transportAmount;
+            const calculatedFee = sessionFee + transportFee;
+            const data = { date, scheduleId: schedule.id, level: schedule.level, tutorCode: schedule.tutorCode || '', tutorName, scheduleName: schedule.name, studentCount: attendedCount, fee: calculatedFee, sessionFee, transportFee, feeSource: 'tuitionMatrix+transportMatrix', note: document.getElementById('ta-note').value || 'OK' };
             if (idx !== null) DB.tutorAttendance[idx] = { ...DB.tutorAttendance[idx], ...data };
             else {
                 const duplicateIdx = DB.tutorAttendance.findIndex(a => String(a.scheduleId || '') === String(schedule.id) && a.date === date);
@@ -2116,42 +2204,51 @@
         function openTutorFeeReceipt(monthValue) {
             if (DB.currentUser.role !== 'admin') { showToast('Struk fee hanya dapat dibuat oleh admin.', 'error'); return; }
             const month = monthValue || window._tutorReportMonth || new Date().toLocaleDateString('en-CA').slice(0,7);
-            const tutors = [...new Set((DB.tutorAttendance || []).filter(t => String(t.date || '').startsWith(month) && t.adminValidated).map(t => t.tutorName).filter(Boolean))];
-            if (!tutors.length) { showToast('Belum ada data fee tervalidasi untuk bulan ini. Validasi sesi terlebih dahulu.', 'error'); return; }
-            openModal('Cetak Struk Tuition Fee Tentor', `<div class="space-y-3 text-sm"><p>Pilih tentor untuk membuat struk gaji bulan <b>${month}</b>. Hanya sesi yang sudah divalidasi admin yang dimasukkan.</p><label class="block font-bold">Nama Tentor</label><select id="receipt-tutor-name" class="w-full border rounded-xl px-3 py-2">${tutors.map(n=>`<option value="${n}">${n}</option>`).join('')}</select><div class="flex flex-wrap gap-2"><button onclick="printTutorFeeReceipt(document.getElementById('receipt-tutor-name').value,'${month}')" class="bg-indigo-600 text-white px-4 py-2 rounded-xl font-bold"><i class="fa-solid fa-print mr-1"></i> Cetak / Simpan PDF</button><button onclick="shareTutorFeeReceiptWA(document.getElementById('receipt-tutor-name').value,'${month}')" class="bg-emerald-600 text-white px-4 py-2 rounded-xl font-bold"><i class="fa-brands fa-whatsapp mr-1"></i> Kirim rincian via WA</button></div><p class="text-xs text-slate-500">Untuk PDF, pilih “Save as PDF” pada dialog cetak browser. WhatsApp membuka pesan yang sudah disiapkan; admin dapat memeriksa sebelum mengirim.</p></div>`);
+            const selectedTutor = window._tutorSummarySearch || '';
+            const activeTutorNames = (DB.tutors || []).filter(t => String(t.active || 'Aktif').trim().toLowerCase() === 'aktif').map(t => t.name).filter(Boolean);
+            const tutors = activeTutorNames.filter(name => (DB.tutorAttendance || []).some(t => t.tutorName === name && String(t.date || '').startsWith(month) && t.adminValidated) && (!selectedTutor || name === selectedTutor));
+            if (!tutors.length) { showToast('Tidak ada tentor aktif dengan data fee tervalidasi untuk bulan ini.', 'error'); return; }
+            openModal('Cetak Struk Tuition Fee Tentor', `<div class="space-y-3 text-sm"><p>Pilih tentor untuk membuat struk gaji bulan <b>${month}</b>. Hanya sesi yang sudah divalidasi admin yang dimasukkan.</p><label class="block font-bold">Nama Tentor</label><select id="receipt-tutor-name" class="w-full border rounded-xl px-3 py-2">${tutors.map(n=>`<option value="${n}" ${n===selectedTutor?'selected':''}>${n}</option>`).join('')}</select><div class="flex flex-wrap gap-2"><button onclick="printTutorFeeReceipt(document.getElementById('receipt-tutor-name').value,'${month}')" class="bg-indigo-600 text-white px-4 py-2 rounded-xl font-bold"><i class="fa-solid fa-print mr-1"></i> Cetak / Simpan PDF</button><button onclick="shareTutorFeeReceiptWA(document.getElementById('receipt-tutor-name').value,'${month}')" class="bg-emerald-600 text-white px-4 py-2 rounded-xl font-bold"><i class="fa-brands fa-whatsapp mr-1"></i> Kirim rincian via WA</button></div><p class="text-xs text-slate-500">Untuk PDF, pilih “Save as PDF” pada dialog cetak browser. WhatsApp membuka pesan yang sudah disiapkan; admin dapat memeriksa sebelum mengirim.</p></div>`);
         }
 
         function buildTutorFeeReceipt(tutorName, month) {
             const rows = (DB.tutorAttendance || []).filter(t => t.tutorName === tutorName && String(t.date || '').startsWith(month) && t.adminValidated).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
-            const total = rows.reduce((sum,t)=>sum+(Number(t.fee)||0),0);
+            const tuitionTotal = rows.reduce((sum,t)=>sum+(Number.isFinite(Number(t.sessionFee))?Number(t.sessionFee):Math.max(0,(Number(t.fee)||0)-(Number(t.transportFee)||0))),0);
+            // One transport fee per tutor per date, even if multiple sessions are present.
+            const transportByDate = new Map();
+            rows.forEach(t=>{ if(Number(t.transportFee)>0) transportByDate.set(t.date, Math.max(Number(transportByDate.get(t.date)||0), Number(t.transportFee)||0)); });
+            const transportTotal = [...transportByDate.values()].reduce((a,b)=>a+b,0);
             const tutor = (DB.tutors || []).find(t=>t.name===tutorName) || {};
-            return {rows,total,tutor};
+            return {rows,total:tuitionTotal+transportTotal,tuitionTotal,transportTotal,tutor,transportByDate};
         }
 
         function printTutorFeeReceipt(tutorName, month) {
-            const {rows,total} = buildTutorFeeReceipt(tutorName, month);
+            const {rows,total,tuitionTotal,transportTotal,transportByDate} = buildTutorFeeReceipt(tutorName, month);
             if (!rows.length) { showToast('Tidak ada sesi tervalidasi untuk struk ini.', 'error'); return; }
             const fmt=n=>'Rp '+Number(n||0).toLocaleString('id-ID');
             const w=window.open('', '_blank');
             if (!w) { showToast('Popup diblokir. Izinkan popup untuk mencetak PDF.', 'error'); return; }
-            w.document.write(`<!doctype html><html lang="id"><head><meta charset="utf-8"><title>Struk Tuition Fee - ${tutorName}</title><style>body{font:14px Arial,sans-serif;color:#172033;margin:32px}h1{font-size:22px;margin:0 0 5px}p{margin:5px 0}.muted{color:#64748b;font-size:12px}table{width:100%;border-collapse:collapse;margin-top:22px}th,td{border:1px solid #cbd5e1;padding:9px;text-align:left}th{background:#f1f5f9}.right{text-align:right}.total{font-size:18px;font-weight:bold;text-align:right;margin-top:18px}.sign{display:flex;justify-content:space-between;margin-top:55px}.sign div{width:42%;text-align:center}.sign span{display:block;margin-top:65px;border-top:1px solid #64748b;padding-top:7px}@media print{button{display:none}body{margin:15mm}}</style></head><body><h1>BIMBEL MBAH AMAT</h1><p>STRUK TUITION FEE / GAJI TENTOR</p><p>Periode: <b>${month}</b></p><p>Nama Tentor: <b>${tutorName}</b></p><p class="muted">Hanya mencakup sesi yang telah divalidasi admin.</p><table><thead><tr><th>No.</th><th>Tanggal</th><th>Jadwal / Rombel</th><th>Jenjang</th><th>Jumlah siswa hadir</th><th class="right">Fee sesi</th></tr></thead><tbody>${rows.map((r,i)=>`<tr><td>${i+1}</td><td>${r.date||'-'}</td><td>${r.scheduleName||'-'}</td><td>${r.level || DB.schedules.find(s=>String(s.id)===String(r.scheduleId))?.level || '-'}</td><td>${Number(r.studentCount)||0}</td><td class="right">${fmt(r.fee)}</td></tr>`).join('')}</tbody></table><div class="total">Total Tuition Fee: ${fmt(total)}</div><div class="sign"><div>Admin / Pemeriksa<span>${DB.currentUser.name||'Admin'}</span></div><div>Penerima, Tentor<span>${tutorName}</span></div></div><p class="muted">Dicetak: ${new Date().toLocaleString('id-ID')}</p><script>window.onload=()=>window.print()<\/script></body></html>`);
+            const tuitionOf=r=>Number.isFinite(Number(r.sessionFee))?Number(r.sessionFee):Math.max(0,(Number(r.fee)||0)-(Number(r.transportFee)||0));
+            w.document.write(`<!doctype html><html lang="id"><head><meta charset="utf-8"><title>Struk Tuition Fee - ${tutorName}</title><style>body{font:14px Arial,sans-serif;color:#172033;margin:32px}h1{font-size:22px;margin:0 0 5px}p{margin:5px 0}.muted{color:#64748b;font-size:12px}table{width:100%;border-collapse:collapse;margin-top:22px}th,td{border:1px solid #cbd5e1;padding:9px;text-align:left}th{background:#f1f5f9}.right{text-align:right}.total{font-size:18px;font-weight:bold;text-align:right;margin-top:18px}.sign{display:flex;justify-content:space-between;margin-top:55px}.sign div{width:42%;text-align:center}.sign span{display:block;margin-top:65px;border-top:1px solid #64748b;padding-top:7px}@media print{button{display:none}body{margin:15mm}}</style></head><body><h1>BIMBEL MBAH AMAT</h1><p>STRUK TUITION FEE / SLIP GAJI TENTOR</p><p>Periode: <b>${month}</b></p><p>Nama Tentor: <b>${tutorName}</b></p><p class="muted">Hanya mencakup sesi yang telah divalidasi admin.</p><h3>Rincian Tuition Fee</h3><table><thead><tr><th>No.</th><th>Tanggal</th><th>Jadwal / Rombel</th><th>Jenjang</th><th>Jumlah siswa hadir</th><th class="right">Tuition Fee</th></tr></thead><tbody>${rows.map((r,i)=>`<tr><td>${i+1}</td><td>${formatDateID(r.date)}</td><td>${r.scheduleName||'-'}</td><td>${r.level || DB.schedules.find(s=>String(s.id)===String(r.scheduleId))?.level || '-'}</td><td>${Number(r.studentCount)||0}</td><td class="right">${fmt(tuitionOf(r))}</td></tr>`).join('')}</tbody><tfoot><tr><th colspan="5" class="right">Total Tuition Fee</th><th class="right">${fmt(tuitionTotal)}</th></tr></tfoot></table><h3>Rincian Fee Transport per Tanggal Kedatangan</h3><table><thead><tr><th>No.</th><th>Tanggal kedatangan</th><th class="right">Fee Transport</th></tr></thead><tbody>${[...transportByDate.entries()].sort((a,b)=>String(a[0]).localeCompare(String(b[0]))).map(([date,amount],i)=>`<tr><td>${i+1}</td><td>${formatDateID(date)}</td><td class="right">${fmt(amount)}</td></tr>`).join('')||'<tr><td colspan="3">Belum ada fee transport tercatat.</td></tr>'}</tbody><tfoot><tr><th colspan="2" class="right">Total Fee Transport</th><th class="right">${fmt(transportTotal)}</th></tr></tfoot></table><div class="total">TOTAL TUITION FEE + TRANSPORT: ${fmt(total)}</div><div class="sign"><div>Admin / Pemeriksa<span>${DB.currentUser.name||'Admin'}</span></div><div>Penerima, Tentor<span>${tutorName}</span></div></div><p class="muted">Dicetak: ${new Date().toLocaleString('id-ID')}</p><script>window.onload=()=>window.print()<\/script></body></html>`);
             w.document.close();
         }
 
         function shareTutorFeeReceiptWA(tutorName, month) {
-            const {rows,total,tutor} = buildTutorFeeReceipt(tutorName, month);
+            const {rows,total,tuitionTotal,transportTotal,transportByDate,tutor} = buildTutorFeeReceipt(tutorName, month);
             if (!rows.length) { showToast('Tidak ada sesi tervalidasi untuk dikirim.', 'error'); return; }
             let phone = String(tutor.phone || (DB.accounts || []).find(a=>a.name===tutorName)?.phone || '').replace(/\D/g,'');
             if (phone.startsWith('0')) phone='62'+phone.slice(1);
             const fmt=n=>'Rp '+Number(n||0).toLocaleString('id-ID');
-            const lines = [`*BIMBEL MBAH AMAT — STRUK TUITION FEE*`,`Nama Tentor: ${tutorName}`,`Periode: ${month}`,`Status: Tervalidasi Admin`,``,`Rincian sesi:`,...rows.map((r,i)=>`${i+1}. ${r.date} | ${r.scheduleName} | Jenjang ${r.level || DB.schedules.find(s=>String(s.id)===String(r.scheduleId))?.level || '-'} | ${Number(r.studentCount)||0} siswa hadir | ${fmt(r.fee)}`),``,`*Total fee: ${fmt(total)}*`,`Divalidasi oleh: ${rows[0].validatedBy || 'Admin'}`];
-            const url='https://wa.me/'+(phone || '')+'?text='+encodeURIComponent(lines.join('\n'));
-            window.open(url, '_blank');
+            const tuitionOf=r=>Number.isFinite(Number(r.sessionFee))?Number(r.sessionFee):Math.max(0,(Number(r.fee)||0)-(Number(r.transportFee)||0));
+            const lines = [`*BIMBEL MBAH AMAT — STRUK TUITION FEE / SLIP GAJI*`,`Nama Tentor: ${tutorName}`,`Periode: ${month}`,`Status: Tervalidasi Admin`,``,`*Rincian Tuition Fee:*`,...rows.map((r,i)=>`${i+1}. ${r.date} | ${r.scheduleName} | ${Number(r.studentCount)||0} siswa hadir | ${fmt(tuitionOf(r))}`),`Total Tuition Fee: ${fmt(tuitionTotal)}`,``,`*Rincian Fee Transport per tanggal:*`,...[...transportByDate.entries()].sort((a,b)=>String(a[0]).localeCompare(String(b[0]))).map(([date,amount])=>`${date}: ${fmt(amount)}`),`Total Fee Transport: ${fmt(transportTotal)}`,``,`*TOTAL TUITION FEE + TRANSPORT: ${fmt(total)}*`,`Divalidasi oleh: ${rows[0].validatedBy || 'Admin'}`];
+            window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(lines.join('\n')), '_blank');
         }
 
         // --- 8. INVOICE ---
         function moneyID(value) { const n = Number(value); return Number.isFinite(n) ? n.toLocaleString('id-ID') : '0'; }
         function safeAmount(value) { const n = Number(value); return Number.isFinite(n) && n >= 0 ? n : 0; }
+        // Pembulatan total tagihan ke ribuan terdekat; contoh Rp 249.999 menjadi Rp 250.000.
+        function roundInvoiceTotal(value) { return Math.max(0, Math.ceil(safeAmount(value) / 5000) * 5000); }
         function invoicePaid(inv) {
             return DB.payments.filter(p => p.status !== 'Dibatalkan' && (p.invoiceNo === inv.invoiceNo || (!p.invoiceNo && p.studentName === inv.studentName && (p.month === inv.month || String(p.note||'').toLowerCase().includes(String(inv.month||'').toLowerCase()))))).reduce((sum,p) => sum + safeAmount(p.amount), 0);
         }
@@ -2186,22 +2283,30 @@
                       <div class="bg-rose-50 p-4 rounded-2xl border border-rose-100"><p class="text-xs text-rose-700">Tagihan Jatuh Tempo</p><p class="text-xl font-black text-rose-800 mt-1">${overdue} invoice</p></div>
                     </div>
                     <div class="bg-white rounded-2xl border p-3 flex flex-wrap gap-2"><input id="inv-search" value="${search.replace(/"/g,'&quot;')}" oninput="renderInvoiceTab(document.getElementById('tab-content-area'))" placeholder="Cari nama siswa / nomor invoice..." class="flex-1 min-w-[180px] px-3 py-2 border rounded-xl text-xs"><select id="inv-filter-month" onchange="renderInvoiceTab(document.getElementById('tab-content-area'))" class="px-3 py-2 border rounded-xl text-xs"><option value="all">Semua bulan</option>${months.map(m=>`<option ${monthFilter===m?'selected':''} value="${m}">${m}</option>`).join('')}</select><select id="inv-filter-status" onchange="renderInvoiceTab(document.getElementById('tab-content-area'))" class="px-3 py-2 border rounded-xl text-xs"><option value="all">Semua status</option>${['Lunas','Cicilan','Belum Lunas','Jatuh Tempo','Dibatalkan'].map(st=>`<option ${statusFilter===st?'selected':''}>${st}</option>`).join('')}</select><select id="inv-sort" onchange="renderInvoiceTab(document.getElementById('tab-content-area'))" class="px-3 py-2 border rounded-xl text-xs"><option value="newest" ${sort==='newest'?'selected':''}>Tanggal terbaru</option><option value="oldest" ${sort==='oldest'?'selected':''}>Tanggal terlama</option><option value="name" ${sort==='name'?'selected':''}>Nama siswa A–Z</option><option value="amount-high" ${sort==='amount-high'?'selected':''}>Nominal terbesar</option><option value="amount-low" ${sort==='amount-low'?'selected':''}>Nominal terkecil</option></select></div>
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-x-auto"><table class="w-full text-left border-collapse text-xs"><thead><tr class="bg-slate-50 border-b text-slate-600 font-bold"><th class="p-3">No. Invoice</th><th class="p-3">Siswa</th><th class="p-3">Bulan Tagihan</th><th class="p-3">Pokok</th><th class="p-3">Diskon</th><th class="p-3">Total</th><th class="p-3">Dibayar</th><th class="p-3">Sisa</th><th class="p-3">Jatuh Tempo</th><th class="p-3">Status</th></tr></thead><tbody class="divide-y">${list.length?list.map(inv=>`<tr><td class="p-3 font-bold text-indigo-600">${inv.invoiceNo}</td><td class="p-3 font-bold">${inv.studentName||'Nama tidak tersedia'}</td><td class="p-3">${inv.month||'-'}</td><td class="p-3">Rp ${moneyID(inv.baseAmount)}</td><td class="p-3">Rp ${moneyID(inv.discount)}</td><td class="p-3 font-bold">Rp ${moneyID(inv.total)}</td><td class="p-3 text-emerald-700">Rp ${moneyID(invoicePaid(inv))}</td><td class="p-3 text-amber-700">Rp ${moneyID(invoiceBalance(inv))}</td><td class="p-3">${inv.deadline||'-'}</td><td class="p-3"><span class="px-2 py-1 rounded text-[10px] font-bold ${inv.status==='Lunas'?'bg-emerald-100 text-emerald-700':inv.status==='Dibatalkan'?'bg-slate-100 text-slate-600':inv.status==='Jatuh Tempo'?'bg-rose-100 text-rose-700':'bg-amber-100 text-amber-700'}">${inv.status}</span><button onclick="printInvoice(${DB.invoices.indexOf(inv)})" class="block mt-2 text-indigo-600 font-bold">Lihat / Cetak</button></td></tr>`).join(''):`<tr><td colspan="10" class="p-6 text-center text-slate-400">Tidak ada invoice sesuai filter.</td></tr>`}</tbody></table></div>
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-x-auto"><table class="w-full text-left border-collapse text-xs"><thead><tr class="bg-slate-50 border-b text-slate-600 font-bold"><th class="p-3">No. Invoice</th><th class="p-3">Siswa</th><th class="p-3">Bulan Tagihan</th><th class="p-3">Pokok</th><th class="p-3">Diskon</th><th class="p-3">Total</th><th class="p-3">Dibayar</th><th class="p-3">Sisa</th><th class="p-3">Jatuh Tempo</th><th class="p-3">Status</th></tr></thead><tbody class="divide-y">${list.length?list.map(inv=>`<tr><td class="p-3 font-bold text-indigo-600">${inv.invoiceNo}</td><td class="p-3 font-bold">${inv.studentName||'Nama tidak tersedia'}</td><td class="p-3">${inv.month||'-'}</td><td class="p-3">Rp ${moneyID(inv.baseAmount)}</td><td class="p-3">Rp ${moneyID((Number(inv.discount)||0)+(Number(inv.leaveDiscount)||0))}</td><td class="p-3 font-bold">Rp ${moneyID(inv.total)}</td><td class="p-3 text-emerald-700">Rp ${moneyID(invoicePaid(inv))}</td><td class="p-3 text-amber-700">Rp ${moneyID(invoiceBalance(inv))}</td><td class="p-3">${inv.deadline||'-'}</td><td class="p-3"><span class="px-2 py-1 rounded text-[10px] font-bold ${inv.status==='Lunas'?'bg-emerald-100 text-emerald-700':inv.status==='Dibatalkan'?'bg-slate-100 text-slate-600':inv.status==='Jatuh Tempo'?'bg-rose-100 text-rose-700':'bg-amber-100 text-amber-700'}">${inv.status}</span><button onclick="printInvoice(${DB.invoices.indexOf(inv)})" class="block mt-2 text-indigo-600 font-bold">Lihat / Cetak</button></td></tr>`).join(''):`<tr><td colspan="10" class="p-6 text-center text-slate-400">Tidak ada invoice sesuai filter.</td></tr>`}</tbody></table></div>
                 </div>`;
         }
         function openInvoiceModal() {
-            const students = DB.students.filter(s=>s && s.name);
-            openModal('Kalkulator & Buat Invoice SPP', `<form onsubmit="saveInvoice(event)" class="space-y-3 text-xs"><div><label class="font-bold block mb-1">Pilih Siswa</label><select id="inv-student" required class="w-full px-3 py-2 border rounded-xl">${students.map((s,i)=>`<option value="${i}">${s.name} (SPP: Rp ${moneyID(s.sppBase)})</option>`).join('')}</select></div><div><label class="font-bold block mb-1">Bulan Tagihan</label><input type="month" id="inv-month" value="${new Date().toISOString().slice(0,7)}" required class="w-full px-3 py-2 border rounded-xl"></div><div><label class="font-bold block mb-1">Jatuh Tempo</label><input type="date" id="inv-deadline" value="${new Date(new Date().getFullYear(),new Date().getMonth(),20).toISOString().slice(0,10)}" required class="w-full px-3 py-2 border rounded-xl"></div><div><label class="font-bold block mb-1">Potongan Diskon (Rp)</label><input type="number" min="0" id="inv-disc" value="0" required class="w-full px-3 py-2 border rounded-xl"></div><p class="text-slate-500">Total invoice dihitung otomatis dari SPP siswa dikurangi diskon.</p><button type="submit" class="w-full bg-indigo-600 text-white font-bold py-2.5 rounded-xl shadow">Terbitkan Invoice</button></form>`);
+            const students = DB.students.filter(s=>s && s.name && String(s.active || 'Aktif').trim().toLowerCase()==='aktif');
+            const rule = getAdminDiscountRule();
+            openModal('Kalkulator & Buat Invoice SPP', `<form onsubmit="saveInvoice(event)" class="space-y-3 text-xs"><div><label class="font-bold block mb-1">Pilih Siswa</label><select id="inv-student" required onchange="updateInvoiceDiscountDefaults()" class="w-full px-3 py-2 border rounded-xl">${students.map((s,i)=>`<option value="${i}">${s.name} (SPP: Rp ${moneyID(s.sppBase)})</option>`).join('') || '<option value="">Tidak ada siswa aktif</option>'}</select></div><div><label class="font-bold block mb-1">Bulan Tagihan</label><input type="month" id="inv-month" value="${new Date().toISOString().slice(0,7)}" required onchange="updateInvoiceDiscountDefaults()" class="w-full px-3 py-2 border rounded-xl"></div><div><label class="font-bold block mb-1">Jatuh Tempo</label><input type="date" id="inv-deadline" value="${new Date(new Date().getFullYear(),new Date().getMonth(),20).toISOString().slice(0,10)}" required class="w-full px-3 py-2 border rounded-xl"></div><div><label class="font-bold block mb-1">Potongan Diskon (Rp) — default SPP ÷ ${rule.divisor} × ${rule.multiplier}</label><input type="number" min="0" id="inv-disc" value="0" oninput="this.dataset.manual='1';updateInvoiceDiscountDefaultsPreview()" required class="w-full px-3 py-2 border rounded-xl"></div><div class="rounded-xl bg-amber-50 border border-amber-200 p-3"><label class="font-bold block mb-1">Potongan Diskon Karena Izin Tervalidasi (Rp)</label><input type="number" min="0" id="inv-leave-disc" value="0" oninput="this.dataset.manual='1';updateInvoiceDiscountDefaultsPreview()" required class="w-full px-3 py-2 border rounded-xl"><p id="inv-approved-leave-count" class="mt-2 text-amber-800">0 kali izin disetujui untuk periode ini.</p><p class="mt-1 text-slate-600">Dasar default: (SPP Pokok ÷ pembagi × pengali) × jumlah izin yang disetujui. Nilai dapat diubah manual.</p></div><p class="text-slate-600">Total tagihan setelah potongan dan pembulatan ke atas ke kelipatan Rp 5.000: <b id="inv-preview-total">Rp 0</b><p class="mt-1 text-slate-500">Total inilah yang menjadi dasar penerbitan invoice. Contoh: Rp 245.001 dibulatkan ke atas menjadi Rp 250.000.</p></p><button type="submit" class="w-full bg-indigo-600 text-white font-bold py-2.5 rounded-xl shadow">Terbitkan Invoice</button></form>`);
+            setTimeout(updateInvoiceDiscountDefaults, 0);
+        }
+        function updateInvoiceDiscountDefaultsPreview() {
+            const students = DB.students.filter(s=>s && s.name && String(s.active || 'Aktif').trim().toLowerCase()==='aktif');
+            const student = students[Number(document.getElementById('inv-student')?.value)];
+            const total = document.getElementById('inv-preview-total');
+            if (student && total) total.textContent = 'Rp ' + moneyID(roundInvoiceTotal(Math.max(0, safeAmount(student.sppBase) - safeAmount(document.getElementById('inv-disc')?.value) - safeAmount(document.getElementById('inv-leave-disc')?.value))));
         }
         function saveInvoice(e) {
-            e.preventDefault(); const students=DB.students.filter(s=>s&&s.name); const student=students[Number(document.getElementById('inv-student').value)];
+            e.preventDefault(); const students=DB.students.filter(s=>s&&s.name&&String(s.active || 'Aktif').trim().toLowerCase()==='aktif'); const student=students[Number(document.getElementById('inv-student').value)];
             if(!student){showToast('Pilih siswa yang valid.','error');return;}
-            const base=safeAmount(student.sppBase), disc=safeAmount(document.getElementById('inv-disc').value), monthVal=document.getElementById('inv-month').value;
-            if(disc>base){showToast('Diskon tidak boleh melebihi biaya SPP.','error');return;}
+            const base=safeAmount(student.sppBase), disc=safeAmount(document.getElementById('inv-disc').value), leaveDisc=safeAmount(document.getElementById('inv-leave-disc')?.value), monthVal=document.getElementById('inv-month').value;
+            if(disc+leaveDisc>base){showToast('Total potongan tidak boleh melebihi biaya SPP.','error');return;}
             const [yy,mm]=monthVal.split('-'); const monthNames=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember']; const monthLabel=`${monthNames[Number(mm)-1]} ${yy}`;
             if(DB.invoices.some(i=>i.studentName===student.name&&i.month===monthLabel&&i.status!=='Dibatalkan')){showToast('Invoice siswa untuk periode ini sudah ada.','error');return;}
             const seq=String(DB.invoices.length+1).padStart(4,'0');
-            DB.invoices.push({invoiceNo:`INV-${yy}-${mm}-${seq}`,date:new Date().toISOString().slice(0,10),month:monthLabel,studentName:student.name,baseAmount:base,discount:disc,total:Math.max(0,base-disc),deadline:document.getElementById('inv-deadline').value,status:'Belum Lunas',paidAmount:0,remainingAmount:Math.max(0,base-disc)});
+            const approvedLeaveCount=getApprovedLeaveCount(student.name,monthVal); const totalDiscount=disc+leaveDisc; DB.invoices.push({invoiceNo:`INV-${yy}-${mm}-${seq}`,date:new Date().toISOString().slice(0,10),month:monthLabel,studentName:student.name,baseAmount:base,discount:disc,leaveDiscount:leaveDisc,approvedLeaveCount,totalDiscount,total:roundInvoiceTotal(Math.max(0,base-totalDiscount)),deadline:document.getElementById('inv-deadline').value,status:'Belum Lunas',paidAmount:0,remainingAmount:roundInvoiceTotal(Math.max(0,base-totalDiscount))});
             closeModal();renderAppLayout('invoice');showToast('Invoice SPP berhasil diterbitkan.');
         }
         function printInvoice(idx){
@@ -2211,7 +2316,7 @@
             const money=n=>'Rp '+moneyID(n);
             const content=`<div class="brand"><h1>BIMBINGAN BELAJAR MBAH AMAT</h1><div>INVOICE TAGIHAN SPP</div></div>
               <div class="meta"><div><b>No. Invoice</b><br>${inv.invoiceNo}</div><div><b>Tanggal</b><br>${inv.date||'-'}</div><div><b>Nama Siswa</b><br>${inv.studentName||'-'}</div><div><b>Periode</b><br>${inv.month||'-'}</div><div><b>Jatuh Tempo</b><br>${inv.deadline||'-'}</div><div><b>Status</b><br>${inv.status||'-'}</div></div>
-              <table><tbody><tr><td>Biaya SPP</td><td class="num">${money(inv.baseAmount)}</td></tr><tr><td>Diskon</td><td class="num">${money(inv.discount)}</td></tr><tr class="strong"><td>Total Tagihan</td><td class="num">${money(inv.total)}</td></tr><tr><td>Sudah Dibayar</td><td class="num">${money(paid)}</td></tr><tr class="balance"><td>Sisa Tagihan</td><td class="num">${money(balance)}</td></tr></tbody></table>
+              <table><tbody><tr><td>Biaya SPP</td><td class="num">${money(inv.baseAmount)}</td></tr><tr><td>Diskon</td><td class="num">${money(inv.discount)}</td></tr><tr><td>Potongan izin tervalidasi (${Number(inv.approvedLeaveCount)||0} kali)</td><td class="num">${money(inv.leaveDiscount||0)}</td></tr><tr class="strong"><td>Total Tagihan</td><td class="num">${money(inv.total)}</td></tr><tr><td>Sudah Dibayar</td><td class="num">${money(paid)}</td></tr><tr class="balance"><td>Sisa Tagihan</td><td class="num">${money(balance)}</td></tr></tbody></table>
               <p class="note">Mohon simpan invoice ini sebagai bukti rincian tagihan SPP.</p><div class="sign"><span>Administrasi Bimbel Mbah Amat</span></div>`;
             openModal(`Invoice ${inv.invoiceNo}`,`<div class="space-y-3"><div class="rounded-xl bg-emerald-50 border border-emerald-100 p-3 text-sm">Invoice siap dicetak atau dikirim melalui WhatsApp.</div><div class="flex flex-wrap justify-end gap-2"><button onclick="openFinancePrintWindow('Invoice ${inv.invoiceNo}', document.getElementById('invoice-preview-wa').innerHTML)" class="bg-indigo-600 text-white px-4 py-2 rounded-xl font-bold">Cetak / Simpan PDF</button><button onclick="shareInvoiceWA(${idx})" class="bg-emerald-600 text-white px-4 py-2 rounded-xl font-bold"><i class="fa-brands fa-whatsapp mr-1"></i> Kirim PDF / rincian via WA</button></div><div id="invoice-preview-wa" class="hidden">${content}</div><p class="text-xs text-slate-500">WhatsApp tidak dapat melampirkan PDF otomatis dari file lokal. Simpan PDF terlebih dahulu, lalu lampirkan file di WhatsApp. Tombol WhatsApp menyiapkan pesan dan rincian invoice.</p></div>`);
         }
@@ -2267,32 +2372,63 @@
         }
         function numberToWordsID(num){const n=Math.floor(Math.max(0,Number(num)||0));if(n===0)return'nol';const w=['','satu','dua','tiga','empat','lima','enam','tujuh','delapan','sembilan','sepuluh','sebelas'];function say(x){if(x<12)return w[x];if(x<20)return say(x-10)+' belas';if(x<100)return say(Math.floor(x/10))+' puluh '+say(x%10);if(x<200)return'seratus '+say(x-100);if(x<1000)return say(Math.floor(x/100))+' ratus '+say(x%100);if(x<2000)return'seribu '+say(x-1000);if(x<1e6)return say(Math.floor(x/1000))+' ribu '+say(x%1000);if(x<1e9)return say(Math.floor(x/1e6))+' juta '+say(x%1e6);return say(Math.floor(x/1e9))+' miliar '+say(x%1e9);}return say(n).replace(/\s+/g,' ').trim();}
 
-        // --- 10. TABEL MATRIKS ---
-        function renderMatriksTab(area) {
-            const m = DB.tuitionMatrix;
-            area.innerHTML = `
-                <div class="space-y-6">
-                    <div class="flex justify-between items-center">
-                        <div><h2 class="text-xl font-bold text-slate-800">Tabel Matriks Tarif (0–10 Siswa)</h2><p class="text-xs text-slate-500">Fee total per sesi berdasarkan jumlah siswa hadir. Nilai tarif dapat diedit.</p></div>
-                        <div class="space-x-2">
-                            <button onclick="addMatrixRow()" class="bg-indigo-600 text-white px-3 py-2 rounded-xl font-bold text-xs shadow"><i class="fa-solid fa-plus mr-1"></i> Tambah Baris</button>
-                            <button onclick="addMatrixCol()" class="bg-emerald-600 text-white px-3 py-2 rounded-xl font-bold text-xs shadow"><i class="fa-solid fa-plus mr-1"></i> Tambah Kolom</button>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-2xl shadow-sm border overflow-x-auto">
-                        <table class="w-full text-left border-collapse text-xs">
-                            <thead><tr class="bg-slate-50 border-b">${m.headers.map((h, i) => `<th class="p-3"><input type="text" value="${h}" onchange="DB.tuitionMatrix.headers[${i}]=this.value" class="bg-transparent font-bold w-full border-b border-dashed focus:outline-none"></th>`).join('')}<th class="p-3 text-center">Aksi</th></tr></thead>
-                            <tbody class="divide-y">
-                                ${m.rows.map((row, rI) => `<tr>${row.map((c, cI) => `<td class="p-3"><input type="text" value="${c}" onchange="DB.tuitionMatrix.rows[${rI}][${cI}]=this.value" class="bg-transparent w-full border-b border-dashed focus:outline-none"></td>`).join('')}<td class="p-3 text-center"><button onclick="DB.tuitionMatrix.rows.splice(${rI},1);renderMatriksTab(document.getElementById('tab-content-area'))" class="text-rose-600"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            `;
+        function formatDateID(value) {
+            const raw = String(value || '').slice(0, 10);
+            const m = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+            return m ? `${m[3]}/${m[2]}/${m[1]}` : (value || '-');
         }
 
-        function addMatrixRow() { DB.tuitionMatrix.rows.push(new Array(DB.tuitionMatrix.headers.length).fill('30000')); renderMatriksTab(document.getElementById('tab-content-area')); showToast('Baris ditambah.'); }
-        function addMatrixCol() { DB.tuitionMatrix.headers.push('Kolom Baru'); DB.tuitionMatrix.rows.forEach(r => r.push('30000')); renderMatriksTab(document.getElementById('tab-content-area')); showToast('Kolom ditambah.'); }
+        // Opsi dropdown bersumber langsung dari matriks pengaturan dan tetap mempertahankan nilai lama jika belum ada di matriks.
+        function matrixSettingOptions(key, selected = '') {
+            const matrix = DB.settingMatrices?.[key];
+            const values = [...new Set((matrix?.rows || []).map(row => String(row?.[0] ?? '').trim()).filter(Boolean))];
+            const current = String(selected ?? '').trim();
+            if (current && !values.includes(current)) values.unshift(current);
+            return values.map(value => `<option value="${escapeHtml(value)}" ${value === current ? 'selected' : ''}>${escapeHtml(value)}</option>`).join('');
+        }
+
+        // Daftar Jenjang utama selalu bersumber dari kolom pertama Tabel Matriks Tarif.
+        function getMatrixLevels() {
+            const rows = Array.isArray(DB.tuitionMatrix?.rows) ? DB.tuitionMatrix.rows : [];
+            return [...new Set(rows.map(row => String(row?.[0] ?? '').trim()).filter(Boolean))];
+        }
+        function matrixLevelOptions(selected = '', includeAllLabel = '') {
+            const levels = getMatrixLevels();
+            const allOption = includeAllLabel ? `<option value="" ${selected === '' ? 'selected' : ''}>${escapeHtml(includeAllLabel)}</option>` : '';
+            const options = levels.map(level => `<option value="${escapeHtml(level)}" ${String(selected) === level ? 'selected' : ''}>${escapeHtml(level)}</option>`).join('');
+            return allOption + options;
+        }
+
+        // --- 10. TABEL MATRIKS DAN MASTER PENGATURAN ---
+        function renderMatriksTab(area) {
+            if (!DB.settingMatrices) DB.settingMatrices = {};
+            const defaults = {
+                kelas:{title:'Tabel Matrik Kelas',headers:['Kelas'],rows:Array.from({length:12},(_,i)=>[`Kelas ${i+1}`])},
+                transport:{title:'Tabel Matrik Fee Transport',headers:['Komponen','Fee (Rp)','Aturan'],rows:[['Transport per Tanggal Kedatangan','5000','Maksimal 1 kali per tentor per tanggal']]},
+                agama:{title:'Tabel Matrik Agama',headers:['Agama'],rows:[['Islam'],['Kristen'],['Katolik'],['Hindu'],['Buddha'],['Konghucu']]},
+                ruangan:{title:'Matrik Ruangan',headers:['Ruangan'],rows:Array.from({length:10},(_,i)=>[`Ruang ${i+1}`])},
+                sesi:{title:'Matrik Sesi Jam Mengajar',headers:['Sesi Jam Mengajar'],rows:[['07:30 - 09:00'],['09:00 - 10:30'],['10:30 - 12:00'],['16:00 - 17:30'],['18:30 - 20:00']]},
+                mapel:{title:'Matrik Mapel',headers:['Mata Pelajaran'],rows:[['Matematika'],['Bahasa Indonesia'],['Bahasa Inggris'],['IPAS']]},
+                angkaPembagiAdministrasi:{title:'Matrik Angka Pembagi Administrasi Bulanan (SPP Bulanan)',headers:['Pembagi (Pertemuan)','Pengali'],rows:[['9','0.5']]},
+                administrasiBulanan:{title:'Matrik Administrasi Bulanan',headers:['Jenjang','1 Siswa','2 Siswa','3 Siswa','4 Siswa','5 Siswa','6 Siswa'],rows:[['TK','400000','300000','300000','250000','250000','250000'],['SD','400000','300000','300000','250000','250000','250000'],['SMP','500000','375000','375000','325000','325000','325000'],['SMA','600000','450000','450000','375000','375000','375000'],['OSN','600000','450000','450000','375000','375000','375000'],['INTENSIF SD','400000','300000','300000','250000','250000','250000']]},
+                tarifPendaftaran:{title:'Matrik Tarif Pendaftaran',headers:['Jenjang','Tarif Pendaftaran (Rp)'],rows:[['TK','50000'],['SD','50000'],['SMP','50000'],['SMA','50000'],['ALUMNI','50000'],['OSN','50000'],['INTENSIF SD','50000']]}
+            };
+            Object.keys(defaults).forEach(k=>{if(!DB.settingMatrices[k])DB.settingMatrices[k]=defaults[k];});
+            const keys=['tarif','kelas','transport','agama','ruangan','sesi','mapel','administrasiBulanan','tarifPendaftaran','angkaPembagiAdministrasi'];
+            const active=window._activeMatrixTab||'tarif';
+            const m=active==='tarif'?DB.tuitionMatrix:DB.settingMatrices[active];
+            const title=active==='tarif'?'Tabel Matriks Tarif (0–10 Siswa)':m.title;
+            const rows=active==='tarif'?m.rows:m.rows;
+            area.innerHTML=`<div class="space-y-5"><div><h2 class="text-xl font-bold text-slate-800">Pusat Tabel Matriks & Pengaturan</h2><p class="text-xs text-slate-500">Aturan tersimpan di browser dan dapat diubah kapan saja. Fitur lama tetap tersedia.</p></div><div class="flex flex-wrap gap-2">${keys.map(k=>`<button onclick="window._activeMatrixTab='${k}';renderMatriksTab(document.getElementById('tab-content-area'))" class="px-3 py-2 rounded-xl text-xs font-bold ${active===k?'bg-indigo-600 text-white':'bg-white border text-slate-700'}">${k==='tarif'?'Matriks Tarif':(DB.settingMatrices[k]?.title||k).replace('Tabel Matrik ','').replace('Matrik ','')}</button>`).join('')}</div><div class="flex flex-wrap justify-between items-center gap-3"><div><h3 class="font-bold text-lg">${title}</h3><p class="text-xs text-slate-500">Edit isi sel langsung, lalu gunakan tombol untuk menambah baris/kolom.</p></div><div class="flex gap-2"><button onclick="addSettingMatrixRow('${active}')" class="bg-indigo-600 text-white px-3 py-2 rounded-xl font-bold text-xs"><i class="fa-solid fa-plus mr-1"></i>Tambah Baris</button><button onclick="addSettingMatrixCol('${active}')" class="bg-emerald-600 text-white px-3 py-2 rounded-xl font-bold text-xs"><i class="fa-solid fa-plus mr-1"></i>Tambah Kolom</button></div></div><div class="bg-white rounded-2xl shadow-sm border overflow-x-auto"><table class="w-full text-left border-collapse text-xs"><thead><tr class="bg-slate-50 border-b">${m.headers.map((h,i)=>`<th class="p-3"><input aria-label="Nama kolom" type="text" value="${escapeHtml(h)}" onchange="updateSettingMatrixHeader('${active}',${i},this.value)" class="bg-transparent font-bold w-full min-w-28 border-b border-dashed"></th>`).join('')}<th class="p-3 text-center">Aksi</th></tr></thead><tbody class="divide-y">${rows.map((row,ri)=>`<tr>${m.headers.map((h,ci)=>`<td class="p-3"><input type="text" value="${escapeHtml(row[ci]??'')}" onchange="updateSettingMatrixCell('${active}',${ri},${ci},this.value)" class="bg-transparent w-full min-w-28 border-b border-dashed"></td>`).join('')}<td class="p-3 text-center"><button onclick="deleteSettingMatrixRow('${active}',${ri})" class="text-rose-600" title="Hapus baris"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')||`<tr><td colspan="${m.headers.length+1}" class="p-4 text-center">Belum ada baris.</td></tr>`}</tbody></table></div>${active==='transport'?'<p class="text-xs text-amber-700 bg-amber-50 p-3 rounded-xl">Fee transport dihitung satu kali per tentor per tanggal kedatangan, bukan per sesi. Nilai default Rp 5.000 dapat diubah pada tabel ini.</p>':''}</div>`;
+        }
+        function getMatrixConfig(key){return key==='tarif'?DB.tuitionMatrix:DB.settingMatrices[key];}
+        function updateSettingMatrixHeader(key,i,value){const m=getMatrixConfig(key);if(m){m.headers[i]=value;mbaSaveLocalData(false);}}
+        function updateSettingMatrixCell(key,r,c,value){const m=getMatrixConfig(key);if(m?.rows[r]){m.rows[r][c]=value;mbaSaveLocalData(false);}}
+        function addSettingMatrixRow(key){const m=getMatrixConfig(key);if(!m)return;m.rows.push(Array(m.headers.length).fill(''));mbaSaveLocalData(false);renderMatriksTab(document.getElementById('tab-content-area'));}
+        function addSettingMatrixCol(key){const m=getMatrixConfig(key);if(!m)return;m.headers.push('Kolom Baru');m.rows.forEach(r=>r.push(''));mbaSaveLocalData(false);renderMatriksTab(document.getElementById('tab-content-area'));}
+        function deleteSettingMatrixRow(key,i){const m=getMatrixConfig(key);if(!m)return;if(!confirm('Hapus baris ini?'))return;m.rows.splice(i,1);mbaSaveLocalData(false);renderMatriksTab(document.getElementById('tab-content-area'));}
+        function addMatrixRow(){addSettingMatrixRow('tarif');}
+        function addMatrixCol(){addSettingMatrixCol('tarif');}
 
         // --- 11. AI GEMINI & CBT BANK SOAL ---
         function renderAiSoalTab(area) {
@@ -2328,7 +2464,7 @@
             const el = document.getElementById('question-subview'); if (!el) return;
             const role = DB.currentUser.role, canManage = role === 'admin' || role === 'tentor';
             if (view === 'bank') {
-                el.innerHTML = `<div class="bg-white rounded-2xl shadow-sm border overflow-hidden"><div class="p-4 border-b flex flex-wrap gap-3 justify-between items-center"><div><h3 class="font-bold text-slate-800">Bank Soal</h3><p class="text-xs text-slate-500">Cari, tinjau, edit, duplikasi, atau arsipkan soal.</p></div><input id="qb-search" oninput="filterQuestionBank()" class="border rounded-xl px-3 py-2 text-xs" placeholder="Cari judul, mapel, topik..."></div><div class="p-3 flex flex-wrap gap-2 bg-slate-50 border-b"><select id="qb-level" onchange="filterQuestionBank()" class="border rounded-lg px-2 py-2 text-xs"><option value="">Semua jenjang</option><option>SD</option><option>SMP</option><option>SMA</option><option>Umum</option></select><select id="qb-subject" onchange="filterQuestionBank()" class="border rounded-lg px-2 py-2 text-xs"><option value="">Semua mapel</option>${[...new Set(DB.questionBank.map(q=>q.subject).filter(Boolean))].map(x=>`<option>${escapeHtml(x)}</option>`).join('')}</select><select id="qb-status" onchange="filterQuestionBank()" class="border rounded-lg px-2 py-2 text-xs"><option value="">Semua status</option><option>Draft</option><option>Perlu Ditinjau</option><option>Siap Digunakan</option><option>Diarsipkan</option></select><select id="qb-sort" onchange="filterQuestionBank()" class="border rounded-lg px-2 py-2 text-xs"><option value="new">Terbaru</option><option value="old">Terlama</option><option value="title">Judul A-Z</option><option value="subject">Mapel A-Z</option><option value="level">Jenjang</option></select></div><div id="qb-rows" class="divide-y"></div></div>`;
+                el.innerHTML = `<div class="bg-white rounded-2xl shadow-sm border overflow-hidden"><div class="p-4 border-b flex flex-wrap gap-3 justify-between items-center"><div><h3 class="font-bold text-slate-800">Bank Soal</h3><p class="text-xs text-slate-500">Cari, tinjau, edit, duplikasi, atau arsipkan soal.</p></div><input id="qb-search" oninput="filterQuestionBank()" class="border rounded-xl px-3 py-2 text-xs" placeholder="Cari judul, mapel, topik..."></div><div class="p-3 flex flex-wrap gap-2 bg-slate-50 border-b"><select id="qb-level" onchange="filterQuestionBank()" class="border rounded-lg px-2 py-2 text-xs">${matrixLevelOptions("", "Semua jenjang")}</select><select id="qb-subject" onchange="filterQuestionBank()" class="border rounded-lg px-2 py-2 text-xs"><option value="">Semua mapel</option>${[...new Set(DB.questionBank.map(q=>q.subject).filter(Boolean))].map(x=>`<option>${escapeHtml(x)}</option>`).join('')}</select><select id="qb-status" onchange="filterQuestionBank()" class="border rounded-lg px-2 py-2 text-xs"><option value="">Semua status</option><option>Draft</option><option>Perlu Ditinjau</option><option>Siap Digunakan</option><option>Diarsipkan</option></select><select id="qb-sort" onchange="filterQuestionBank()" class="border rounded-lg px-2 py-2 text-xs"><option value="new">Terbaru</option><option value="old">Terlama</option><option value="title">Judul A-Z</option><option value="subject">Mapel A-Z</option><option value="level">Jenjang</option></select></div><div id="qb-rows" class="divide-y"></div></div>`;
                 filterQuestionBank();
             } else if (view === 'paket') {
                 el.innerHTML = `<div class="bg-white rounded-2xl border shadow-sm overflow-hidden"><div class="p-4 border-b flex flex-wrap gap-3 justify-between items-center"><div><h3 class="font-bold">Paket Ujian CBT</h3><p class="text-xs text-slate-500">Susun bank soal, atur durasi, jadwal, percobaan, dan status publikasi.</p></div>${canManage?'<button onclick="openExamPackageEditor()" class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold"><i class="fa fa-plus mr-1"></i> Buat Paket Ujian</button>':''}</div><div class="divide-y">${DB.examPackages.length?DB.examPackages.map((x,i)=>`<div class="p-4 flex flex-wrap gap-3 justify-between items-center"><div><p class="font-bold text-sm">${escapeHtml(x.title)}</p><p class="text-xs text-slate-500">${escapeHtml(x.subject||'Umum')} · ${escapeHtml(x.level||'Umum')} · ${(x.questionIds||[]).length} soal · ${Number(x.duration)||15} menit</p><p class="text-xs mt-1">Status: <b class="${x.status==='Diterbitkan'?'text-emerald-600':'text-amber-600'}">${escapeHtml(x.status||'Draft')}</b> ${x.dueAt?'· Tenggat '+escapeHtml(x.dueAt.replace('T',' ')):''}</p></div><div class="flex flex-wrap gap-2"><button onclick="previewExamPackage(${i})" class="border px-3 py-2 rounded-lg text-xs">Pratinjau</button><button onclick="shareExamPackage(${i})" class="border px-3 py-2 rounded-lg text-xs"><i class="fa-brands fa-whatsapp mr-1"></i>Bagikan</button>${canManage?`<button onclick="openExamPackageEditor(${i})" class="bg-indigo-600 text-white px-3 py-2 rounded-lg text-xs">Edit</button>`:''}<button onclick="startPackageExam(${i})" class="bg-emerald-600 text-white px-3 py-2 rounded-lg text-xs">Mulai Ujian</button><button onclick="printOfflineAnswerSheet(${i})" class="border border-amber-300 text-amber-800 px-3 py-2 rounded-lg text-xs">Cetak Soal & Lembar Jawaban</button></div></div>`).join(''):'<p class="p-6 text-sm text-slate-400">Belum ada paket ujian. Buat paket dari bank soal.</p>'}</div></div>`;
@@ -2349,37 +2485,89 @@
         function escapeHtml(v) { return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
         function openQuestionEditor(idx=null) {
             const q=idx===null?{}:DB.questionBank[idx];
-            openModal(idx===null?'Tambah Soal Manual':'Edit Soal',`<form onsubmit="saveQuestion(event,${idx===null?'null':idx})" class="space-y-3 text-xs"><div><label class="block font-bold mb-1">Judul / pertanyaan utama</label><input id="qe-title" required class="w-full border rounded-xl p-2" value="${escapeHtml(q.title||'')}"></div><div class="grid grid-cols-2 gap-2"><div><label class="block font-bold mb-1">Mata pelajaran</label><input id="qe-subject" required class="w-full border rounded-xl p-2" value="${escapeHtml(q.subject||'')}"></div><div><label class="block font-bold mb-1">Jenjang</label><select id="qe-level" class="w-full border rounded-xl p-2"><option ${q.level==='SD'?'selected':''}>SD</option><option ${(!q.level||q.level==='SMP')?'selected':''}>SMP</option><option ${q.level==='SMA'?'selected':''}>SMA</option><option ${q.level==='Umum'?'selected':''}>Umum</option></select></div></div><div><label class="block font-bold mb-1">Topik / materi</label><input id="qe-topic" class="w-full border rounded-xl p-2" value="${escapeHtml(q.topic||'')}"></div><div><label class="block font-bold mb-1">Isi soal, opsi, kunci jawaban, dan pembahasan</label><textarea id="qe-content" rows="7" class="w-full border rounded-xl p-2" placeholder="1. Pertanyaan...\nA. ...\nB. ...\nKunci: A\nPembahasan: ...">${escapeHtml(q.content||'')}</textarea></div><div><label class="block font-bold mb-1">Status</label><select id="qe-status" class="w-full border rounded-xl p-2"><option>Draft</option><option ${q.status==='Perlu Ditinjau'||!q.status?'selected':''}>Perlu Ditinjau</option><option ${q.status==='Siap Digunakan'?'selected':''}>Siap Digunakan</option><option>Diarsipkan</option></select></div><button class="w-full bg-indigo-600 text-white rounded-xl p-3 font-bold">Simpan Soal</button></form>`);
+            openModal(idx===null?'Tambah Soal Manual':'Edit Soal',`<form onsubmit="saveQuestion(event,${idx===null?'null':idx})" class="space-y-3 text-xs"><div><label class="block font-bold mb-1">Judul / pertanyaan utama</label><input id="qe-title" required class="w-full border rounded-xl p-2" value="${escapeHtml(q.title||'')}"></div><div class="grid grid-cols-2 gap-2"><div><label class="block font-bold mb-1">Mata pelajaran</label><input id="qe-subject" required class="w-full border rounded-xl p-2" value="${escapeHtml(q.subject||'')}"></div><div><label class="block font-bold mb-1">Jenjang</label><select id="qe-level" class="w-full border rounded-xl p-2">${matrixLevelOptions(q.level || "SMP")}</select></div></div><div><label class="block font-bold mb-1">Topik / materi</label><input id="qe-topic" class="w-full border rounded-xl p-2" value="${escapeHtml(q.topic||'')}"></div><div><label class="block font-bold mb-1">Isi soal, opsi, kunci jawaban, dan pembahasan</label><textarea id="qe-content" rows="7" class="w-full border rounded-xl p-2" placeholder="1. Pertanyaan...\nA. ...\nB. ...\nKunci: A\nPembahasan: ...">${escapeHtml(q.content||'')}</textarea></div><div><label class="block font-bold mb-1">Status</label><select id="qe-status" class="w-full border rounded-xl p-2"><option>Draft</option><option ${q.status==='Perlu Ditinjau'||!q.status?'selected':''}>Perlu Ditinjau</option><option ${q.status==='Siap Digunakan'?'selected':''}>Siap Digunakan</option><option>Diarsipkan</option></select></div><button class="w-full bg-indigo-600 text-white rounded-xl p-3 font-bold">Simpan Soal</button></form>`);
         }
         function saveQuestion(e,idx){e.preventDefault();const q={id:idx===null?Date.now():(DB.questionBank[idx].id||Date.now()),title:document.getElementById('qe-title').value.trim(),subject:document.getElementById('qe-subject').value.trim(),level:document.getElementById('qe-level').value,topic:document.getElementById('qe-topic').value.trim(),content:document.getElementById('qe-content').value.trim(),totalQ:Math.max(1,(document.getElementById('qe-content').value.match(/(^|\n)\s*\d+[.)]/g)||[]).length),creator:idx===null?DB.currentUser.name:(DB.questionBank[idx].creator||DB.currentUser.name),status:document.getElementById('qe-status').value,createdAt:idx===null?new Date().toISOString():(DB.questionBank[idx].createdAt||new Date().toISOString()),updatedAt:new Date().toISOString()};if(idx===null)DB.questionBank.push(q);else DB.questionBank[idx]={...DB.questionBank[idx],...q};mbaSaveLocalData();closeModal();renderAppLayout('ai-soal');showToast('Soal berhasil disimpan.');}
         function duplicateQuestion(i){const q=JSON.parse(JSON.stringify(DB.questionBank[i]));q.id=Date.now();q.title+=' (Salinan)';q.status='Draft';q.creator=DB.currentUser.name;DB.questionBank.push(q);mbaSaveLocalData();renderAppLayout('ai-soal');showToast('Soal berhasil diduplikasi.');}
         function toggleQuestionArchive(i){const q=DB.questionBank[i];q.status=q.status==='Diarsipkan'?'Draft':'Diarsipkan';mbaSaveLocalData();renderAppLayout('ai-soal');showToast('Status soal diperbarui.');}
         function previewQuestion(i){const q=DB.questionBank[i];openModal('Pratinjau Soal',`<div class="space-y-3 text-sm"><div class="flex gap-2"><span class="px-2 py-1 bg-indigo-50 text-indigo-700 rounded-lg text-xs">${escapeHtml(q.subject||'Umum')}</span><span class="px-2 py-1 bg-slate-100 rounded-lg text-xs">${escapeHtml(q.level||'Umum')}</span></div><h3 class="font-bold text-lg">${escapeHtml(q.title)}</h3><div class="whitespace-pre-wrap leading-6">${escapeHtml(q.content||'Isi soal belum ditambahkan. Silakan Edit untuk memasukkan pertanyaan dan kunci jawaban.')}</div><button onclick="printQuestion(${i})" class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold">Cetak / Simpan PDF</button></div>`);}
         function printQuestion(i){const q=DB.questionBank[i],w=window.open('','_blank');if(!w){showToast('Izinkan pop-up untuk mencetak soal.','error');return;}w.document.write(`<html><head><title>${escapeHtml(q.title)}</title><style>body{font:14px Arial;padding:32px;color:#111}h1{font-size:20px}pre{white-space:pre-wrap;font:14px Arial;line-height:1.6}</style></head><body><h1>BIMBINGAN BELAJAR MBAH AMAT</h1><h2>${escapeHtml(q.title)}</h2><p>${escapeHtml(q.subject||'Umum')} · ${escapeHtml(q.level||'Umum')}</p><pre>${escapeHtml(q.content||'')}</pre><script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close();}
-        function openAiGeneratorModal(){openModal('Buat Soal dengan Bantuan AI',`<form onsubmit="generateQuestionDraft(event)" class="space-y-3 text-xs"><p class="p-3 bg-amber-50 border border-amber-200 rounded-xl">Generator ini menyiapkan draf lokal berdasarkan detail yang Anda isi. Koneksi API Gemini belum terpasang pada file HTML lokal; periksa dan edit draf sebelum dipakai.</p><div><label class="font-bold block mb-1">Instruksi / prompt</label><textarea id="ai-prompt" required class="w-full border rounded-xl p-2" rows="3" placeholder="Contoh: buat latihan persamaan linear satu variabel..."></textarea></div><div class="grid grid-cols-2 gap-2"><div><label class="font-bold block mb-1">Mapel</label><input id="ai-subject" class="w-full border rounded-xl p-2" placeholder="Matematika" required></div><div><label class="font-bold block mb-1">Jenjang</label><select id="ai-level" class="w-full border rounded-xl p-2"><option>SD</option><option selected>SMP</option><option>SMA</option><option>Umum</option></select></div><div><label class="font-bold block mb-1">Jumlah soal</label><input id="ai-count" type="number" min="1" max="50" value="5" class="w-full border rounded-xl p-2"></div><div><label class="font-bold block mb-1">Jenis soal</label><select id="ai-type" class="w-full border rounded-xl p-2"><option>Pilihan ganda</option><option>Esai</option><option>Campuran</option></select></div></div><div><label class="font-bold block mb-1">Unggah dokumen / kisi-kisi</label><input id="ai-file" type="file" accept=".txt,.csv,.md,.pdf,.doc,.docx" class="w-full border rounded-xl p-2"/><p class="text-slate-500 mt-1">File dipilih sebagai referensi; pembacaan isi PDF/DOCX belum aktif pada versi lokal ini. Tempelkan isi penting ke prompt untuk digunakan.</p></div><button class="w-full bg-indigo-600 text-white p-3 rounded-xl font-bold">Buat Draf Soal</button></form>`);}
+        function openAiGeneratorModal(){openModal('Buat Soal dengan Bantuan AI',`<form onsubmit="generateQuestionDraft(event)" class="space-y-3 text-xs"><p class="p-3 bg-amber-50 border border-amber-200 rounded-xl">Generator ini menyiapkan draf lokal berdasarkan detail yang Anda isi. Koneksi API Gemini belum terpasang pada file HTML lokal; periksa dan edit draf sebelum dipakai.</p><div><label class="font-bold block mb-1">Instruksi / prompt</label><textarea id="ai-prompt" required class="w-full border rounded-xl p-2" rows="3" placeholder="Contoh: buat latihan persamaan linear satu variabel..."></textarea></div><div class="grid grid-cols-2 gap-2"><div><label class="font-bold block mb-1">Mapel</label><input id="ai-subject" class="w-full border rounded-xl p-2" placeholder="Matematika" required></div><div><label class="font-bold block mb-1">Jenjang</label><select id="ai-level" class="w-full border rounded-xl p-2">${matrixLevelOptions("SMP")}</select></div><div><label class="font-bold block mb-1">Jumlah soal</label><input id="ai-count" type="number" min="1" max="50" value="5" class="w-full border rounded-xl p-2"></div><div><label class="font-bold block mb-1">Jenis soal</label><select id="ai-type" class="w-full border rounded-xl p-2"><option>Pilihan ganda</option><option>Esai</option><option>Campuran</option></select></div></div><div><label class="font-bold block mb-1">Unggah dokumen / kisi-kisi</label><input id="ai-file" type="file" accept=".txt,.csv,.md,.pdf,.doc,.docx" class="w-full border rounded-xl p-2"/><p class="text-slate-500 mt-1">File dipilih sebagai referensi; pembacaan isi PDF/DOCX belum aktif pada versi lokal ini. Tempelkan isi penting ke prompt untuk digunakan.</p></div><button class="w-full bg-indigo-600 text-white p-3 rounded-xl font-bold">Buat Draf Soal</button></form>`);}
         function buildLocalQuestionSet(prompt,subject,level,count,type){
             const p=(prompt+' '+subject).toLowerCase();
-            const gcd=(a,b)=>b?gcd(b,a%b):a; const lcm=(a,b)=>a/gcd(a,b)*b;
-            const isKpk=/\bkpk\b|kelipatan persekutuan terkecil/.test(p),isFpb=/\bfpb\b|faktor persekutuan terbesar/.test(p);
-            const isFraction=/pecahan|\bfraction/.test(p),isLinear=/persamaan linear|variabel|aljabar/.test(p);
+            const gcd=(a,b)=>b?gcd(b,a%b):a;
+            const lcm=(a,b)=>a/gcd(a,b)*b;
             const bank=[];
+            const mc=(n,question,answer,explanation,distractors=[])=>{
+                if(type==='Esai') return `${n}. ${question}\nJawaban: ${answer}\nPembahasan: ${explanation}`;
+                const opts=[...new Set([Number(answer),...distractors.map(Number)])];
+                for(let k=1;opts.length<4;k++) opts.push(Number(answer)+k+3);
+                const rotated=[...opts.slice(0,4)];
+                const correctIndex=(n*3)%4; const actual=rotated.indexOf(Number(answer));
+                if(actual!==correctIndex){[rotated[actual],rotated[correctIndex]]=[rotated[correctIndex],rotated[actual]];}
+                const letters=['A','B','C','D'];
+                return `${n}. ${question}\n${rotated.map((v,j)=>`${letters[j]}. ${v}`).join('\n')}\nKunci: ${letters[rotated.indexOf(Number(answer))]} (${answer})\nPembahasan: ${explanation}`;
+            };
+            const add=(q)=>bank.push(q);
+            const isKpk=/\bkpk\b|kelipatan persekutuan terkecil/.test(p),isFpb=/\bfpb\b|faktor persekutuan terbesar/.test(p);
+            const isFraction=/pecahan|fraction/.test(p),isLinear=/persamaan linear|variabel|aljabar/.test(p);
+            const isGeometry=/bangun datar|persegi|persegi panjang|segitiga|lingkaran|jajar genjang|trapesium|belah ketupat|layang-layang|keliling|luas/.test(p);
             if(isKpk||isFpb){
                 const sets=[[4,6],[6,8],[8,12],[5,10],[9,12],[6,15],[10,15],[12,18],[8,20],[14,21],[15,20],[9,15],[16,24],[18,30],[12,16],[7,14],[10,12],[20,30],[14,28],[21,28],[4,10],[18,24],[25,30],[16,20],[12,30],[8,14],[15,25],[18,27],[24,36],[20,25],[6,9],[14,35],[22,33],[27,36],[28,42],[32,40],[35,49],[24,32],[30,45],[36,48],[42,56],[45,60],[48,64],[50,75],[54,72],[60,84],[63,81],[70,90],[72,96],[80,100]];
-                sets.slice(0,count).forEach((ab,i)=>{const [a,b]=ab,ans=isKpk?lcm(a,b):gcd(a,b),label=isKpk?'KPK':'FPB';const contexts=isKpk?[`Lampu A berkedip setiap ${a} detik dan lampu B setiap ${b} detik. Jika keduanya berkedip bersama sekarang, berapa detik lagi keduanya berkedip bersama?`,`Bus A tiba setiap ${a} menit dan bus B setiap ${b} menit. Jika keduanya berangkat bersama, berapa menit lagi keduanya berangkat bersama?`,`Dua alarm berbunyi setiap ${a} menit dan ${b} menit. Setelah berapa menit keduanya berbunyi bersamaan?`]:[`Ibu memiliki ${a} apel dan ${b} jeruk yang akan dibagikan ke beberapa paket dengan isi setiap jenis buah sama banyak tanpa sisa. Berapa paket terbanyak yang dapat dibuat?`,`Terdapat ${a} pensil dan ${b} penghapus. Semua akan dibagi ke kelompok dengan jumlah masing-masing barang sama pada tiap kelompok. Berapa kelompok terbanyak?`,`Pita sepanjang ${a} cm dan ${b} cm dipotong menjadi bagian sama panjang paling besar tanpa sisa. Berapa panjang tiap potongan?`];const question=`${contexts[i%contexts.length]} Tentukan ${label} dari ${a} dan ${b}.`;const options=[ans,ans+(i%2?2:1),Math.max(1,ans-2),ans+3].filter((v,j,arr)=>arr.indexOf(v)===j);while(options.length<4)options.push(ans+options.length+4);const opts=options.slice(0,4);const letters=['A','B','C','D'],correct=letters[opts.indexOf(ans)];bank.push(`${i+1}. ${question}${type==='Esai'?'':`\n${opts.map((v,j)=>letters[j]+'. '+v).join('\n')}`}\nKunci: ${type==='Esai'?ans:correct+' ('+ans+')'}\nPembahasan: ${label} dari ${a} dan ${b} adalah ${ans}. ${isKpk?'KPK adalah kelipatan positif terkecil yang sama pada kedua bilangan.':'FPB adalah faktor terbesar yang membagi kedua bilangan tanpa sisa.'}`)});
+                for(let i=0;i<count;i++){const [a,b]=sets[i%sets.length],ans=isKpk?lcm(a,b):gcd(a,b),label=isKpk?'KPK':'FPB';const q=isKpk?`Dua bel berbunyi setiap ${a} menit dan ${b} menit. Jika berbunyi bersama sekarang, berapa menit lagi keduanya berbunyi bersama?`:`Ada ${a} pensil dan ${b} penghapus yang akan dibagikan ke paket identik tanpa sisa. Berapa paket terbanyak yang dapat dibuat?`;add(mc(i+1,q,ans,`${label} dari ${a} dan ${b} adalah ${ans}.`,[ans+2,Math.max(1,ans-2),ans+5]));}
             } else if(isFraction){
-                for(let i=0;i<count;i++){const a=[1,2,3,2,3,4,5,3,5,7][i%10],b=[4,5,8,3,7,9,10,4,8,12][i%10];bank.push(`${i+1}. Sederhanakan pecahan ${a}/${b} jika dapat disederhanakan, atau jelaskan alasan pecahan tersebut sudah paling sederhana.\nJawaban: ${gcd(a,b)===1?`${a}/${b} sudah paling sederhana`:`${a/gcd(a,b)}/${b/gcd(a,b)}`}\nPembahasan: Bagi pembilang dan penyebut dengan FPB(${a}, ${b}) = ${gcd(a,b)}.`)}
+                const vals=[[1,2,1,4],[2,3,1,6],[3,4,1,8],[2,5,1,10],[3,8,1,4],[5,6,1,3],[4,7,2,7],[5,8,1,8],[7,10,1,5],[3,5,1,10],[2,9,1,3],[5,12,1,4]];
+                for(let i=0;i<count;i++){const [a,b,c,d]=vals[i%vals.length];const ans=`${a*d+c*b}/${b*d}`;add(`${i+1}. Hitung hasil penjumlahan pecahan ${a}/${b} + ${c}/${d}.\nJawaban: ${ans}\nPembahasan: Samakan penyebut menjadi ${b*d}, lalu jumlahkan pembilang: ${a*d} + ${c*b} = ${a*d+c*b}, sehingga hasilnya ${ans}.`);}
             } else if(isLinear){
-                for(let i=0;i<count;i++){const x=i+2,m=i%4+2,c=i+3,r=m*x+c;bank.push(`${i+1}. Tentukan nilai x dari persamaan ${m}x + ${c} = ${r}.\n${type==='Esai'?'':'A. '+x+'\nB. '+(x+1)+'\nC. '+(x-1)+'\nD. '+(x+2)+'\n'}Kunci: ${type==='Esai'?x:'A ('+x+')'}\nPembahasan: ${m}x = ${r}-${c} = ${m*x}, sehingga x = ${x}.`)}
+                for(let i=0;i<count;i++){const x=i+2,m=i%5+2,c=i+3,r=m*x+c;add(mc(i+1,`Tentukan nilai x dari persamaan ${m}x + ${c} = ${r}.`,x,`Kurangi kedua ruas dengan ${c}: ${m}x = ${r-c}. Bagi ${m}, maka x = ${x}.`,[x+1,Math.max(0,x-1),x+2]));}
+            } else if(isGeometry){
+                const templates=[
+                    {q:(a,b)=>`Sebuah persegi memiliki panjang sisi ${a} cm. Berapakah kelilingnya?`,ans:(a)=>4*a,ex:(a)=>`Keliling persegi = 4 × sisi = 4 × ${a} = ${4*a} cm.`,args:[4,5,6,7,8,9,10,12,13,15]},
+                    {q:(a,b)=>`Sebuah persegi memiliki sisi ${a} cm. Berapakah luasnya?`,ans:(a)=>a*a,ex:(a)=>`Luas persegi = sisi × sisi = ${a} × ${a} = ${a*a} cm².`,args:[3,4,5,6,7,8,9,10,11,12]},
+                    {q:(a,b)=>`Sebuah persegi panjang memiliki panjang ${a} cm dan lebar ${b} cm. Berapakah luasnya?`,ans:(a,b)=>a*b,ex:(a,b)=>`Luas persegi panjang = panjang × lebar = ${a} × ${b} = ${a*b} cm².`,args:[[8,3],[9,4],[10,5],[12,6],[7,3],[11,4],[15,5],[14,6],[13,7],[16,8]]},
+                    {q:(a,b)=>`Sebuah persegi panjang memiliki panjang ${a} cm dan lebar ${b} cm. Berapakah kelilingnya?`,ans:(a,b)=>2*(a+b),ex:(a,b)=>`Keliling = 2 × (panjang + lebar) = 2 × (${a} + ${b}) = ${2*(a+b)} cm.`,args:[[8,3],[9,4],[10,5],[12,6],[7,3],[11,4],[15,5],[14,6],[13,7],[16,8]]},
+                    {q:(a,b)=>`Sebuah segitiga memiliki alas ${a} cm dan tinggi ${b} cm. Berapakah luasnya?`,ans:(a,b)=>a*b/2,ex:(a,b)=>`Luas segitiga = ½ × alas × tinggi = ½ × ${a} × ${b} = ${a*b/2} cm².`,args:[[8,4],[10,6],[12,5],[14,4],[9,6],[16,7],[18,8],[20,5],[11,6],[15,8]]},
+                    {q:(a,b)=>`Sebuah lingkaran memiliki jari-jari ${a} cm. Gunakan π = 22/7 jika memungkinkan. Berapakah keliling lingkaran (gunakan π = 3,14)?`,ans:(a)=>Math.round(2*3.14*a*100)/100,ex:(a)=>`Keliling lingkaran = 2πr = 2 × 3,14 × ${a} = ${(2*3.14*a).toFixed(2)} cm.`,args:[3,4,5,6,7,8,9,10,11,12]},
+                    {q:(a,b)=>`Sebuah jajar genjang memiliki alas ${a} cm dan tinggi ${b} cm. Berapakah luasnya?`,ans:(a,b)=>a*b,ex:(a,b)=>`Luas jajar genjang = alas × tinggi = ${a} × ${b} = ${a*b} cm².`,args:[[8,4],[9,5],[10,6],[12,4],[7,6],[11,3],[13,5],[14,7],[15,4],[16,6]]},
+                    {q:(a,b)=>`Dua sudut sebuah segitiga masing-masing ${a}° dan ${b}°. Berapakah besar sudut ketiga?`,ans:(a,b)=>180-a-b,ex:(a,b)=>`Jumlah sudut segitiga 180°. Sudut ketiga = 180° − ${a}° − ${b}° = ${180-a-b}°.`,args:[[40,60],[50,70],[35,85],[45,45],[30,90],[65,55],[72,48],[80,40],[25,75],[60,60]]},
+                    {q:(a,b)=>`Sebuah trapesium memiliki sisi sejajar ${a} cm dan ${b} cm serta tinggi 4 cm. Berapakah luasnya?`,ans:(a,b)=>(a+b)*2,ex:(a,b)=>`Luas trapesium = ½ × jumlah sisi sejajar × tinggi = ½ × (${a}+${b}) × 4 = ${(a+b)*2} cm².`,args:[[6,8],[5,9],[7,11],[10,12],[4,8],[9,13],[12,16],[8,14],[11,15],[13,17]]},
+                    {q:(a,b)=>`Bangun datar apakah yang memiliki empat sisi sama panjang dan empat sudut siku-siku?`,ans:1,ex:`Jawabannya persegi, karena semua sisinya sama panjang dan semua sudutnya 90°.` ,text:true}
+                ];
+                for(let i=0;i<count;i++){
+                    const t=templates[i%templates.length];
+                    if(t.text){const options=['Persegi','Persegi panjang','Belah ketupat','Trapesium'];const correct=(i%4);const rotated=[...options];if(correct) [rotated[0],rotated[correct]]=[rotated[correct],rotated[0]];const key=['A','B','C','D'][rotated.indexOf('Persegi')];add(`${i+1}. ${t.q()}\n${rotated.map((v,j)=>`${'ABCD'[j]}. ${v}`).join('\n')}\nKunci: ${key} (Persegi)\nPembahasan: ${t.ex}`);continue;}
+                    const raw=t.args[i%t.args.length],a=Array.isArray(raw)?raw[0]:raw,b=Array.isArray(raw)?raw[1]:undefined,ans=t.ans(a,b),question=t.q(a,b),ex=t.ex(a,b);
+                    const numeric=Number(ans);add(mc(i+1,question,numeric,ex,[numeric+2,Math.max(1,numeric-2),numeric+5]));
+                }
             } else {
-                const prompts=[`Jelaskan pengertian ${prompt} dengan kata-katamu sendiri dan berikan satu contoh yang tepat.`,`Sebutkan dua hal penting tentang ${prompt} dan jelaskan masing-masing.`,`Bacalah sebuah situasi sehari-hari yang berkaitan dengan ${prompt}. Jelaskan bagaimana konsep tersebut digunakan untuk menyelesaikannya.`,`Tuliskan langkah-langkah untuk menyelesaikan masalah yang berkaitan dengan ${prompt}, lalu berikan contoh.`,`Bandingkan dua contoh yang berkaitan dengan ${prompt}. Apa persamaan dan perbedaannya?`];for(let i=0;i<count;i++)bank.push(`${i+1}. ${prompts[i%prompts.length]}\nPanduan jawaban: Jawaban harus sesuai konsep ${prompt}, disertai alasan atau contoh yang relevan.\nPembahasan: Periksa ketepatan konsep, kejelasan alasan, dan kesesuaian contoh dengan materi.`)
+                const topic=prompt.replace(/[.!?]+$/,'').trim();
+                const templates=[
+                    `Dalam materi ${topic}, konsep apa yang paling penting untuk dipahami? Jelaskan dengan satu contoh konkret.`,
+                    `Selesaikan satu masalah sederhana yang berkaitan dengan ${topic}. Tuliskan langkah penyelesaiannya secara berurutan.`,
+                    `Buatlah contoh situasi sehari-hari yang menerapkan ${topic}, lalu jelaskan cara menyelesaikannya.`,
+                    `Perhatikan pernyataan berikut tentang ${topic}: sebuah jawaban harus disertai alasan. Tuliskan jawaban dan alasan yang benar untuk satu contoh soal.`,
+                    `Apa kesalahan yang sering terjadi saat mengerjakan soal ${topic}? Berikan contoh kesalahan dan perbaikannya.`,
+                    `Bandingkan dua cara menyelesaikan soal ${topic}. Jelaskan cara mana yang lebih tepat dan alasannya.`,
+                    `Buat satu soal singkat tentang ${topic}, kemudian selesaikan dan periksa kembali hasilnya.`,
+                    `Jelaskan hubungan ${topic} dengan materi sebelumnya yang pernah dipelajari, sertakan contoh.`,
+                    `Diberikan sebuah soal tentang ${topic}. Informasi apa yang perlu diketahui terlebih dahulu sebelum menyelesaikannya? Jelaskan.`,
+                    `Tuliskan kesimpulan utama dari materi ${topic} dan dukung dengan contoh yang relevan.`
+                ];
+                for(let i=0;i<count;i++)add(`${i+1}. ${templates[i%templates.length]}\nPanduan jawaban: Jawaban harus relevan dengan materi ${topic}, menunjukkan langkah atau alasan yang logis, serta menyertakan contoh yang sesuai.\nPembahasan: Nilai ketepatan konsep, kelengkapan langkah, alasan, dan kesesuaian contoh dengan materi.`);
             }
-            return bank.map((q,i)=>type==='Campuran'&&i%2===1?q.replace(/\nJawaban:/,'\nJawaban:'):q).join('\n\n');
+            if(type==='Campuran'){
+                return bank.map((q,i)=>{
+                    if(i%2===0)return q;
+                    return q.replace(/\n[A-D]\. [\s\S]*?\nKunci: [^\n]*/,m=>{const first=m.split('\n')[0];return first;}).replace(/\nJawaban:/,'\nJawaban:');
+                }).join('\n\n');
+            }
+            return bank.join('\n\n');
         }
         function generateQuestionDraft(e){e.preventDefault();const prompt=document.getElementById('ai-prompt').value.trim(),subject=document.getElementById('ai-subject').value.trim(),level=document.getElementById('ai-level').value,count=Math.max(1,Math.min(50,Number(document.getElementById('ai-count').value)||5)),type=document.getElementById('ai-type').value,file=document.getElementById('ai-file').files[0];const content=`Instruksi materi: ${prompt}\n\nSOAL HASIL GENERATOR LOKAL (${type}, ${count} soal)\nCatatan: ini dibuat dengan pola lokal, bukan hasil API Gemini. Periksa kesesuaian tingkat kesulitan dan kunci sebelum diterbitkan.\n\n${buildLocalQuestionSet(prompt,subject,level,count,type)}${file?'\n\nReferensi file yang dipilih: '+file.name+' (isi file belum dibaca otomatis)':''}`;DB.questionBank.push({id:Date.now(),title:`Soal ${subject}: ${prompt.slice(0,55)}`,subject,level,topic:prompt.slice(0,80),content,totalQ:count,creator:DB.currentUser.name,status:'Perlu Ditinjau',createdAt:new Date().toISOString()});mbaSaveLocalData();closeModal();renderAppLayout('ai-soal');showToast('Soal telah dibuat dari generator lokal dan disimpan. Periksa kunci serta materi sebelum digunakan.','info');}
         function openExamPackageEditor(idx=null,questionIdx=null){
             const ex=idx===null?{}:DB.examPackages[idx],selected=ex.questionIds||(questionIdx===null?[]:[DB.questionBank[questionIdx]?.id]);
             const level=ex.level||'SMP';
-            openModal(idx===null?'Buat Paket Ujian CBT':'Edit Paket Ujian CBT',`<form onsubmit="saveExamPackage(event,${idx===null?'null':idx})" class="space-y-3 text-xs"><div><label class="font-bold block mb-1">Nama paket ujian</label><input id="ep-title" required maxlength="120" class="w-full border rounded-xl p-2" value="${escapeHtml(ex.title||'')}"></div><div class="grid grid-cols-2 gap-2"><div><label class="font-bold block mb-1">Mata pelajaran</label><input id="ep-subject" required class="w-full border rounded-xl p-2" value="${escapeHtml(ex.subject||'')}"></div><div><label class="font-bold block mb-1">Jenjang</label><select id="ep-level" class="w-full border rounded-xl p-2">${['SD','SMP','SMA','Umum'].map(v=>`<option ${level===v?'selected':''}>${v}</option>`).join('')}</select></div><div><label class="font-bold block mb-1">Durasi (menit)</label><input id="ep-duration" type="number" min="1" max="300" required value="${Number(ex.duration)||30}" class="w-full border rounded-xl p-2"></div><div><label class="font-bold block mb-1">Batas percobaan</label><input id="ep-attempts" type="number" min="1" max="20" required value="${Number(ex.attempts)||1}" class="w-full border rounded-xl p-2"></div><div><label class="font-bold block mb-1">Jadwal mulai</label><input id="ep-start" type="datetime-local" class="w-full border rounded-xl p-2" value="${escapeHtml(ex.startAt||'')}"></div><div><label class="font-bold block mb-1">Tenggat</label><input id="ep-due" type="datetime-local" class="w-full border rounded-xl p-2" value="${escapeHtml(ex.dueAt||'')}"></div></div><div><label class="font-bold block mb-1">Nilai kelulusan</label><input id="ep-pass" type="number" min="0" max="100" value="${ex.passScore===0?0:(Number(ex.passScore)||70)}" class="w-full border rounded-xl p-2"></div><div><label class="font-bold block mb-2">Pilih soal dari bank soal</label><div class="max-h-52 overflow-y-auto border rounded-xl p-2 space-y-2">${DB.questionBank.filter(q=>q.status!=='Diarsipkan').map(q=>`<label class="flex gap-2 items-start"><input type="checkbox" name="ep-question" value="${q.id}" ${selected.includes(q.id)?'checked':''}><span>${escapeHtml(q.title||'Tanpa judul')} <small class="text-slate-500">(${escapeHtml(q.subject||'Umum')} · ${escapeHtml(q.level||'Umum')} · ${Number(q.totalQ)||1} soal · ${escapeHtml(q.status||'Perlu Ditinjau')})</small></span></label>`).join('')||'<p class="text-slate-400">Tambahkan soal terlebih dahulu.</p>'}</div><p class="text-slate-500 mt-1">Disarankan memilih soal berstatus Siap Digunakan. Soal draf tetap bisa dipilih, tetapi harus ditinjau dahulu.</p></div><div><label class="font-bold block mb-1">Sistem pengerjaan</label><select id="ep-mode" class="w-full border rounded-xl p-2"><option value="online" ${(ex.deliveryMode||'online')==='online'?'selected':''}>Online (CBT interaktif)</option><option value="offline" ${ex.deliveryMode==='offline'?'selected':''}>Offline (cetak PDF + lembar jawaban)</option></select></div><div><label class="font-bold block mb-1">Status publikasi</label><select id="ep-status" class="w-full border rounded-xl p-2"><option ${!ex.status||ex.status==='Draft'?'selected':''}>Draft</option><option ${ex.status==='Diterbitkan'?'selected':''}>Diterbitkan</option><option ${ex.status==='Ditutup'?'selected':''}>Ditutup</option></select></div><button class="w-full bg-indigo-600 text-white p-3 rounded-xl font-bold">Simpan Paket Ujian</button></form>`);
+            openModal(idx===null?'Buat Paket Ujian CBT':'Edit Paket Ujian CBT',`<form onsubmit="saveExamPackage(event,${idx===null?'null':idx})" class="space-y-3 text-xs"><div><label class="font-bold block mb-1">Nama paket ujian</label><input id="ep-title" required maxlength="120" class="w-full border rounded-xl p-2" value="${escapeHtml(ex.title||'')}"></div><div class="grid grid-cols-2 gap-2"><div><label class="font-bold block mb-1">Mata pelajaran</label><input id="ep-subject" required class="w-full border rounded-xl p-2" value="${escapeHtml(ex.subject||'')}"></div><div><label class="font-bold block mb-1">Jenjang</label><select id="ep-level" class="w-full border rounded-xl p-2">${matrixLevelOptions(level || "SMP")}</select></div><div><label class="font-bold block mb-1">Durasi (menit)</label><input id="ep-duration" type="number" min="1" max="300" required value="${Number(ex.duration)||30}" class="w-full border rounded-xl p-2"></div><div><label class="font-bold block mb-1">Batas percobaan</label><input id="ep-attempts" type="number" min="1" max="20" required value="${Number(ex.attempts)||1}" class="w-full border rounded-xl p-2"></div><div><label class="font-bold block mb-1">Jadwal mulai</label><input id="ep-start" type="datetime-local" class="w-full border rounded-xl p-2" value="${escapeHtml(ex.startAt||'')}"></div><div><label class="font-bold block mb-1">Tenggat</label><input id="ep-due" type="datetime-local" class="w-full border rounded-xl p-2" value="${escapeHtml(ex.dueAt||'')}"></div></div><div><label class="font-bold block mb-1">Nilai kelulusan</label><input id="ep-pass" type="number" min="0" max="100" value="${ex.passScore===0?0:(Number(ex.passScore)||70)}" class="w-full border rounded-xl p-2"></div><div><label class="font-bold block mb-2">Pilih soal dari bank soal</label><div class="max-h-52 overflow-y-auto border rounded-xl p-2 space-y-2">${DB.questionBank.filter(q=>q.status!=='Diarsipkan').map(q=>`<label class="flex gap-2 items-start"><input type="checkbox" name="ep-question" value="${q.id}" ${selected.includes(q.id)?'checked':''}><span>${escapeHtml(q.title||'Tanpa judul')} <small class="text-slate-500">(${escapeHtml(q.subject||'Umum')} · ${escapeHtml(q.level||'Umum')} · ${Number(q.totalQ)||1} soal · ${escapeHtml(q.status||'Perlu Ditinjau')})</small></span></label>`).join('')||'<p class="text-slate-400">Tambahkan soal terlebih dahulu.</p>'}</div><p class="text-slate-500 mt-1">Disarankan memilih soal berstatus Siap Digunakan. Soal draf tetap bisa dipilih, tetapi harus ditinjau dahulu.</p></div><div><label class="font-bold block mb-1">Sistem pengerjaan</label><select id="ep-mode" class="w-full border rounded-xl p-2"><option value="online" ${(ex.deliveryMode||'online')==='online'?'selected':''}>Online (CBT interaktif)</option><option value="offline" ${ex.deliveryMode==='offline'?'selected':''}>Offline (cetak PDF + lembar jawaban)</option></select></div><div><label class="font-bold block mb-1">Status publikasi</label><select id="ep-status" class="w-full border rounded-xl p-2"><option ${!ex.status||ex.status==='Draft'?'selected':''}>Draft</option><option ${ex.status==='Diterbitkan'?'selected':''}>Diterbitkan</option><option ${ex.status==='Ditutup'?'selected':''}>Ditutup</option></select></div><button class="w-full bg-indigo-600 text-white p-3 rounded-xl font-bold">Simpan Paket Ujian</button></form>`);
         }
         function saveExamPackage(e,idx){
             e.preventDefault();
@@ -2491,6 +2679,21 @@
                     </div>
                 </div>
             `;
+        }
+
+        function printAttendanceHtml(title, tableHtml) {
+            const w=window.open('','_blank'); if(!w){showToast('Izinkan pop-up browser untuk mencetak PDF.','error');return;}
+            w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${title}</title><style>body{font-family:Arial,sans-serif;padding:24px;color:#111}h2{margin-bottom:16px}table{border-collapse:collapse;width:100%;font-size:12px}th,td{border:1px solid #bbb;padding:8px;text-align:left}th{background:#eee}@media print{button{display:none}}</style></head><body><h2>${title}</h2>${tableHtml}<p>Dicetak: ${new Date().toLocaleString('id-ID')}</p><script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close();
+        }
+        function shareAttendanceWA(kind, personName) {
+            const isStudent=kind==='student';
+            const person=isStudent?(DB.students||[]).find(s=>s.name===personName):(DB.tutors||[]).find(t=>t.name===personName);
+            let phone=String(isStudent?(person?.parentPhone||person?.phone||''):(person?.phone||'')).replace(/\D/g,'');
+            if(phone.startsWith('0'))phone='62'+phone.slice(1);
+            if(!phone){showToast('Nomor WhatsApp yang bersangkutan belum tersedia di data.','error');return;}
+            const records=isStudent?(DB.studentAttendance||[]).filter(a=>a.studentName===personName):(DB.tutorAttendance||[]).filter(a=>a.tutorName===personName);
+            const lines=[`*BIMBEL MBAH AMAT — DETAIL KEHADIRAN ${isStudent?'SISWA':'TENTOR'}*`,`Nama: ${personName}`,`Jumlah catatan: ${records.length}`,`Hadir: ${records.filter(a=>a.status==='Hadir'||(!isStudent&&a.date)).length}`, ...records.slice().sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))).slice(0,20).map(a=>`${a.date||'-'} | ${isStudent?(a.scheduleName||'-'):(a.scheduleName||'-')} | ${isStudent?(a.status||'-'):`Fee Rp ${Number(a.fee||0).toLocaleString('id-ID')}`}`), '', 'Rincian lengkap dapat dicetak/disimpan sebagai PDF dari aplikasi.'];
+            window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(lines.join('\n')),'_blank');
         }
 
         function openModal(title, content) {
