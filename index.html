@@ -113,6 +113,83 @@
         #device-frame[data-device="android"] #dashboard-view .dashboard-card { padding: 13px !important; }
         #device-frame[data-device="iphone"] #dashboard-view .dashboard-quick-actions,
         #device-frame[data-device="android"] #dashboard-view .dashboard-quick-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+        /* Halaman depan publik Bimbel Mbah Amat: lapisan visual baru tanpa mengubah modul aplikasi. */
+        #mba-public-home { scroll-behavior: smooth; background: #fff; }
+        #mba-public-home .mba-home-hero { background: linear-gradient(125deg,#11133d 0%,#25246e 48%,#4338a8 100%); }
+        #mba-public-home .mba-hero-glow { position:absolute; border-radius:9999px; pointer-events:none; filter:blur(2px); }
+        #mba-public-home .mba-hero-glow-one { width:420px;height:420px;right:-100px;top:-160px;background:radial-gradient(circle,rgba(129,140,248,.28),transparent 68%); }
+        #mba-public-home .mba-hero-glow-two { width:360px;height:360px;left:25%;bottom:-240px;background:radial-gradient(circle,rgba(245,158,11,.13),transparent 70%); }
+        #mba-public-home .mba-brand-mark { width:46px;height:46px;display:grid;place-items:center;border-radius:15px;background:linear-gradient(145deg,#fbbf24,#f59e0b);color:#312e81;font-size:22px;box-shadow:0 8px 22px #0f172a44; }
+        #mba-public-home .mba-nav-cta { color:white;font-size:13px;font-weight:800;padding:11px 17px;border-radius:12px;border:1px solid #ffffff55;background:#ffffff12;transition:.2s;white-space:nowrap; }
+        #mba-public-home .mba-nav-cta:hover { background:#ffffff25;transform:translateY(-1px); }
+        #mba-public-home .mba-eyebrow { display:inline-flex;align-items:center;gap:9px;border:1px solid #c7d2fe55;background:#ffffff0c;color:#e0e7ff;border-radius:999px;padding:9px 13px;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase; }
+        #mba-public-home .mba-eyebrow-dot { width:7px;height:7px;border-radius:50%;background:#fbbf24;box-shadow:0 0 0 4px #fbbf2424; }
+        #mba-public-home .mba-gradient-text { color:#fbbf24; }
+        #mba-public-home .mba-primary-cta { display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:13px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#312e81;font-size:13px;font-weight:900;padding:14px 19px;box-shadow:0 9px 24px #0f172a28;transition:.2s; }
+        #mba-public-home .mba-primary-cta:hover { transform:translateY(-2px);box-shadow:0 13px 28px #0f172a38; }
+        #mba-public-home .mba-secondary-cta { display:inline-flex;align-items:center;justify-content:center;border:1px solid #ffffff60;border-radius:13px;background:#ffffff10;color:white;font-size:13px;font-weight:800;padding:13px 18px;transition:.2s; }
+        #mba-public-home .mba-secondary-cta:hover { background:#ffffff20; }
+        #mba-public-home .mba-hero-visual { position:relative;min-height:330px;display:flex;align-items:center;justify-content:center; }
+        #mba-public-home .mba-orbit { position:absolute;border:1px solid #c7d2fe35;border-radius:50%; }
+        #mba-public-home .mba-orbit-one { width:330px;height:330px; }
+        #mba-public-home .mba-orbit-two { width:255px;height:255px;border-style:dashed; }
+        #mba-public-home .mba-book-illustration { position:relative;width:190px;height:220px;transform:rotate(-7deg);filter:drop-shadow(0 24px 25px #08082c66); }
+        #mba-public-home .mba-book-cover { position:absolute;inset:0 12px 0 0;border-radius:10px 18px 18px 10px;background:linear-gradient(145deg,#fbbf24,#f59e0b 65%,#d97706);border-left:9px solid #b45309;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#312e81;gap:14px;box-shadow:inset -7px 0 0 #ffffff30; }
+        #mba-public-home .mba-book-cover i { font-size:56px; }
+        #mba-public-home .mba-book-cover span { font-size:12px;line-height:1.35;font-weight:900;letter-spacing:.2em;text-align:center; }
+        #mba-public-home .mba-book-pages { position:absolute;right:0;top:8px;bottom:7px;width:16px;border-radius:0 8px 8px 0;background:repeating-linear-gradient(0deg,#fff 0,#fff 3px,#e2e8f0 4px,#e2e8f0 5px); }
+        #mba-public-home .mba-float-card { position:absolute;z-index:2;display:flex;align-items:center;gap:11px;padding:13px 15px;background:#fff;border:1px solid #ffffffaa;border-radius:16px;box-shadow:0 15px 35px #08082c30;color:#1e293b; }
+        #mba-public-home .mba-float-card b { display:block;font-size:12px; }
+        #mba-public-home .mba-float-card small { display:block;font-size:10px;color:#64748b;margin-top:3px; }
+        #mba-public-home .mba-float-top { top:28px;right:0; }
+        #mba-public-home .mba-float-bottom { bottom:25px;left:0; }
+        #mba-public-home .mba-float-icon { width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-size:17px; }
+        #mba-public-home .mba-sparkle { position:absolute;color:#fcd34d;font-size:32px; }
+        #mba-public-home .mba-sparkle-a { top:35px;left:16%; }
+        #mba-public-home .mba-sparkle-b { right:12%;bottom:35px;font-size:23px;color:#c4b5fd; }
+        #mba-public-home .mba-section-kicker { font-size:10px;font-weight:900;letter-spacing:.18em;color:#6366f1; }
+        #mba-public-home .mba-feature-card { background:white;border:1px solid #e8eaf4;border-radius:20px;padding:22px 20px;box-shadow:0 6px 20px #1e1b4b08;transition:transform .2s,box-shadow .2s; }
+        #mba-public-home .mba-feature-card:hover { transform:translateY(-4px);box-shadow:0 16px 35px #1e1b4b12; }
+        #mba-public-home .mba-feature-icon { width:46px;height:46px;display:grid;place-items:center;border-radius:14px;font-size:20px;margin-bottom:18px; }
+        #mba-public-home .mba-feature-card h3 { font-size:15px;font-weight:850;color:#1e293b;margin-bottom:8px; }
+        #mba-public-home .mba-feature-card p { font-size:12px;line-height:1.75;color:#64748b; }
+        #mba-public-home .mba-steps-section { background:linear-gradient(110deg,#f8fafc,#eef2ff);border-top:1px solid #eef2ff;border-bottom:1px solid #e0e7ff; }
+        #mba-public-home .mba-role-tile { display:flex;flex-direction:column;gap:7px;border:1px solid #e2e8f0;background:#ffffffd9;padding:20px;border-radius:17px; }
+        #mba-public-home .mba-role-tile i { font-size:23px;margin-bottom:5px; }
+        #mba-public-home .mba-role-tile b { font-size:14px;color:#1e293b; }
+        #mba-public-home .mba-role-tile span { font-size:11px;color:#64748b; }
+        #mba-public-home .mba-bottom-cta { padding:28px 30px;border-radius:24px;background:linear-gradient(115deg,#272568,#4338a8 70%,#5b4bd8);box-shadow:0 18px 35px #312e811c; }
+        #mba-public-home .mba-footer-mark { display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:#e0e7ff;color:#4338ca;font-size:18px; }
+        #mba-public-home .mba-login-anchor { height:1px;scroll-margin-top:0; }
+        #mba-public-home .mba-login-backdrop { background:linear-gradient(125deg,#11133d,#28266e 55%,#3730a3); }
+        #mba-public-home .mba-login-icon { width:52px;height:52px;margin:0 auto 14px;display:grid;place-items:center;background:#eef2ff;color:#4338ca;border-radius:17px;font-size:24px; }
+        #mba-public-home .mba-login-submit { background:linear-gradient(110deg,#4338ca,#6366f1);box-shadow:0 9px 22px #4338ca35;transition:.2s; }
+        #mba-public-home .mba-login-submit:hover { transform:translateY(-1px);box-shadow:0 12px 25px #4338ca45; }
+        #mba-public-home .mba-demo-details { text-align:left;border-top:1px solid #f1f5f9;padding-top:13px; }
+        #mba-public-home .mba-demo-details summary { cursor:pointer;color:#64748b;font-size:11px;font-weight:700;text-align:center; }
+        #mba-public-home .mba-demo-details summary:hover { color:#4338ca; }
+        @media(max-width:767px) {
+            #mba-public-home .mba-home-nav { padding-top:15px;padding-bottom:15px; }
+            #mba-public-home .mba-brand-mark { width:40px;height:40px;font-size:19px; }
+            #mba-public-home .mba-home-hero h1 { font-size:2.55rem; }
+            #mba-public-home .mba-home-hero .pt-7 { padding-top:1.6rem; }
+            #mba-public-home .mba-bottom-cta { padding:23px 20px;border-radius:20px; }
+            #mba-public-home .mba-primary-cta,#mba-public-home .mba-secondary-cta { padding:12px 14px;font-size:12px; }
+            #mba-public-home .mba-login-backdrop { padding-top:2.5rem;padding-bottom:2.5rem; }
+        }
+
+
+        #mba-public-home .mba-register-card { color:#0f172a; background:#fff; position:relative; z-index:2; }
+        #mba-public-home .mba-register-icon { width:52px;height:52px;margin:0 auto 14px;display:grid;place-items:center;border-radius:17px;background:#eef2ff;color:#4338ca;font-size:22px; }
+        #mba-public-home .mba-register-label { display:block;color:#334155;font-size:12px;font-weight:800;margin-bottom:7px; }
+        #mba-public-home .mba-register-input { display:block;min-height:44px;padding:11px 13px;border:1px solid #cbd5e1;border-radius:11px;background:#f8fafc;color:#0f172a;font-size:13px;outline:none;transition:border-color .2s,box-shadow .2s,background .2s; }
+        #mba-public-home .mba-register-input::placeholder { color:#94a3b8;opacity:1; }
+        #mba-public-home .mba-register-input:focus { border-color:#6366f1;background:#fff;box-shadow:0 0 0 3px #6366f122; }
+        #mba-public-home .mba-register-submit { color:#fff;background:linear-gradient(110deg,#4338ca,#6366f1);box-shadow:0 8px 20px #4338ca2b;transition:transform .2s,box-shadow .2s; }
+        #mba-public-home .mba-register-submit:hover { transform:translateY(-1px);box-shadow:0 11px 24px #4338ca40; }
+        #mba-public-home #mba-login { scroll-margin-top:12px; }
+
         /* Invoice dan kuitansi dicetak melalui jendela cetak mandiri agar tidak terpengaruh layout modal aplikasi. */
     </style>
 </head>
@@ -542,36 +619,95 @@
             DB.currentUser = null;
             document.getElementById('user-top-info').classList.add('hidden');
             document.getElementById('main-content').innerHTML = `
-                <div class="flex-1 flex flex-col md:flex-row bg-slate-50 overflow-y-auto">
-                    <div class="md:w-1/2 bg-gradient-to-br from-indigo-900 via-indigo-800 to-slate-900 text-white p-8 md:p-12 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center space-x-3 mb-8">
-                                <div class="bg-amber-500 p-3 rounded-2xl text-slate-900 font-bold shadow-lg"><i class="fa-solid fa-graduation-cap text-2xl"></i></div>
-                                <h2 class="text-2xl font-black tracking-wide">Bimbel Mbah Amat</h2>
+                <div id="mba-public-home" class="flex-1 overflow-y-auto bg-white">
+                    <section class="mba-home-hero relative overflow-hidden">
+                        <div class="mba-hero-glow mba-hero-glow-one"></div>
+                        <div class="mba-hero-glow mba-hero-glow-two"></div>
+                        <nav class="mba-home-nav relative z-10 max-w-7xl mx-auto px-5 sm:px-8 py-5 flex items-center justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <div class="mba-brand-mark"><i class="fa-solid fa-graduation-cap"></i></div>
+                                <div><div class="font-extrabold text-white tracking-tight text-lg sm:text-xl">Bimbel Mbah Amat</div><div class="text-indigo-200 text-[10px] sm:text-xs tracking-widest uppercase">Belajar · Bertumbuh · Berprestasi</div></div>
                             </div>
-                            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4 leading-tight">Solusi Belajar Cerdas & Profesional</h1>
-                            <p class="text-indigo-200 text-sm leading-relaxed mb-6">Platform manajemen bimbingan belajar dengan kontrol penuh multi-role, integrasi jadwal & rombel, serta absensi otomatis.</p>
-                            <div class="grid grid-cols-2 gap-4 text-xs font-semibold text-indigo-200">
-                                <div class="bg-indigo-950/50 p-3 rounded-xl border border-indigo-700/40"><span class="text-amber-400 font-bold block mb-1">Super Admin:</span><span>arifnoker / arieph123</span></div>
-                                <div class="bg-indigo-950/50 p-3 rounded-xl border border-indigo-700/40"><span class="text-amber-400 font-bold block mb-1">Tentor / Siswa:</span><span>Username tentor/siswa: tentorbudi, siswani, faqih, ortuani · Password demo: 123</span></div>
+                            <a href="#mba-login" class="mba-nav-cta"><i class="fa-solid fa-right-to-bracket mr-2"></i>Masuk</a>
+                        </nav>
+                        <div class="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 pt-7 pb-14 md:pt-12 md:pb-20">
+                            <div class="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+                                <div class="text-white">
+                                    <div class="mba-eyebrow"><span class="mba-eyebrow-dot"></span> Teman belajar untuk masa depan</div>
+                                    <h1 class="text-4xl sm:text-5xl xl:text-6xl font-black leading-[1.08] tracking-tight mt-5 mb-6">Buka Potensi,<br><span class="mba-gradient-text">Raih Prestasi.</span></h1>
+                                    <p class="text-indigo-100 text-base sm:text-lg leading-relaxed max-w-xl mb-7">Selamat datang di Bimbel Mbah Amat. Ruang belajar yang mendukung perjalanan siswa melalui pendampingan belajar, pengelolaan kelas, dan pemantauan perkembangan dalam satu aplikasi.</p>
+                                    <div class="flex flex-wrap gap-3 mb-8">
+                                        <a href="#mba-login" class="mba-primary-cta">Mulai dari sini <i class="fa-solid fa-arrow-right ml-2"></i></a>
+                                        <button type="button" onclick="renderPublicRegisterForm()" class="mba-secondary-cta"><i class="fa-solid fa-user-plus mr-2"></i>Daftar akun</button>
+                                    </div>
+                                    <div class="flex flex-wrap gap-x-6 gap-y-3 text-sm text-indigo-100">
+                                        <span><i class="fa-solid fa-circle-check text-amber-300 mr-2"></i>Informasi lebih teratur</span>
+                                        <span><i class="fa-solid fa-circle-check text-amber-300 mr-2"></i>Akses sesuai peran</span>
+                                    </div>
+                                </div>
+                                <div class="mba-hero-visual hidden md:block" aria-label="Ilustrasi aktivitas belajar">
+                                    <div class="mba-orbit mba-orbit-one"></div><div class="mba-orbit mba-orbit-two"></div>
+                                    <div class="mba-book-illustration"><div class="mba-book-cover"><i class="fa-solid fa-book-open-reader"></i><span>GROW<br>WITH<br>KNOWLEDGE</span></div><div class="mba-book-pages"></div></div>
+                                    <div class="mba-float-card mba-float-top"><span class="mba-float-icon bg-amber-100 text-amber-600"><i class="fa-solid fa-lightbulb"></i></span><div><b>Semangat belajar</b><small>Langkah kecil, hasil bermakna</small></div></div>
+                                    <div class="mba-float-card mba-float-bottom"><span class="mba-float-icon bg-emerald-100 text-emerald-600"><i class="fa-solid fa-chart-line"></i></span><div><b>Terus berkembang</b><small>Pantau proses belajar</small></div></div>
+                                    <div class="mba-sparkle mba-sparkle-a">✦</div><div class="mba-sparkle mba-sparkle-b">✧</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="text-xs text-indigo-300 mt-8 pt-4 border-t border-indigo-800/60">&copy; 2026 Mbah Amat App. Professional Edition.</div>
-                    </div>
-                    <div class="md:w-1/2 p-4 sm:p-8 md:p-12 flex items-center justify-center">
-                        <div class="w-full max-w-md bg-white rounded-3xl shadow-xl p-5 sm:p-8 border border-slate-100">
-                            <div id="auth-form-container">
-                                <div class="text-center mb-6"><h3 class="text-2xl font-bold text-slate-800">Sign In / Masuk</h3><p class="text-xs text-slate-500 mt-1">Masukkan akun terdaftar atau daftar baru.</p></div>
-                                <form onsubmit="handleLogin(event)" class="space-y-4">
-                                    <div><label class="block text-xs font-bold text-slate-700 mb-1">Username</label><input type="text" id="login-username" required placeholder="Contoh: arifnoker / faqih" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-600 transition"></div>
-                                    <div><label class="block text-xs font-bold text-slate-700 mb-1">Password</label><input type="password" id="login-password" required placeholder="••••••••" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-600 transition"></div>
-                                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-indigo-600/20 text-sm">Masuk Aplikasi <i class="fa-solid fa-arrow-right ml-1"></i></button>
-                                </form>
-                                <div class="mt-6 text-center pt-4 border-t border-slate-100">
-                                    <p class="text-xs text-slate-500">Belum punya akun / siswa baru?</p>
-                                    <button onclick="renderPublicRegisterForm()" class="mt-2 text-indigo-600 font-bold text-xs hover:underline flex items-center justify-center mx-auto space-x-1">
-                                        <i class="fa-solid fa-user-plus"></i><span>Pendaftaran Akun Baru (Sign Up)</span>
-                                    </button>
+                    </section>
+                    <section class="max-w-7xl mx-auto px-5 sm:px-8 py-12 md:py-16">
+                        <div class="text-center max-w-2xl mx-auto mb-8 md:mb-10">
+                            <span class="mba-section-kicker">SATU APLIKASI, BANYAK KEMUDAHAN</span>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-3 mb-3">Belajar lebih terarah, pengelolaan lebih mudah</h2>
+                            <p class="text-slate-500 text-sm sm:text-base leading-relaxed">Fitur yang membantu kegiatan bimbingan belajar terorganisasi dari administrasi hingga evaluasi pembelajaran.</p>
+                        </div>
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <article class="mba-feature-card"><div class="mba-feature-icon bg-indigo-50 text-indigo-600"><i class="fa-solid fa-calendar-check"></i></div><h3>Jadwal & Kehadiran</h3><p>Kelola jadwal bimbingan dan catatan kehadiran siswa maupun tentor dengan lebih terstruktur.</p></article>
+                            <article class="mba-feature-card"><div class="mba-feature-icon bg-emerald-50 text-emerald-600"><i class="fa-solid fa-user-graduate"></i></div><h3>Data Siswa & Tentor</h3><p>Informasi peserta dan pengajar tertata untuk membantu administrasi sehari-hari.</p></article>
+                            <article class="mba-feature-card"><div class="mba-feature-icon bg-amber-50 text-amber-600"><i class="fa-solid fa-file-invoice-dollar"></i></div><h3>Administrasi Keuangan</h3><p>Catat tagihan, pembayaran, dan ringkasan keuangan dalam satu tempat.</p></article>
+                            <article class="mba-feature-card"><div class="mba-feature-icon bg-sky-50 text-sky-600"><i class="fa-solid fa-clipboard-question"></i></div><h3>Latihan & Evaluasi</h3><p>Kelola bank soal, paket ujian, dan hasil evaluasi untuk mendukung proses belajar.</p></article>
+                        </div>
+                    </section>
+                    <section class="mba-steps-section">
+                        <div class="max-w-7xl mx-auto px-5 sm:px-8 py-12 md:py-14 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                            <div><span class="mba-section-kicker">DIBUAT UNTUK MEMBANTU</span><h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-3 mb-4">Kolaborasi yang lebih rapi untuk setiap peran</h2><p class="text-slate-600 leading-relaxed text-sm sm:text-base">Admin, tentor, siswa, dan orang tua dapat menggunakan akses sesuai peran yang tersedia. Informasi penting lebih mudah ditemukan sehingga kegiatan belajar dapat berjalan lebih terarah.</p></div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="mba-role-tile"><i class="fa-solid fa-user-shield text-indigo-600"></i><b>Admin</b><span>Kelola operasional</span></div>
+                                <div class="mba-role-tile"><i class="fa-solid fa-chalkboard-user text-emerald-600"></i><b>Tentor</b><span>Dampingi pembelajaran</span></div>
+                                <div class="mba-role-tile"><i class="fa-solid fa-book-open text-amber-600"></i><b>Siswa</b><span>Ikuti kegiatan belajar</span></div>
+                                <div class="mba-role-tile"><i class="fa-solid fa-people-roof text-sky-600"></i><b>Orang tua</b><span>Dapatkan informasi</span></div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="max-w-7xl mx-auto px-5 sm:px-8 py-10 md:py-14">
+                        <div class="mba-bottom-cta flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+                            <div><h2 class="text-xl sm:text-2xl font-extrabold text-white mb-2">Siap melanjutkan perjalanan belajar?</h2><p class="text-indigo-100 text-sm">Masuk ke akun Anda atau ajukan pendaftaran untuk memulai.</p></div>
+                            <div class="flex flex-wrap gap-3"><a href="#mba-login" class="mba-primary-cta">Masuk aplikasi <i class="fa-solid fa-arrow-right ml-2"></i></a><button type="button" onclick="renderPublicRegisterForm()" class="mba-secondary-cta">Daftar akun</button></div>
+                        </div>
+                    </section>
+                    <footer class="border-t border-slate-200 bg-slate-50">
+                        <div class="max-w-7xl mx-auto px-5 sm:px-8 py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                            <div class="flex items-center gap-3"><div class="mba-footer-mark"><i class="fa-solid fa-graduation-cap"></i></div><div><b class="text-slate-800">Bimbel Mbah Amat</b><p class="text-xs text-slate-500">Belajar dengan arah, bertumbuh dengan semangat.</p></div></div>
+                            <p class="text-xs text-slate-400">© 2026 Bimbel Mbah Amat · Hak cipta dilindungi</p>
+                        </div>
+                    </footer>
+                    <div id="mba-login" class="mba-login-anchor"></div>
+                    <div class="mba-login-backdrop px-5 sm:px-8 py-12">
+                        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-14 items-center">
+                            <div class="text-white max-w-xl"><span class="mba-section-kicker text-amber-300">AREA AKSES PENGGUNA</span><h2 class="text-3xl sm:text-4xl font-extrabold mt-3 mb-4">Selamat datang kembali!</h2><p class="text-indigo-100 leading-relaxed">Silakan masuk untuk mengakses fitur sesuai akun Anda. Belum memiliki akun? Anda dapat mengirim pendaftaran melalui formulir yang tersedia.</p><div class="mt-6 flex flex-wrap gap-3 text-xs text-indigo-100"><span class="rounded-full border border-white/20 px-3 py-2"><i class="fa-solid fa-lock mr-2 text-amber-300"></i>Akses akun</span><span class="rounded-full border border-white/20 px-3 py-2"><i class="fa-solid fa-laptop-mobile mr-2 text-amber-300"></i>PC & perangkat mobile</span></div></div>
+                            <div id="auth-form-container" class="w-full max-w-md mx-auto">
+                                <div class="bg-white rounded-3xl shadow-2xl p-5 sm:p-8 border border-white/60">
+                                    <div class="text-center mb-6"><div class="mba-login-icon"><i class="fa-solid fa-graduation-cap"></i></div><h3 class="text-2xl font-extrabold text-slate-900">Masuk Aplikasi</h3><p class="text-sm text-slate-500 mt-2">Gunakan username dan password akun Anda.</p></div>
+                                    <form onsubmit="handleLogin(event)" class="space-y-4">
+                                        <div><label class="block text-xs font-bold text-slate-700 mb-1.5">Username</label><input type="text" id="login-username" required autocomplete="username" placeholder="Masukkan username" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-600 transition"></div>
+                                        <div><label class="block text-xs font-bold text-slate-700 mb-1.5">Password</label><input type="password" id="login-password" required autocomplete="current-password" placeholder="Masukkan password" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-600 transition"></div>
+                                        <button type="submit" class="mba-login-submit w-full py-3.5 rounded-xl text-white font-bold text-sm">Masuk dengan aman <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                                    </form>
+                                    <div class="mt-6 text-center pt-5 border-t border-slate-100">
+                                        <p class="text-sm text-slate-500">Belum punya akun / siswa baru?</p>
+                                        <button onclick="renderPublicRegisterForm()" class="mt-2 text-indigo-700 font-bold text-sm hover:underline"><i class="fa-solid fa-user-plus mr-2"></i>Pendaftaran Akun Baru</button>
+                                    </div>
+                                    <details class="mba-demo-details mt-5"><summary>Lihat akun demo untuk pengujian</summary><div class="mt-3 rounded-xl bg-slate-50 p-3 text-xs text-slate-600 space-y-2"><p><b>Super Admin:</b> arifnoker / arieph123</p><p><b>Tentor / Siswa / Orang Tua:</b> tentorbudi, siswani, faqih, ortuani · Password demo: 123</p><p class="text-amber-700"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Akun demo hanya untuk pengujian. Jangan gunakan kredensial ini pada aplikasi produksi.</p></div></details>
                                 </div>
                             </div>
                         </div>
@@ -582,27 +718,34 @@
 
         function renderPublicRegisterForm() {
             const container = document.getElementById('auth-form-container');
+            if (!container) return;
             container.innerHTML = `
-                <div class="text-center mb-4"><h3 class="text-xl font-bold text-slate-800">Pendaftaran Akun Baru</h3><p class="text-xs text-slate-500 mt-0.5">Isi data lengkap pendaftaran Bimbel Mbah Amat.</p></div>
-                <form onsubmit="handlePublicRegister(event)" class="space-y-3 text-xs">
-                    <div><label class="font-bold block mb-1">Nama Lengkap</label><input type="text" id="reg-name" required class="w-full px-3 py-2 border rounded-xl"></div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div><label class="font-bold block mb-1">Username</label><input type="text" id="reg-user" required class="w-full px-3 py-2 border rounded-xl"></div>
-                        <div><label class="font-bold block mb-1">Password</label><input type="password" id="reg-pass" required class="w-full px-3 py-2 border rounded-xl"></div>
+                <div class="mba-register-card bg-white rounded-3xl shadow-2xl p-5 sm:p-8 border border-slate-200">
+                    <div class="text-center mb-6">
+                        <div class="mba-register-icon"><i class="fa-solid fa-user-plus"></i></div>
+                        <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900">Pendaftaran Akun Baru</h3>
+                        <p class="text-sm text-slate-500 mt-2">Isi data berikut untuk mengajukan pendaftaran Bimbel Mbah Amat.</p>
                     </div>
-                    <div><label class="font-bold block mb-1">No. HP / WA</label><input type="text" id="reg-phone" required placeholder="0812..." class="w-full px-3 py-2 border rounded-xl"></div>
-                    <div>
-                        <label class="font-bold block mb-1">Pilih Role / Hak Akses</label>
-                        <select id="reg-role" class="w-full px-3 py-2 border rounded-xl">
-                            <option value="siswa">Siswa</option>
-                            <option value="ortu">Orang Tua / Wali</option>
-                            <option value="tentor">Tentor</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-2.5 rounded-xl mt-2">Kirim Pendaftaran</button>
-                    <button type="button" onclick="renderAuthScreen()" class="w-full text-slate-500 hover:text-slate-800 text-xs font-semibold py-1">&larr; Kembali ke Login</button>
-                </form>
+                    <form onsubmit="handlePublicRegister(event)" class="space-y-4 text-sm">
+                        <div><label for="reg-name" class="mba-register-label">Nama Lengkap</label><input type="text" id="reg-name" required autocomplete="name" placeholder="Masukkan nama lengkap" class="mba-register-input w-full"></div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div><label for="reg-user" class="mba-register-label">Username</label><input type="text" id="reg-user" required autocomplete="username" placeholder="Buat username" class="mba-register-input w-full"></div>
+                            <div><label for="reg-pass" class="mba-register-label">Password</label><input type="password" id="reg-pass" required autocomplete="new-password" placeholder="Buat password" class="mba-register-input w-full"></div>
+                        </div>
+                        <div><label for="reg-phone" class="mba-register-label">No. HP / WhatsApp</label><input type="tel" id="reg-phone" required autocomplete="tel" placeholder="Contoh: 0812xxxxxxxx" class="mba-register-input w-full"></div>
+                        <div><label for="reg-role" class="mba-register-label">Daftar sebagai</label><select id="reg-role" class="mba-register-input w-full"><option value="siswa">Siswa</option><option value="ortu">Orang Tua / Wali</option><option value="tentor">Tentor</option></select><p class="text-xs text-slate-500 mt-1.5">Pilih peran yang sesuai dengan kebutuhan Anda.</p></div>
+                        <button type="submit" class="mba-register-submit w-full font-bold py-3 rounded-xl mt-2"><i class="fa-solid fa-paper-plane mr-2"></i>Kirim Pendaftaran</button>
+                        <button type="button" onclick="renderAuthScreen(); document.getElementById('mba-login')?.scrollIntoView({behavior:'smooth',block:'start'});" class="w-full text-slate-500 hover:text-indigo-700 text-sm font-semibold py-2 transition"><i class="fa-solid fa-arrow-left mr-2"></i>Kembali ke Login</button>
+                    </form>
+                </div>
             `;
+            // Pastikan form yang baru ditampilkan langsung terlihat, termasuk saat tombol diklik dari hero/footer.
+            window.setTimeout(() => {
+                const anchor = document.getElementById('mba-login');
+                if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const firstField = document.getElementById('reg-name');
+                if (firstField) firstField.focus({ preventScroll: true });
+            }, 60);
         }
 
         function handlePublicRegister(e) {
